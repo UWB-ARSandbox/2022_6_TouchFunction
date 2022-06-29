@@ -14,12 +14,18 @@ public class WolframAlpha : MonoBehaviour
     //Used in Solve
     public delegate void ObtainPointsEvent(List<float> points);
     public static event ObtainPointsEvent onObtainPoints;
-/* //Used in GetTangentFunction
+/* 
+    //Used in GetTangentFunction
     public delegate void ObtainTangentEvent(string tangentLine);
     public static event ObtainTangentEvent onObtainTangent;
-*/ /* //Used in GetFuncitonFromPoints
-    public delegate void ObtainFunctionFromPoints(bool success, string function);
-    public static event ObtainFunctionFromPoints onObtainFunction;
+*/ /* 
+    //Used in GetFuncitonFromPoints
+    public delegate void ObtainFunctionFromPointsEvent(string function);
+    public static event ObtainFunctionFromPointsEvent onObtainFunction;
+*/ /*
+    //Used in GetFunctionInfo
+    public delegate void ObtainFunctionInfoEvent(Dictionary<string, string> dic);
+    public static event ObtainFunctionInfoEvent onObtainFunctionInfo;
 */
     WolframAlphaClient client;
     // Start is called before the first frame update
@@ -29,7 +35,12 @@ public class WolframAlpha : MonoBehaviour
         client = new WolframAlphaClient("GHE9KT-EP5Y898AAL");
     }
 
-
+    // Solve: creates a list of y coordinate floats
+    // @param: equation -- string containing the funciton to plot
+    // @param: start    -- float starting point to plot
+    // @param: end      -- float end point of plot
+    // @param: inc      -- float increment amount 
+    // @returns: list of y coordinate floats
     public async void Solve(string equation, float start, float end, float inc){
         string input = "Table[" + equation + "], {x, " + start + ", " + end + ", " + inc + "}]";
 
@@ -60,12 +71,15 @@ public class WolframAlpha : MonoBehaviour
         onObtainPoints?.Invoke(cleanResults(resultString));
     }
 
+    // cleanResults: 
+    // @param: toClean -- string containing a list of floats from WA
+    // @returns: list of floats
     static List<float> cleanResults(string toClean){
         
-        
+        // remove brackets and white space, break the string into a list of floats, and return
         return Regex.Replace(toClean, @"{|}|\s", "").Split(',').Select(float.Parse).ToList();;
     }
-/*
+/* 
     // GetTangentFunction: Gets the tangent function at x
     // @param: originalFunction -- string of original function
     // @param: x                -- x value to get tangent for
@@ -75,17 +89,19 @@ public class WolframAlpha : MonoBehaviour
         FullResultResponse results = await client.FullResultAsync(input);
         string resultString = "";
 
+        // foreach pod, look for the one titled "Interpolating polynomial"
         foreach (Pod pod in results.Pods){
             if(pod.Title == "Interpolating polynomial"){
                 foreach (SubPod subPod in pod.SubPods){
-                    if(string.IsNullOrEmpty(subPod.Plaintext)){
-                        Debug.Log("<Cannot output in console>");
-                    }else{
+                    // if subPod contains Plaintext, save it to return
+                    if(!string.IsNullOrEmpty(subPod.Plaintext)){
                         resultString = subPod.Plaintext;
                     }
                 }
             }
         }
+
+        // pass tangent funciton into method.
         onObtainTangent?.Invoke(resultString);
 
     }
@@ -100,26 +116,71 @@ public class WolframAlpha : MonoBehaviour
         FullResultResponse results = await client.FullResultAsync(input);
         string resultString = "";
 
+        // foreach pod, look for the one that is titled "Results"
         foreach(Pod pod in results.Pods){
             if(pod.Title == "Result"){
                 foreach (SubPod subPod in pod.SubPods){
-                    if(string.IsNullOrEmpty(subPod.Plaintext)){
-                        Debug.Log("<Cannot output in console>");
-                    }else{
+
+                    // if that SubPod contains a Plaintext, save it to return
+                    if(!string.IsNullOrEmpty(subPod.Plaintext)){
                         resultString = subPod.Plaintext;
                     }
                 }
             }
         }
-        if(resultString != ""){
-            onObtainFunction?.Invoke(resultString);
-        }else{
-            notObtainFunction?.Invoke();
-        }
+        
+        // pass function into method.
+        onObtainFunction?.Invoke(resultString);
+
     }
 */ /*
-    public async void GetDerivativeFunction(string function){
-        string input = "Derivative [" + function + "]"
+    // GetFuncitonInfo: returns all Plaintext information from WolframAlpha for function.
+    // @param: funciton -- string of function to get info for
+    // @returns: Dictonary of all Plaintext information
+    public async void GetFunctionInfo(string function){
+        // query of just the function returns multiple strings of information on the function
+        FullResultResponse results = await client.FullResultAsync(function);
+
+        //Dictionary of strings from results
+        Dictionary<string, string> dic = new Dictionary<string, string>();
+
+        //for each pod in Pods
+        foreach(Pod pod in results.Pods){
+
+            // count for Pods/SubPods with multiple entries
+            int SPCount = 1;
+
+            //for each subPod in SubPods
+            foreach(SubPod subPod in pod.SubPods){
+                
+                // if subPod contains Plaintext. if not, do nothing
+                if (!string.IsNullOrEmpty(subPod.Plaintext)){
+                    
+                    // If subPod ! contain a title, use pod.Title
+                    if(string.IsNullOrEmpty(subPod.Title)){
+                        // TryAdd attempts to add the object to the dictionary. returns false if entry already exists for that key
+                        if(!dic.TryAdd(pod.Title, subPod.Plaintext)){
+                            // Add the object with a key + an iterator
+                            dic.Add(pod.Title + SPCount, subPod.Plaintext);
+                            SPCount ++;
+                        }
+                    //using subPod.Title
+                    }else{
+                        // TryAdd attempts to add the object to the dictionary. returns false if entry already exists for that key
+                        if(!dic.TryAdd(subPod.Title, subPod.Plaintext)){
+                            // Add the object with a key + an iterator
+                            dic.Add(subPod.Title + SPCount, subPod.Plaintext);
+                            SPCount ++;
+                        }
+                    }
+                }
+            }
+
+            
+        }
+        //Send dictionary to other process
+        onObtainFunctionInfo?.Invoke(dic);
     }
     */
+    
 }
