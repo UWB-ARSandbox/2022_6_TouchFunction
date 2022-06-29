@@ -26,7 +26,7 @@ If you are creating a new project and wish to utilize this functionality, you wi
 
 1. Download NuGet from https://github.com/GlitchEnzo/NuGetForUnity
 2. Drag the download object into your unity scene and click "install". If correctly done a new dropdown tab should appear between "Component" and "Window".
-3. Click NuGet->Manage NuGet Packages.
+3. Click NuGet->Manage NuGet Packages.                                                                                 
  ![image](https://github.com/UWB-ARSandbox/2022_6_TouchFunction/blob/main/README%20Pictures/Pic6.png)
  
 4. Click the "Show Prerelease" box and enter "wolframalpha" into the search bar. 
