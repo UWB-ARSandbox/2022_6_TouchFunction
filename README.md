@@ -8,7 +8,7 @@ Creating and Updating a WolframAlpha AppId for use in the file WolframAlpha.cs
 
 1. go to https://developer.wolframalpha.com/portal/signup.html and create an account. A free non-commercial account will be fine.
 2. verify the email on your account. Wolfram will not recognize your AppId until this is done.
-3. Go to https://developer.wolframalpha.com/portal/myapps/ and click "Get an AppId" near the top righthand corner.
+3. Go to https://developer.wolframalpha.com/portal/myapps/ and click "Get an AppId" near the top righthand corner.                                                           
  ![image](https://github.com/UWB-ARSandbox/2022_6_TouchFunction/blob/main/README%20Pictures/Pic1.PNG)
  
 4. Enter the application name and description and click "Get AppId"
