@@ -66,7 +66,6 @@ public class WolframAlpha : MonoBehaviour
                 }
             }
         }
-        // Debug.Log("Result String: " + resultString);
         Debug.Log("Result String: " + resultString);
 
         onObtainPoints?.Invoke(cleanResults(resultString));
