@@ -8,7 +8,7 @@ public class MeshCreator : MonoBehaviour
     public Vector3 origin;
 
     int MeshM = 20;//widthwise;
-    int MeshPerX = 4;//lengthwise;
+    int MeshPerX = 100;//lengthwise;
     int minVal = 0;
     int maxVal = 20;
     // public int functionSelection = 0;

@@ -15,6 +15,6 @@ public class FunctionInput : MonoBehaviour
     {
         string function = inputField.text;
 
-        FindObjectOfType<WolframAlpha>().Solve(function, 0, 20, 0.25f);
+        FindObjectOfType<WolframAlpha>().Solve(function, 0, 20, 0.01f);
     } 
 }
