@@ -67,6 +67,7 @@ public class WolframAlpha : MonoBehaviour
             }
         }
         // Debug.Log("Result String: " + resultString);
+        Debug.Log("Result String: " + resultString);
 
         onObtainPoints?.Invoke(cleanResults(resultString));
     }
@@ -76,8 +77,12 @@ public class WolframAlpha : MonoBehaviour
     // @returns: list of floats
     static List<float> cleanResults(string toClean){
         
+<<<<<<< Updated upstream
         // remove brackets and white space, break the string into a list of floats, and return
         return Regex.Replace(toClean, @"{|}|\s", "").Split(',').Select(float.Parse).ToList();;
+=======
+        return Regex.Replace(toClean, @"{|}|\s", "").Split(',').Select(float.Parse).ToList();
+>>>>>>> Stashed changes
     }
 /* 
     // GetTangentFunction: Gets the tangent function at x
