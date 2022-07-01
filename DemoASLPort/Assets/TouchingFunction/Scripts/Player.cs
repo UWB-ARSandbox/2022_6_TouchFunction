@@ -8,19 +8,12 @@ public class Player : MonoBehaviour
     private static GameObject _playerObject = null;
     private static ASLObject _playerAslObject = null;
 
-    private static readonly float UPDATES_PER_SECOND = 2.0f;
+    private static readonly float UPDATES_PER_SECOND = 10.0f;
     
     // Instantiates a player for each client
     void Start()
     {
-        ASLHelper.InstantiateASLObject(
-            PrimitiveType.Cube, 
-            new Vector3(0,0,0), 
-            Quaternion.identity, 
-            null, 
-            null, 
-            OnPlayerCreated);
-
+        ASLHelper.InstantiateASLObject("Player", Vector3.zero, Quaternion.identity, null, null, OnPlayerCreated);
         
         StartCoroutine(DelayedInit());
         StartCoroutine(NetworkedUpdate());
@@ -38,18 +31,11 @@ public class Player : MonoBehaviour
     {
         while (_playerObject == null)
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return null;
         }
-        
-        _playerAslObject.SendAndSetClaim(() =>
-        {
-            _playerAslObject.SendAndSetObjectColor(
-                new Color(0.0f, 0.0f, 0.0f, 0.0f), 
-                new Color(0.2f, 0.4f, 0.2f));
-        });
 
-        _playerObject.SetActive(false);
-
+        _playerObject.GetComponent<PlayerMovement>().enabled = true;
+        _playerObject.GetComponent<PlayerMovement>().playerCam.SetActive(true);
     }
 
     // Putting your update in a coroutine allows you to run it at a rate of your choice
@@ -62,7 +48,8 @@ public class Player : MonoBehaviour
             
             _playerAslObject.SendAndSetClaim(() =>
             {
-                _playerAslObject.SendAndSetWorldPosition(transform.position);
+                // Debug.Log(transform.position);
+                _playerAslObject.SendAndSetWorldPosition(_playerAslObject.transform.position);
             });
             
             yield return new WaitForSeconds(1 / UPDATES_PER_SECOND);

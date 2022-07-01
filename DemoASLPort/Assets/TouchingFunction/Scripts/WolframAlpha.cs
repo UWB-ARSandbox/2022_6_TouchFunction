@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 
 public class WolframAlpha : MonoBehaviour
 {
-    public delegate void ObtainPointsEvent(List<float> points);
+    public delegate void ObtainPointsEvent(float[] points);
     public static event ObtainPointsEvent onObtainPoints;
 
     WolframAlphaClient client;
@@ -48,12 +48,12 @@ public class WolframAlpha : MonoBehaviour
                 }
             }
         }
-        Debug.Log("Result String: " + resultString);
+        // Debug.Log("Result String: " + resultString);
 
         onObtainPoints?.Invoke(cleanResults(resultString));
     }
 
-    static List<float> cleanResults(string toClean){
+    static float[] cleanResults(string toClean){
         // string trim = toClean.Replace(" ", "");
         // char breakOn = ',';
         // string[] broken = trim.Split(breakOn);
@@ -66,6 +66,6 @@ public class WolframAlpha : MonoBehaviour
         //     Debug.Log(cleaned[i]);
         // }
         
-        return Regex.Replace(toClean, @"{|}|\s", "").Split(',').Select(float.Parse).ToList();
+        return Regex.Replace(toClean, @"{|}|\s", "").Split(',').Select(float.Parse).ToArray<float>();
     }
 }

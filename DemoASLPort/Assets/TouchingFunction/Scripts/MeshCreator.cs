@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ASL;
 
 [RequireComponent(typeof(MeshFilter))]
 public class MeshCreator : MonoBehaviour
@@ -17,9 +18,9 @@ public class MeshCreator : MonoBehaviour
     Vector3[] vertices;
     int[] triangles;
 
-    List<float> yVals;
+    float[] yVals;
 
-    public void RenderGraph(List<float> values) {
+    public void RenderGraph(float[] values) {
         yVals = values;
         createGraphMesh();
         UpdateMesh();
@@ -29,10 +30,26 @@ public class MeshCreator : MonoBehaviour
     void Start()
     {
         WolframAlpha.onObtainPoints += RenderGraph;
+        WolframAlpha.onObtainPoints += SendPointsToNetwork;
+
+        GetComponent<ASLObject>()._LocallySetFloatCallback(ReceivePointsFromNetwork);
 
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
         GetComponent<MeshCollider>().sharedMesh = mesh;
+    }
+
+    public void ReceivePointsFromNetwork(string _id, float[] values)
+    {
+        RenderGraph(values);
+    }
+
+    public void SendPointsToNetwork(float[] values)
+    {
+        GetComponent<ASLObject>().SendAndSetClaim(() =>
+        {
+            GetComponent<ASLObject>().SendFloatArray(values);
+        });
     }
 
     // using function y = 5sin(x/3) + 5
