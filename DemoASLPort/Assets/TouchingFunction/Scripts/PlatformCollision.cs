@@ -11,8 +11,8 @@ public class PlatformCollision : MonoBehaviour
         if (other.gameObject == Player)
         {
             //Player.transform.parent = transform;
-            Player.GetComponent<PlayerMovement>().onPlatform = true;
-            Player.GetComponent<PlayerMovement>().verticalSpeed = 0;
+            Player.GetComponent<Player>().onPlatform = true;
+            Player.GetComponent<Player>().verticalSpeed = 0;
         }
     }
 
@@ -20,7 +20,7 @@ public class PlatformCollision : MonoBehaviour
     {
         if (other.gameObject == Player)
         {
-            Player.GetComponent<PlayerMovement>().onPlatform = false;
+            Player.GetComponent<Player>().onPlatform = false;
             //Player.transform.parent = null;
         }
     }

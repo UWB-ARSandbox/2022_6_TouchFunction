@@ -36,15 +36,19 @@ public class GetInputOnClick : MonoBehaviour
         ValidateInput(quadraticInput);
         ValidateInput(linearInput);
         ValidateInput(constantInput);
+
+        string functionExpression = quarticInput.text + "x^4 + " + 
+                                    cubicInput.text + "x^3 + " + 
+                                    quadraticInput.text + "x^2 + " + 
+                                    linearInput.text + "x +" +
+                                    constantInput.text;
         
-        Debug.Log(quarticInput.text + "x^4 + " + 
-                    cubicInput.text + "x^3 + " + 
-                    quadraticInput.text + "x^2 + " + 
-                    linearInput.text + "x +" +
-                    constantInput.text);
+        Debug.Log(functionExpression);
+        FindObjectOfType<WolframAlpha>().Solve(functionExpression, 0, 20, 0.25f);
+        ClearInput();
     }
 
-    public void ValidateInput(InputField numInput) 
+    private void ValidateInput(InputField numInput) 
     {
         float num;
         bool isFloat = float.TryParse(numInput.text, out num);
@@ -56,5 +60,14 @@ public class GetInputOnClick : MonoBehaviour
         else {
             Debug.Log("input: " + num);
         }
+    }
+
+    private void ClearInput()
+    {
+        quarticInput.text = "";
+        cubicInput.text = "";
+        quadraticInput.text = "";
+        linearInput.text = "";
+        constantInput.text = ""; 
     }
 }

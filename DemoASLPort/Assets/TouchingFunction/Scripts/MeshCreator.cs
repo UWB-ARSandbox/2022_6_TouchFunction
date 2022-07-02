@@ -20,6 +20,8 @@ public class MeshCreator : MonoBehaviour
 
     float[] yVals;
 
+    string cachedFunction;
+
     public void RenderGraph(float[] values) {
         yVals = values;
         createGraphMesh();
@@ -44,13 +46,26 @@ public class MeshCreator : MonoBehaviour
         RenderGraph(values);
     }
 
+    
     public void SendPointsToNetwork(float[] values)
     {
+        if(FindObjectOfType<GameLiftManager>().AmLowestPeer())
         GetComponent<ASLObject>().SendAndSetClaim(() =>
         {
             GetComponent<ASLObject>().SendFloatArray(values);
         });
     }
+
+    // public void SendFunctionToNetwork(string function)
+    // {
+    //     cachedFunction = function;
+    //     ASLHelper.InstantiateASLObject("FunctionContainer", Vector3.zero, Quaternion.identity, null, null, SetFunctionCallback);
+    // }
+
+    // public static void SetFunctionCallback(GameObject gameObject)
+    // {
+    //     gameObject.GetComponent<FunctionContainer>().function 
+    // }
 
     // using function y = 5sin(x/3) + 5
     void createGraphMesh()

@@ -3,56 +3,163 @@ using System.Collections.Generic;
 using UnityEngine;
 using ASL;
 
-public class Player : MonoBehaviour
+public partial class Player : MonoBehaviour
 {
-    private static GameObject _playerObject = null;
-    private static ASLObject _playerAslObject = null;
-
-    private static readonly float UPDATES_PER_SECOND = 10.0f;
+    #region Player movement variables
+    public float speed = 5.0f;
+    public float jumpSpeed = 10.0f;
+    public float gravity = 10.0f;
+    public bool onPlatform = false;
+    public float verticalSpeed = 0f;
+    public bool inAir = false;
+    #endregion
     
-    // Instantiates a player for each client
+    #region Player animation
+    public Transform rightArm;
+    public Transform rightArmPivot;
+    public Transform leftArm;
+    public Transform leftArmPivot;
+
+    bool gravityEnabled = true;
+    bool armMovingForward = true;
+    bool armFlappingUp = true;
+    # endregion
+
+
+    // Start is called before the first frame update
     void Start()
     {
-        ASLHelper.InstantiateASLObject("Player", Vector3.zero, Quaternion.identity, null, null, OnPlayerCreated);
-        
-        StartCoroutine(DelayedInit());
-        StartCoroutine(NetworkedUpdate());
+        LockCursor();
     }
 
-    private static void OnPlayerCreated(GameObject obj)
+    // Update is called once per frame
+    void Update()
     {
-        _playerObject = obj;
-        _playerAslObject = obj.GetComponent<ASLObject>();
-    }
-
-    // Ensures that the ASLObject is initialized
-    // You can also do this in the callback if you prefer, but that has to be static.
-    IEnumerator DelayedInit()
-    {
-        while (_playerObject == null)
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            yield return null;
+            ToggleCursorLock();            
+        } 
+
+        Vector3 currPos = transform.position;
+
+        if (currPos.y <= 0 || onPlatform)
+        {
+            inAir = false;
+        } else
+        {
+            inAir = true;
         }
 
-        _playerObject.GetComponent<PlayerMovement>().enabled = true;
-        _playerObject.GetComponent<PlayerMovement>().playerCam.SetActive(true);
+        // Vertical movement
+        if(gravityEnabled)
+        {
+            if (inAir) 
+            {
+                verticalSpeed -= gravity * Time.deltaTime;
+            } 
+
+            
+            float newY = currPos.y + Time.deltaTime * verticalSpeed;
+            if (newY < 0)
+            {
+                newY = 0;
+                verticalSpeed = 0;
+                inAir = false;
+            }
+            transform.position = new Vector3(currPos.x, newY, currPos.z);
+        }
+
+        if (inAir && !gravityEnabled) {
+            FlappingArmMovement(-0.3f, -0.9f);
+        }
+        else {
+            if (leftArm.localRotation.z > -0.1f || leftArm.localRotation.z < -0.2f) {
+                FlappingArmMovement(-0.1f, -0.2f);
+            }
+        }
+        
+        
+        if (IsCursorLocked()) {
+            MovePlayer();
+            RotateCamera();
+
+            if (Input.GetKeyDown(KeyCode.G)) {
+                gravityEnabled = !gravityEnabled;
+            }
+
+            if (Input.GetKey(KeyCode.Space))
+            {
+                if (!inAir && gravityEnabled)
+                {
+                    verticalSpeed = jumpSpeed;
+                }
+                else if (!gravityEnabled) {
+                    float jumpY = currPos.y + Time.deltaTime * jumpSpeed;
+                    transform.localPosition = new Vector3(currPos.x, jumpY, currPos.z);
+                }
+            }
+
+            if (Input.GetKey(KeyCode.F) && inAir && !gravityEnabled) {
+                float fallY = currPos.y + Time.deltaTime * -jumpSpeed;
+                transform.localPosition = new Vector3(currPos.x, fallY, currPos.z);
+            }
+        }
     }
 
-    // Putting your update in a coroutine allows you to run it at a rate of your choice
-    IEnumerator NetworkedUpdate()
+    void MovePlayer()
     {
-        while (true)
-        {
-            if(_playerObject == null)
-                yield return new WaitForSeconds(0.1f);
-            
-            _playerAslObject.SendAndSetClaim(() =>
-            {
-                // Debug.Log(transform.position);
-                _playerAslObject.SendAndSetWorldPosition(_playerAslObject.transform.position);
-            });
-            
-            yield return new WaitForSeconds(1 / UPDATES_PER_SECOND);
+        Vector3 dir = new Vector3(0, 0, 0);
+        dir.x = Input.GetAxis("Horizontal"); // Left/Right movement
+        dir.z = Input.GetAxis("Vertical");  // Forward/Backward movement
+
+        transform.Translate(dir * Time.deltaTime * speed);
+
+        // Walking animation movement
+        if (!inAir) {
+            if (dir.z != 0 || dir.x != 0) {
+                WalkingArmMovement(0.25f);
+            }
+            else {
+                if(leftArm.localRotation.x > 0.01f || leftArm.localRotation.x < -0.01f) {
+                    WalkingArmMovement(0.01f);
+                }
+            }
+        }
+    }
+
+    void WalkingArmMovement(float maxAngle) {
+        if (armMovingForward) {
+            leftArm.RotateAround(leftArmPivot.position, leftArm.TransformDirection(Vector3.right), 200*Time.deltaTime);
+            rightArm.RotateAround(rightArmPivot.position, rightArm.TransformDirection(Vector3.left), 200*Time.deltaTime);
+        }
+        else {
+            leftArm.RotateAround(leftArmPivot.position, leftArm.TransformDirection(Vector3.left), 200*Time.deltaTime);
+            rightArm.RotateAround(rightArmPivot.position, rightArm.TransformDirection(Vector3.right), 200*Time.deltaTime);
+        }
+
+        if (leftArm.localRotation.x > maxAngle) {
+            armMovingForward = false;                  
+        }
+        else if (leftArm.localRotation.x < -maxAngle) {
+            armMovingForward = true;
+        }
+    }
+
+    void FlappingArmMovement(float maxAngle, float minAngle) {
+        if (armFlappingUp) {
+            leftArm.RotateAround(leftArmPivot.position, leftArm.TransformDirection(Vector3.forward), 400*Time.deltaTime);
+            rightArm.RotateAround(rightArmPivot.position, rightArm.TransformDirection(Vector3.back), 400*Time.deltaTime);
+        }
+        else {
+            leftArm.RotateAround(leftArmPivot.position, leftArm.TransformDirection(Vector3.back), 400*Time.deltaTime);
+            rightArm.RotateAround(rightArmPivot.position, rightArm.TransformDirection(Vector3.forward), 400*Time.deltaTime);
+        }
+
+        if (leftArm.localRotation.z > maxAngle) {
+            armFlappingUp = false;                  
+        }
+        else if (leftArm.localRotation.z < minAngle) {
+            armFlappingUp = true;
         }
     }
 }

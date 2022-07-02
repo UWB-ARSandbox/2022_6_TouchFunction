@@ -54,18 +54,6 @@ public class WolframAlpha : MonoBehaviour
     }
 
     static float[] cleanResults(string toClean){
-        // string trim = toClean.Replace(" ", "");
-        // char breakOn = ',';
-        // string[] broken = trim.Split(breakOn);
-        // broken[0] = broken[0].Substring(1,broken[0].Length - 1);
-        // broken[broken.Length -1] = broken[broken.Length-1].Substring(0, broken[broken.Length-1].Length -1);
-        // float[] cleaned = new float[broken.Length];
-        // for (int i = 0; i < broken.Length; i++){
-        //     //Debug.Log(str);
-        //     cleaned[i] = Convert.ToSingle(broken[i]);
-        //     Debug.Log(cleaned[i]);
-        // }
-        
         return Regex.Replace(toClean, @"{|}|\s", "").Split(',').Select(float.Parse).ToArray<float>();
     }
 }
