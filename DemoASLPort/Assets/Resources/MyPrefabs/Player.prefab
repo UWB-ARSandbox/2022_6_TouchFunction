@@ -118,7 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0479a1cb0cdd474d917be8da0f3075c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  head: {fileID: 8995529674786299758}
+  head: {fileID: 8995529675970596643}
   playerCam: {fileID: 8995529675708157623}
   mouseSensitivity: 100
   clampAngle: 80

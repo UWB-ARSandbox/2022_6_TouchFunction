@@ -14,7 +14,7 @@ public class FunctionInput : MonoBehaviour
     public void TriggerGraphRender()
     {
         string function = inputField.text;
-
+        FindObjectOfType<FunctionTextDisplay>().UpdateText(function);
         FindObjectOfType<WolframAlpha>().Solve(function, 0, 20, 0.25f);
     } 
 }
