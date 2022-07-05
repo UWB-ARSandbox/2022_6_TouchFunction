@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using ASL;
 
-public partial class PlayerSpawn : MonoBehaviour
+public class PlayerSpawn : MonoBehaviour
 {
+    // The peer id of this player in ASL
     private static GameObject _playerObject = null;
     private static ASLObject _playerAslObject = null;
 
@@ -15,7 +16,6 @@ public partial class PlayerSpawn : MonoBehaviour
     {
         ASLHelper.InstantiateASLObject("Player", Vector3.zero, Quaternion.identity, null, null, OnPlayerCreated);
         
-        StartCoroutine(DelayedInit());
         StartCoroutine(NetworkedUpdate());
     }
 
@@ -23,20 +23,17 @@ public partial class PlayerSpawn : MonoBehaviour
     {
         _playerObject = obj;
         _playerAslObject = obj.GetComponent<ASLObject>();
-    }
-
-    // Ensures that the ASLObject is initialized
-    // You can also do this in the callback if you prefer, but that has to be static.
-    IEnumerator DelayedInit()
-    {
-        while (_playerObject == null)
-        {
-            yield return null;
-        }
 
         _playerObject.GetComponent<Player>().enabled = true;
         _playerObject.GetComponent<Player>().playerCam.SetActive(true);
+
+        _playerAslObject.SendAndSetClaim(() =>
+        {
+            _playerAslObject.SendAndSetLocalScale(new Vector3(0.3f, 0.3f, (float) GameLiftManager.GetInstance().m_PeerId / 100f));
+        });
     }
+
+
 
     // Putting your update in a coroutine allows you to run it at a rate of your choice
     IEnumerator NetworkedUpdate()
@@ -48,7 +45,6 @@ public partial class PlayerSpawn : MonoBehaviour
             
             _playerAslObject.SendAndSetClaim(() =>
             {
-                // Debug.Log(transform.position);
                 _playerAslObject.SendAndSetWorldPosition(_playerAslObject.transform.position);
             });
             

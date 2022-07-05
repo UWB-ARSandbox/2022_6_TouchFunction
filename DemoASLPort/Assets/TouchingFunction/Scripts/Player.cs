@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ASL;
 
 public partial class Player : MonoBehaviour
-{
+{   
     #region Player movement variables
     public float speed = 5.0f;
     public float jumpSpeed = 10.0f;
@@ -25,10 +24,10 @@ public partial class Player : MonoBehaviour
     bool armFlappingUp = true;
     # endregion
 
-
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log(GetComponent<ASL.ASLObject>().m_Id);
         LockCursor();
     }
 
