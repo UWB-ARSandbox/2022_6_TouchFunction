@@ -144,48 +144,53 @@ public class WolframAlpha : MonoBehaviour
     // GetFuncitonInfo: returns all Plaintext information from WolframAlpha for function.
     // @param: funciton -- string of function to get info for
     // @returns: Dictonary of all Plaintext information
-    // public async void GetFunctionInfo(string function){
-    //     // query of just the function returns multiple strings of information on the function
-    //     FullResultResponse results = await client.FullResultAsync(function);
+    public async void GetFunctionInfo(string function){
+        // query of just the function returns multiple strings of information on the function
+        FullResultResponse results = await client.FullResultAsync(function);
 
-    //     //Dictionary of strings from results
-    //     Dictionary<string, string> dic = new Dictionary<string, string>();
+        //Dictionary of strings from results
+        Dictionary<string, string> dic = new Dictionary<string, string>();
 
-    //     //for each pod in Pods
-    //     foreach(Pod pod in results.Pods){
+        //for each pod in Pods
+        foreach(Pod pod in results.Pods){
 
-    //         // count for Pods/SubPods with multiple entries
-    //         int SPCount = 1;
+            // count for Pods/SubPods with multiple entries
+            int SPCount = 1;
 
-    //         //for each subPod in SubPods
-    //         foreach(SubPod subPod in pod.SubPods){
+            //for each subPod in SubPods
+            foreach(SubPod subPod in pod.SubPods){
                 
-    //             // if subPod contains Plaintext. if not, do nothing
-    //             if (!string.IsNullOrEmpty(subPod.Plaintext)){
+                // if subPod contains Plaintext. if not, do nothing
+                if (!string.IsNullOrEmpty(subPod.Plaintext)){
                     
-    //                 // If subPod ! contain a title, use pod.Title
-    //                 if(string.IsNullOrEmpty(subPod.Title)){
-    //                     // TryAdd attempts to add the object to the dictionary. returns false if entry already exists for that key
-    //                     if(!dic.TryAdd(pod.Title, subPod.Plaintext)){
-    //                         // Add the object with a key + an iterator
-    //                         dic.Add(pod.Title + SPCount, subPod.Plaintext);
-    //                         SPCount ++;
-    //                     }
-    //                 //using subPod.Title
-    //                 }else{
-    //                     // TryAdd attempts to add the object to the dictionary. returns false if entry already exists for that key
-    //                     if(!dic.TryAdd(subPod.Title, subPod.Plaintext)){
-    //                         // Add the object with a key + an iterator
-    //                         dic.Add(subPod.Title + SPCount, subPod.Plaintext);
-    //                         SPCount ++;
-    //                     }
-    //                 }
-    //             }
-    //         }
-
-            
-    //     }
-    //     //Send dictionary to other process
-    //     onObtainFunctionInfo?.Invoke(dic);
-    // }
+                    // If subPod ! contain a title, use pod.Title
+                    if(string.IsNullOrEmpty(subPod.Title)){
+                        if(dic.ContainsKey(pod.Title)){
+                            // Add the object with a key + an iterator
+                            dic.Add(pod.Title + SPCount, subPod.Plaintext);
+                            SPCount ++;
+                        }
+                        else
+                        {
+                            dic.Add(pod.Title, subPod.Plaintext);
+                        }
+                    //using subPod.Title
+                    }else{
+                        // TryAdd attempts to add the object to the dictionary. returns false if entry already exists for that key
+                        if(dic.ContainsKey(subPod.Title)){
+                            // Add the object with a key + an iterator
+                            dic.Add(subPod.Title + SPCount, subPod.Plaintext);
+                            SPCount ++;
+                        }
+                        else
+                        {
+                            dic.Add(subPod.Title, subPod.Plaintext);
+                        }
+                    }
+                }
+            }
+        }
+        //Send dictionary to other process
+        onObtainFunctionInfo?.Invoke(dic);
+    }
 }

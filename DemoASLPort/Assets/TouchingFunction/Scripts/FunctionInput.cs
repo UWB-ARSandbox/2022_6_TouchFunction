@@ -7,6 +7,7 @@ public class FunctionInput : MonoBehaviour
 {
     InputField inputField;
     FunctionTextDisplay functionTextDisplay;
+    WolframAlpha wolframAlpha;
     void Awake()
     {
         inputField = GetComponent<InputField>();
@@ -14,6 +15,7 @@ public class FunctionInput : MonoBehaviour
 
     void Start()
     {
+        wolframAlpha = FindObjectOfType<WolframAlpha>();
         functionTextDisplay = FindObjectOfType<FunctionTextDisplay>();
     }
 
@@ -22,6 +24,7 @@ public class FunctionInput : MonoBehaviour
         string function = inputField.text;
         functionTextDisplay.UpdateText(function);
         functionTextDisplay.SendFunctionToNetwork(function);
-        FindObjectOfType<WolframAlpha>().Solve(function, 0, 20, 0.25f);
+        wolframAlpha.Solve(function, 0, 20, 0.25f);
+        wolframAlpha.GetFunctionInfo(function);
     } 
 }
