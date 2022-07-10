@@ -3,10 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - MatchInfo
-  - AvailableMatches
-  - UI
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -14,9 +11,6 @@ TagManager:
   - 
   - Water
   - UI
-  - Player
-  - Point
-  - PostProcessing
   - 
   - 
   - 
@@ -39,7 +33,10 @@ TagManager:
   - 
   - 
   - 
-  - Spatial Awareness
+  - 
+  - 
+  - 
+  - 
   m_SortingLayers:
   - name: Default
     uniqueID: 0

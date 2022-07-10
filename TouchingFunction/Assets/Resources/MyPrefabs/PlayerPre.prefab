@@ -199,6 +199,7 @@ GameObject:
   - component: {fileID: 7473864094519733550}
   - component: {fileID: 1820991123759945088}
   - component: {fileID: 7453444277320579165}
+  - component: {fileID: 1535697445308652434}
   m_Layer: 0
   m_Name: PlayerPre
   m_TagString: Untagged
@@ -267,7 +268,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   head: {fileID: 8995529675970596643}
-  playerCam: {fileID: 8995529675708157623}
   mouseSensitivity: 10
   contSensitivity: 100
   clampAngle: 80
@@ -315,6 +315,19 @@ MonoBehaviour:
   playerBody: {fileID: 8995529675655909488}
   playerLeftArm: {fileID: 8995529675127677283}
   playerRightArm: {fileID: 8995529675894755462}
+--- !u!114 &1535697445308652434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8995529674786299754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d2928ccde397bf408e94113a0f9330f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCam: {fileID: 8995529675708157623}
 --- !u!1 &8995529675127677282
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,8 +12,8 @@ public class MeshCreator : MonoBehaviour
     int MeshM = 20;//widthwise;
     public int MeshPerX = 4;//lengthwise;
     public bool meshIsEmpty = true;
-    int minVal = 0;
-    int maxVal = 20;
+    public int minVal = 0;
+    public int maxVal = 20;
     // public int functionSelection = 0;
     Mesh mesh;
 
@@ -36,6 +36,7 @@ public class MeshCreator : MonoBehaviour
          yVals = values;
          createGraphMesh();
          UpdateMesh();
+         GetComponent<PointsCreator>().CreatePoints();
 
          //FindObjectOfType<MeshManager>().addMesh(GetComponent<MeshCreator>());
         
