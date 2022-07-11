@@ -53,6 +53,14 @@ public class PlayerASL : MonoBehaviour
 
     }
 
+    public void SendScale()
+    {
+        aslObj.SendAndSetClaim(() =>
+        {
+            aslObj.SendAndSetLocalScale(aslObj.transform.localScale);
+        });
+    }
+
     public void Receive(string _id, float[] _f)
     {
         if(!string.Equals(aslObj.m_Id, _id)) return; // Not for this player, disregard

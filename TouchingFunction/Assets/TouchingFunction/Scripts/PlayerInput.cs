@@ -116,6 +116,24 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ScaleUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""2ab28db3-efe5-4639-829d-19116110debd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ScaleDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""ddcb3ef0-75d4-4880-a864-0f49a0ea9d17"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -349,6 +367,28 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""VRLookCont"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cd3c9457-b65a-4232-b8a8-0f3b034bec9f"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""ScaleUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""875d734f-50e3-4f2c-84ed-005ed9264c2f"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""ScaleDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -394,6 +434,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_PlayerControls_Look = m_PlayerControls.FindAction("Look", throwIfNotFound: true);
         m_PlayerControls_VRLook = m_PlayerControls.FindAction("VRLook", throwIfNotFound: true);
         m_PlayerControls_VRLookCont = m_PlayerControls.FindAction("VRLookCont", throwIfNotFound: true);
+        m_PlayerControls_ScaleUp = m_PlayerControls.FindAction("ScaleUp", throwIfNotFound: true);
+        m_PlayerControls_ScaleDown = m_PlayerControls.FindAction("ScaleDown", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -463,6 +505,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControls_Look;
     private readonly InputAction m_PlayerControls_VRLook;
     private readonly InputAction m_PlayerControls_VRLookCont;
+    private readonly InputAction m_PlayerControls_ScaleUp;
+    private readonly InputAction m_PlayerControls_ScaleDown;
     public struct PlayerControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -477,6 +521,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_PlayerControls_Look;
         public InputAction @VRLook => m_Wrapper.m_PlayerControls_VRLook;
         public InputAction @VRLookCont => m_Wrapper.m_PlayerControls_VRLookCont;
+        public InputAction @ScaleUp => m_Wrapper.m_PlayerControls_ScaleUp;
+        public InputAction @ScaleDown => m_Wrapper.m_PlayerControls_ScaleDown;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -516,6 +562,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @VRLookCont.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnVRLookCont;
                 @VRLookCont.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnVRLookCont;
                 @VRLookCont.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnVRLookCont;
+                @ScaleUp.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnScaleUp;
+                @ScaleUp.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnScaleUp;
+                @ScaleUp.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnScaleUp;
+                @ScaleDown.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnScaleDown;
+                @ScaleDown.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnScaleDown;
+                @ScaleDown.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnScaleDown;
             }
             m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -550,6 +602,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @VRLookCont.started += instance.OnVRLookCont;
                 @VRLookCont.performed += instance.OnVRLookCont;
                 @VRLookCont.canceled += instance.OnVRLookCont;
+                @ScaleUp.started += instance.OnScaleUp;
+                @ScaleUp.performed += instance.OnScaleUp;
+                @ScaleUp.canceled += instance.OnScaleUp;
+                @ScaleDown.started += instance.OnScaleDown;
+                @ScaleDown.performed += instance.OnScaleDown;
+                @ScaleDown.canceled += instance.OnScaleDown;
             }
         }
     }
@@ -584,5 +642,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnVRLook(InputAction.CallbackContext context);
         void OnVRLookCont(InputAction.CallbackContext context);
+        void OnScaleUp(InputAction.CallbackContext context);
+        void OnScaleDown(InputAction.CallbackContext context);
     }
 }

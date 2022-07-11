@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1781558, g: 0.22306523, b: 0.30514213, a: 1}
+  m_IndirectSpecularColor: {r: 0.1781555, g: 0.2230649, b: 0.30514145, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8860,7 +8860,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1261758972}
-  - component: {fileID: 1261758971}
   - component: {fileID: 1261758973}
   - component: {fileID: 1261758974}
   m_Layer: 0
@@ -8870,29 +8869,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1261758971
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1261758970}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7eea19228f8acbc4eb558a3bdf10d30f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  head: {fileID: 0}
-  mouseSensitivity: 100
-  contSensitivity: 100
-  clampAngle: 80
-  speed: 5
-  jumpSpeed: 10
-  gravity: 10
-  onPlatform: 0
-  verticalSpeed: 0
-  inAir: 0
-  m_MeshManager: {fileID: 1438277364}
 --- !u!4 &1261758972
 Transform:
   m_ObjectHideFlags: 0

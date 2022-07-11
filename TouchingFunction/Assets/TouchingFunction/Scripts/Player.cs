@@ -19,6 +19,12 @@ public partial class Player : MonoBehaviour
     public bool inAir = false;
     MeshCreator currentStandingMesh;
     public MeshManager m_MeshManager;
+
+    private float scalingFactor = 0.2f;
+    private float positionChangeFactor = 0.3f;
+    public bool scalingUp = false;
+    public bool scalingDown = false;
+    
     #endregion
 
     #region Player animation
@@ -38,6 +44,8 @@ public partial class Player : MonoBehaviour
     private InputAction look;
     private InputAction vrLook;
     private InputAction vrLookCon;
+    private InputAction scaleUp;
+    private InputAction scaleDown;
     private Vector3 velocity;
 
     private bool gravityFall;
@@ -45,7 +53,7 @@ public partial class Player : MonoBehaviour
     private bool mouseLook;
     private bool vrLookB;
 
-
+    public PlayerASL playerASL;
 
     // Start is called before the first frame update
     void Start()
@@ -100,6 +108,17 @@ public partial class Player : MonoBehaviour
         vrLook.performed += togVRLook;
         vrLook.Enable();
 
+        // scale up player's size
+        scaleUp = playerInput.PlayerControls.ScaleUp;
+        scaleUp.started += BeginScalingUp;
+        scaleUp.canceled += EndScalingUp;
+        scaleUp.Enable();
+
+        // scale down player's size
+        scaleDown = playerInput.PlayerControls.ScaleDown;
+        scaleDown.started += BeginScalingDown;
+        scaleDown.canceled += EndScalingDown;
+        scaleDown.Enable();
     }
 
     private void togMouseLook(InputAction.CallbackContext obj)
@@ -187,11 +206,20 @@ public partial class Player : MonoBehaviour
             velocity.y = 0;
             transform.position = new Vector3(currPos.x, 0, currPos.z);
         }
+
+        // Scaling player
+        if (scalingUp)
+        {
+            ScalePlayerUp();
+        }
+
+        if (scalingDown) {
+            ScalePlayerDown();
+        }
     }
 
     void MovePlayer()
     {
-
         Vector2 moveValue = movement.ReadValue<Vector2>();
         Vector3 move = transform.right * moveValue.x + transform.forward * moveValue.y;
 
@@ -279,7 +307,6 @@ public partial class Player : MonoBehaviour
             else if (!gravityEnabled)
             {
                 gravityRise = true;
-
             }
         }
 
@@ -329,6 +356,56 @@ public partial class Player : MonoBehaviour
     public bool isFalling()
     {
         return velocity.y < 0;
+    }
+
+        private void BeginScalingUp(InputAction.CallbackContext obj)
+    {
+        scalingUp = true;
+    }
+
+    private void EndScalingUp(InputAction.CallbackContext obj)
+    {
+        scalingUp = false;
+        playerASL.SendScale();
+    }
+    private void ScalePlayerUp()
+    {
+        if (IsCursorLocked())
+        {
+            Vector3 scalingVector = new Vector3(scalingFactor, scalingFactor, scalingFactor);
+            transform.localScale += scalingVector;
+
+            // Vector3 back = transform.TransformDirection(Vector3.back);
+            transform.position += positionChangeFactor * -transform.forward;
+        }
+    }
+
+    private void BeginScalingDown(InputAction.CallbackContext obj)
+    {
+        scalingDown = true;
+    }
+
+    private void EndScalingDown(InputAction.CallbackContext obj)
+    {
+        scalingDown = false;
+        playerASL.SendScale();
+    }
+
+    private void ScalePlayerDown()
+    {
+        if (IsCursorLocked())
+        {
+            if (transform.localScale.y < 1.0f)
+            {
+                return; // Not allowed to be smaller
+            }
+
+            Vector3 scalingVector = new Vector3(-scalingFactor, -scalingFactor, -scalingFactor);
+            transform.localScale += scalingVector;
+
+            // Vector3 forward = transform.TransformDirection(Vector3.forward);
+            transform.position += positionChangeFactor * transform.forward;
+        }
     }
 }
 

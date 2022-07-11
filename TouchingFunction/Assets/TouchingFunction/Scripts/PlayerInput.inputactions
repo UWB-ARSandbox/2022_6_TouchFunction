@@ -94,6 +94,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "ScaleUp",
+                    "type": "Button",
+                    "id": "2ab28db3-efe5-4639-829d-19116110debd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ScaleDown",
+                    "type": "Button",
+                    "id": "ddcb3ef0-75d4-4880-a864-0f49a0ea9d17",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -325,6 +343,28 @@
                     "processors": "",
                     "groups": "VR",
                     "action": "VRLookCont",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cd3c9457-b65a-4232-b8a8-0f3b034bec9f",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "ScaleUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "875d734f-50e3-4f2c-84ed-005ed9264c2f",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "ScaleDown",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
