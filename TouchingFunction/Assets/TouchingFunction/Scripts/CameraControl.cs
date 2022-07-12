@@ -17,7 +17,8 @@ public partial class Player : MonoBehaviour
     {
         Quaternion moveValVR = vrLook.ReadValue<Quaternion>();
         Vector3 vecVR = moveValVR.eulerAngles;
-        head.localRotation = Quaternion.Euler(-vecVR.x, 0, 0);
+        //head.localRotation = Quaternion.Euler(-vecVR.x, 0, 0);
+        head.localRotation = Quaternion.Euler(vecVR.x, 0, 0);
         transform.rotation = Quaternion.Euler(0, vecVR.y, 0);
     }
 

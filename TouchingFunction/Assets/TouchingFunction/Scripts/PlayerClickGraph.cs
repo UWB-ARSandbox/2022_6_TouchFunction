@@ -33,18 +33,38 @@ public class PlayerClickGraph : MonoBehaviour
     private void TryFindPoint(InputAction.CallbackContext obj)
     {
         //GameObject player = GetComponent<Player>().playerCam;
+        bool cursorLocked = GetComponent<Player>().IsCursorLocked();
         Debug.Log("PlayerClicked");
         RaycastHit hit;
-        if(Physics.Raycast(playerCam.transform.position, playerCam.transform.TransformDirection(Vector3.forward), out hit, 25, layerMask)) 
+        if(cursorLocked)
         {
-            if(hit.transform.gameObject != null)
+            if(Physics.Raycast(playerCam.transform.position, playerCam.transform.TransformDirection(Vector3.forward), out hit, 25, layerMask)) 
             {
-                Debug.Log("Found Object");
-                hit.transform.gameObject.GetComponent<Point>().WasHit();
+                if(hit.transform.gameObject != null)
+                {
+                    Debug.Log("Found Object");
+                    hit.transform.gameObject.GetComponent<Point>().WasHit();
+                }
+                else
+                {
+                    Debug.Log("GameObject not found.");
+                }
             }
-            else
+        }
+        else 
+        {
+            Ray ray = playerCam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+            if(Physics.Raycast(ray.origin, ray.direction, out hit, 25, layerMask))
             {
-                Debug.Log("GameObject not found.");
+                if(hit.transform.gameObject != null)
+                {
+                    Debug.Log("Found Object");
+                    hit.transform.gameObject.GetComponent<Point>().WasHit();
+                }
+                else
+                {
+                    Debug.Log("GameObject not found.");
+                }
             }
         }
     }
