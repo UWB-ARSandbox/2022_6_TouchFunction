@@ -1,18 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class FunctionInput : MonoBehaviour
 {
-    InputField inputField;
+    public static Func<string> obtainFunctionEvent;
+
+    public TMP_InputField min;
+    public TMP_InputField max;
+
     FunctionTextDisplay functionTextDisplay;
     WolframAlpha wolframAlpha;
-    void Awake()
-    {
-        inputField = GetComponent<InputField>();
-    }
-
+    
     void Start()
     {
         wolframAlpha = FindObjectOfType<WolframAlpha>();
@@ -21,10 +22,13 @@ public class FunctionInput : MonoBehaviour
 
     public void TriggerGraphRender()
     {
-        string function = inputField.text;
-        functionTextDisplay.UpdateText(function);
-        functionTextDisplay.SendFunctionToNetwork(function);
-        wolframAlpha.Solve(function, 0, 20, 0.25f);
-        wolframAlpha.GetFunctionInfo(function);
+        string function = obtainFunctionEvent?.Invoke();
+        
+        if(function != null)
+        {
+            functionTextDisplay.SendFunctionToNetwork(function);
+            wolframAlpha.Solve(function, float.Parse(min.text), float.Parse(max.text), 0.25f);
+            wolframAlpha.GetFunctionInfo(function);
+        }
     } 
 }

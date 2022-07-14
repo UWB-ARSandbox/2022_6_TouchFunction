@@ -28,7 +28,7 @@ public class MeshCreator : MonoBehaviour
     {
         minVal = min;
         maxVal = max;
-        MeshPerX = (int)(1 / increment);
+        //MeshPerX = (int)(1 / increment);
     }
 
     public void RenderGraph(float[] values) {

@@ -2,34 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
-public class GetInputOnClick : MonoBehaviour
+public class PolynomialInput : MonoBehaviour
 {
-    public Button btnClick;
-
     // get input fields
-    public InputField quarticInput;
-    public InputField cubicInput;
-    public InputField quadraticInput;
-    public InputField linearInput;
-    public InputField constantInput;
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        // attach button event
-        btnClick.onClick.AddListener(GetInputOnClickHandler);
+    public TMP_InputField quarticInput;
+    public TMP_InputField cubicInput;
+    public TMP_InputField quadraticInput;
+    public TMP_InputField linearInput;
+    public TMP_InputField constantInput;
 
+    void OnEnable()
+    {
+        FunctionInput.obtainFunctionEvent += GetInput;
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnDisable()
     {
-        
+        FunctionInput.obtainFunctionEvent -= GetInput;
     }
 
     // Runs on button click
-    public void GetInputOnClickHandler() 
+    public string GetInput() 
     {
         ValidateInput(quarticInput);
         ValidateInput(cubicInput);
@@ -44,11 +39,11 @@ public class GetInputOnClick : MonoBehaviour
                                     constantInput.text;
         
         Debug.Log(functionExpression);
-        FindObjectOfType<WolframAlpha>().Solve(functionExpression, 0, 20, 0.25f);
         ClearInput();
+        return functionExpression;
     }
 
-    private void ValidateInput(InputField numInput) 
+    private void ValidateInput(TMP_InputField numInput) 
     {
         float num;
         bool isFloat = float.TryParse(numInput.text, out num);

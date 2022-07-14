@@ -7,7 +7,7 @@ using ASL;
 public class FunctionTextDisplay : MonoBehaviour
 {
     ASLObject aslObj;
-    void Awake()
+    void Start()
     {
         aslObj = GetComponent<ASLObject>();
     }
