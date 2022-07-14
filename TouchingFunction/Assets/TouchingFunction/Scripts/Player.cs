@@ -119,6 +119,9 @@ public partial class Player : MonoBehaviour
         scaleDown.started += BeginScalingDown;
         scaleDown.canceled += EndScalingDown;
         scaleDown.Enable();
+
+        // script to check for VR input to activate VR hands
+        gameObject.GetComponent<PlayerActivateVRHands>().enabled = true;
     }
 
     private void togMouseLook(InputAction.CallbackContext obj)
