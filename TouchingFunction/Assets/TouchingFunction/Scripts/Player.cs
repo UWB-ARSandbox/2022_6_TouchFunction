@@ -46,7 +46,7 @@ public partial class Player : MonoBehaviour
     private InputAction vrLookCon;
     private InputAction scaleUp;
     private InputAction scaleDown;
-    private Vector3 velocity;
+    public Vector3 velocity;
 
     private bool gravityFall;
     private bool gravityRise;
@@ -165,7 +165,7 @@ public partial class Player : MonoBehaviour
 
         controller.Move(velocity * Time.deltaTime);
         
-        if (currPos.y <= 0 || onPlatform >= 0)
+        if (velocity.y == 0)
         {
             inAir = false;
         }
@@ -233,11 +233,11 @@ public partial class Player : MonoBehaviour
         {
             playerMoving = false;
         }
-
+        /*
         if (onPlatform >= 0)
         {
             MovePositionOnGraph();
-        }
+        }*/
     }
 
     public bool IsFlappingEnabled()
@@ -325,6 +325,7 @@ public partial class Player : MonoBehaviour
         gravityRise = false;
     }
 
+    /*
     // change Y value when player is moving on a graph, the Y value will be based on the resolution (MeshPerX)
     private void MovePositionOnGraph()
     {
@@ -356,7 +357,7 @@ public partial class Player : MonoBehaviour
     public bool isFalling()
     {
         return velocity.y < 0;
-    }
+    }*/
 
         private void BeginScalingUp(InputAction.CallbackContext obj)
     {

@@ -13,8 +13,6 @@ public class WolframAlpha : MonoBehaviour
 {
     public delegate void ObtainPointsEvent(float[] points);
     public static event ObtainPointsEvent onObtainPoints;
-    // TO FIX
-    int index = 0;
 
 /*  
     //Used in GetTangentFunction
@@ -78,7 +76,7 @@ public class WolframAlpha : MonoBehaviour
                 }
             }
         }
-        Debug.Log("Result String: " + resultString);
+        //Debug.Log("Result String: " + resultString);
 
         onObtainPoints?.Invoke(cleanResults(resultString));
     }

@@ -23,7 +23,7 @@ public class FunctionInput : MonoBehaviour
     {
         string function = inputField.text;
         functionTextDisplay.UpdateText(function);
-        functionTextDisplay.SendFunctionToNetwork(function);
+        FindObjectOfType<MeshManager>().SendFunctionToNetwork(function);
         wolframAlpha.Solve(function, 0, 20, 0.25f);
         wolframAlpha.GetFunctionInfo(function);
     } 

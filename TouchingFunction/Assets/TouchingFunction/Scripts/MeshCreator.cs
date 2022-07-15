@@ -4,6 +4,7 @@ using UnityEngine;
 using ASL;
 using System;
 
+
 [RequireComponent(typeof(MeshFilter))]
 public class MeshCreator : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class MeshCreator : MonoBehaviour
     public bool meshIsEmpty = true;
     public int minVal = 0;
     public int maxVal = 20;
+
+    public Color c;
+    public string functionText;
     // public int functionSelection = 0;
     Mesh mesh;
 
@@ -32,11 +36,12 @@ public class MeshCreator : MonoBehaviour
     }
 
     public void RenderGraph(float[] values) {
-        
-         yVals = values;
-         createGraphMesh();
-         UpdateMesh();
-         GetComponent<PointsCreator>().CreatePoints();
+
+        //Array.Copy(values, yVals, maxVal*MeshPerX);
+        yVals = values;
+        createGraphMesh();
+        UpdateMesh();
+        GetComponent<PointsCreator>().CreatePoints();
 
          //FindObjectOfType<MeshManager>().addMesh(GetComponent<MeshCreator>());
         
@@ -119,6 +124,8 @@ public class MeshCreator : MonoBehaviour
         mesh.vertices = vertices;
         mesh.triangles = triangles;
         GetComponent<MeshCollider>().sharedMesh = mesh;
+        //GetComponent<Renderer>().material.color = c;
+
     }
 
     float getY(int x)
@@ -136,21 +143,15 @@ public class MeshCreator : MonoBehaviour
         // }
     }
 
-    public void onFxChanged(int newFx)
-    {
-        mesh.Clear();
-        //functionSelection = newFx;
-
-        createGraphMesh();
-        //Debug.Log(vertices[0]);
-        UpdateMesh();
-    }
 
     public void clearMesh()
     {
-        mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
-        GetComponent<MeshCollider>().sharedMesh = mesh;
+        mesh.Clear();
+        //mesh = new Mesh();
+
+        //GetComponent<MeshFilter>().mesh = mesh;
+        //GetComponent<MeshCollider>().sharedMesh = mesh;
+        functionText = "";
         meshIsEmpty = true;
     }
 
