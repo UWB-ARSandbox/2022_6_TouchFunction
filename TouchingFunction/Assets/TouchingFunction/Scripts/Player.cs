@@ -328,10 +328,10 @@ public partial class Player : MonoBehaviour
     // change Y value when player is moving on a graph, the Y value will be based on the resolution (MeshPerX)
     private void MovePositionOnGraph()
     {
-        float xVal = transform.position.x - currentStandingMesh.origin.x;
+        float xVal = transform.position.x - currentStandingMesh.GetOrigin().x;
         int wn = (int)Mathf.Floor(xVal / currentStandingMesh.MeshPerX);
         int snapXVal = wn + (int)Mathf.Floor((xVal - wn) * currentStandingMesh.MeshPerX);
-        float newY = currentStandingMesh.origin.y + currentStandingMesh.yVals[snapXVal] + .5f;
+        float newY = currentStandingMesh.GetOrigin().y + currentStandingMesh.yVals[snapXVal] + .5f;
         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
 
         Debug.Log("snapX: " + snapXVal);

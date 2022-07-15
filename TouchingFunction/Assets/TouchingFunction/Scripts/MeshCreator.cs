@@ -7,6 +7,8 @@ using System;
 [RequireComponent(typeof(MeshFilter))]
 public class MeshCreator : MonoBehaviour
 {
+    public GameObject graphAxes;
+    GraphManipulation graphManScript;
     public Vector3 origin;
     public int GraphIndex;
     int MeshM = 20;//widthwise;
@@ -37,6 +39,7 @@ public class MeshCreator : MonoBehaviour
          createGraphMesh();
          UpdateMesh();
          GetComponent<PointsCreator>().CreatePoints();
+         onGraphChanged();
 
          //FindObjectOfType<MeshManager>().addMesh(GetComponent<MeshCreator>());
         
@@ -51,6 +54,7 @@ public class MeshCreator : MonoBehaviour
         //GetComponent<ASLObject>()._LocallySetFloatCallback(ReceivePointsFromNetwork);
 
         mesh = new Mesh();
+        graphManScript = graphAxes.GetComponent<GraphManipulation>();
 
         GetComponent<MeshFilter>().mesh = mesh;
         GetComponent<MeshCollider>().sharedMesh = mesh;
@@ -146,6 +150,26 @@ public class MeshCreator : MonoBehaviour
         UpdateMesh();
     }
 
+    public void onGraphChanged() {
+        Vector3 meshScale = transform.localScale;
+        Vector3 meshPos = transform.position;
+        
+        double xUnitSpace = graphManScript.GetXUnitSpace();
+        float xScale = (float) xUnitSpace;
+        float xPos = (xScale - 1) * maxVal;
+        Debug.Log("xscale: " + xScale);
+        Debug.Log("xPos: " + xPos);
+
+        double yUnitSpace = graphManScript.GetYUnitSpace();
+        float yScale = (float) yUnitSpace;
+        float yPos = -(yScale / 2 - 0.5f);
+        Debug.Log("yscale: " + yScale);
+        Debug.Log("yPos: " + yPos);
+
+        transform.localScale = new Vector3(xScale, yScale, meshScale.z);
+        transform.position = new Vector3(xPos, yPos, meshPos.z);
+    }
+
     public void clearMesh()
     {
         mesh = new Mesh();
@@ -154,7 +178,10 @@ public class MeshCreator : MonoBehaviour
         meshIsEmpty = true;
     }
 
-
+    public Vector3 GetOrigin()
+    {
+        return origin;
+    }
 
     // public void onMaxValChanged(System.Single newMax)
     // {
@@ -180,5 +207,4 @@ public class MeshCreator : MonoBehaviour
 
     //     UpdateMesh();
     // }
-
 }

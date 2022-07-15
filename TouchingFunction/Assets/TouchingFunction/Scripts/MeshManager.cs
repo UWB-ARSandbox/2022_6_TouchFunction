@@ -56,4 +56,16 @@ public class MeshManager : MonoBehaviour
             GetComponent<ASLObject>().SendFloatArray(values);
         });
     }
+
+    public void UpdateGraphs() {
+        for (int i = 0; i < MaxMeshes; i++)
+        {
+            if (!meshes[i].isEmpty())
+            {
+                Debug.Log("Here 2");
+                meshes[i].onGraphChanged();
+                Debug.Log("And Back 2");
+            }
+        }
+    }
 }

@@ -34,7 +34,7 @@ public class PointsCreator : MonoBehaviour
         int maxVal = GetComponent<MeshCreator>().maxVal;
         int meshPerX = GetComponent<MeshCreator>().MeshPerX;
         float[] yVal = GetComponent<MeshCreator>().yVals;
-        Vector3 origin = GetComponent<MeshCreator>().origin;
+        Vector3 origin = GetComponent<MeshCreator>().GetOrigin();
 
         points = new Vector3[ Mathf.Abs(Mathf.Abs(maxVal) - Mathf.Abs(minVal)) * meshPerX ];
 
