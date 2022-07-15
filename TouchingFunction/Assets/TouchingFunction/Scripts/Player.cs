@@ -92,12 +92,12 @@ public partial class Player : MonoBehaviour
 
         //gravity
         disableGravity = playerInput.PlayerControls.DisableGravity;
-        disableGravity.performed += DisableGravity;
+        disableGravity.performed += TogGravity;
         disableGravity.Enable();
 
         enableGravity = playerInput.PlayerControls.EnableGravity;
-        enableGravity.started += BeginEnableGravity;
-        enableGravity.canceled += EndEnableGravity;
+        enableGravity.started += StartFall;
+        enableGravity.canceled += EndFall;
         enableGravity.Enable();
 
         // camera rotation
@@ -157,7 +157,7 @@ public partial class Player : MonoBehaviour
 
         if (gravityFall)
         {
-            EnableGravity();
+            DoFall();
         }
         else if (gravityRise)
         {
@@ -165,8 +165,6 @@ public partial class Player : MonoBehaviour
         }
 
         Vector3 currPos = transform.position;
-
-        controller.Move(velocity * Time.deltaTime);
         
         if (currPos.y <= 0 || onPlatform >= 0)
         {
@@ -185,18 +183,21 @@ public partial class Player : MonoBehaviour
         //if gravity enabled, drag player to platform
         if (gravityEnabled && inAir)
         {
-            velocity.y -= gravity * Time.deltaTime;
+            velocity.y -= (gravity * Time.deltaTime) * .75f;
         }
         else
-        {
+        {   
             if (velocity.y > 0)
             {
-                velocity.y -= gravity * Time.deltaTime;
+                // Add negative acceleration to drop player
+                velocity.y -= gravity * Time.deltaTime * .75f;
             }
             else if (velocity.y < 0)
             {
-                velocity.y += gravity * Time.deltaTime;
+                // Add positive acceleration to rise player
+                velocity.y += gravity * Time.deltaTime * .75f;
             }
+            // if y velocity is very small, cancel it. Done to prevent velocity from bouncing positive and negative when player stationary. 
             if (velocity.y < .05f && velocity.y > -.05f)
             {
                 velocity.y = 0;
@@ -224,7 +225,7 @@ public partial class Player : MonoBehaviour
     void MovePlayer()
     {
         Vector2 moveValue = movement.ReadValue<Vector2>();
-        Vector3 move = transform.right * moveValue.x + transform.forward * moveValue.y;
+        Vector3 move = transform.right * (moveValue.x * 1.25f) + transform.up * velocity.y + transform.forward * (moveValue.y * 1.25f);
 
         controller.Move(move * speed * Time.deltaTime);
 
@@ -243,6 +244,7 @@ public partial class Player : MonoBehaviour
         }
     }
 
+// Flapping functions ============================================================================
     public bool IsFlappingEnabled()
     {
         return inAir && !gravityEnabled;
@@ -253,14 +255,15 @@ public partial class Player : MonoBehaviour
         return !IsFlappingEnabled() && playerMoving;
     }
 
-    // Toggle cursor lock
+
+    // Toggle cursor lock ========================================================================
     private void TogCursorLock(InputAction.CallbackContext obj)
     {
         ToggleCursorLock();
     }
 
-    // disable gravity
-    private void DisableGravity(InputAction.CallbackContext obj)
+    // disable gravity ===========================================================================
+    private void TogGravity(InputAction.CallbackContext obj)
     {
         if (IsCursorLocked())
         {
@@ -269,27 +272,28 @@ public partial class Player : MonoBehaviour
         }
     }
 
+// Falling functions =============================================================================
     // drop flying player drown (leaves gravity turned off unless hits ground)
-    private void EnableGravity()
+    private void DoFall()
     {
         if (IsCursorLocked())
         {
 
             if (inAir && !gravityEnabled)
             {
-                velocity.y = -Mathf.Sqrt(jumpSpeed * 2f * (gravity)) / 2;
+                velocity.y = -Mathf.Sqrt(jumpSpeed * (gravity)) * .4f;
             }
         }
     }
 
-    private void BeginEnableGravity(InputAction.CallbackContext obj)
+    private void StartFall(InputAction.CallbackContext obj)
     {
         if (IsCursorLocked())
         {
             gravityFall = true;
         }
     }
-    private void EndEnableGravity(InputAction.CallbackContext obj)
+    private void EndFall(InputAction.CallbackContext obj)
     {
         if (IsCursorLocked())
         {
@@ -297,6 +301,7 @@ public partial class Player : MonoBehaviour
         }
     }
 
+// Rising functions ===============================================================================
     // jump. if player gravity = false, moves 
     private void StartJump(InputAction.CallbackContext obj)
     {
@@ -305,7 +310,7 @@ public partial class Player : MonoBehaviour
             // if not in air and gravity enabled, normal jump
             if (!inAir && gravityEnabled)
             {
-                velocity.y = Mathf.Sqrt(jumpSpeed * 2f * (gravity));
+                velocity.y = Mathf.Sqrt(jumpSpeed * (gravity)) * .75f;
             }//else enter gravity jump
             else if (!gravityEnabled)
             {
@@ -319,7 +324,7 @@ public partial class Player : MonoBehaviour
     {
         if (IsCursorLocked())
         {
-            velocity.y = Mathf.Sqrt(jumpSpeed * 2f * (gravity)) / 2;
+            velocity.y = Mathf.Sqrt(jumpSpeed  * (gravity)) * .4f;
         }
     }
 
@@ -328,6 +333,7 @@ public partial class Player : MonoBehaviour
         gravityRise = false;
     }
 
+// Movement on graph ===============================================================================
     // change Y value when player is moving on a graph, the Y value will be based on the resolution (MeshPerX)
     private void MovePositionOnGraph()
     {
@@ -361,6 +367,7 @@ public partial class Player : MonoBehaviour
         return velocity.y < 0;
     }
 
+// Scaling funcitons ====================================================================
         private void BeginScalingUp(InputAction.CallbackContext obj)
     {
         scalingUp = true;
