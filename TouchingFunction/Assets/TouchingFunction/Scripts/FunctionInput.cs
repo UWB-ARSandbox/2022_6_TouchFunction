@@ -1,30 +1,34 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class FunctionInput : MonoBehaviour
 {
-    InputField inputField;
-    FunctionTextDisplay functionTextDisplay;
-    WolframAlpha wolframAlpha;
-    void Awake()
-    {
-        inputField = GetComponent<InputField>();
-    }
+    public static Func<string> obtainFunctionEvent;
 
+    public TMP_InputField min;
+    public TMP_InputField max;
+
+    WolframAlpha wolframAlpha;
+    MeshManager meshManager;
+    
     void Start()
     {
         wolframAlpha = FindObjectOfType<WolframAlpha>();
-        functionTextDisplay = FindObjectOfType<FunctionTextDisplay>();
+        meshManager = FindObjectOfType<MeshManager>();
     }
 
     public void TriggerGraphRender()
     {
-        string function = inputField.text;
-        functionTextDisplay.UpdateText(function);
-        FindObjectOfType<MeshManager>().SendFunctionToNetwork(function);
-        wolframAlpha.Solve(function, 0, 20, 0.25f);
-        wolframAlpha.GetFunctionInfo(function);
+        string function = obtainFunctionEvent?.Invoke();
+        
+        if(function != null)
+        {
+            meshManager.SendFunctionToNetwork(function);
+            wolframAlpha.Solve(function, float.Parse(min.text), float.Parse(max.text), 0.25f);
+            wolframAlpha.GetFunctionInfo(function);
+        }
     } 
 }

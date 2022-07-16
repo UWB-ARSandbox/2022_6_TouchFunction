@@ -6,27 +6,25 @@ using ASL;
 using UnityEngine.UI;
 public class MeshManager : MonoBehaviour
 {
-
+    ASLObject aslObj;
     public MeshCreator[] meshes;
 
-    public GameObject GraphList;
-    public ListEntry ListEntryPrefab;
-    public Color[] ColorList;
-
-    // change to private later
-    // 0 if the entry is not used, 
+    public GameObject graphList;
+    public ListEntry listEntryPrefab;
+    public Color[] colorList;
     public int[] colorSelected;
 
     private void Start()
     {
+        aslObj = GetComponent<ASLObject>();
         //meshes = new MeshCreator[MaxMeshes];
         
         // set up WA call backs on receiving float array (y indexes)
-        //WolframAlpha.onObtainPoints += ReceivePointsFromWA;
+        // WolframAlpha.onObtainPoints += ReceivePointsFromWA;
         WolframAlpha.onObtainPoints += SendPointsToNetwork;
         
         // set up local call back on receiving float array (y indexes) from ASL network
-        GetComponent<ASLObject>()._LocallySetFloatCallback(onFloatArrayReceived);
+        aslObj._LocallySetFloatCallback(onFloatArrayReceived);
 
         colorSelected = new int[meshes.Length];
     }
@@ -43,27 +41,25 @@ public class MeshManager : MonoBehaviour
         return -1;
     }
 
-    // sending y values retrieved from WA, attach a 0f at the front of array
-    public void SendPointsToNetwork(float[] values)
+    private void SendPointsToNetwork(float[] _f)
     {
-        float[] yArr = new float[values.Length + 1];
-        yArr[0] = 0f;
-        Array.Copy(values, 0, yArr, 1, values.Length);
+        float[] yArr = new float[_f.Length + 1];
+        yArr[0] = 0;
 
-        GetComponent<ASLObject>().SendAndSetClaim(() =>
+        Array.Copy(_f, 0, yArr, 1, _f.Length);
+
+        aslObj.SendAndSetClaim(() =>
         {
-            GetComponent<ASLObject>().SendFloatArray(yArr);
+            aslObj.SendFloatArray(yArr);
         });
     }
 
-
-
     /*  Determine what we do with the array based on value[0]
-         *  0: Use the float array to render graph
-         *  1: Erase the graph with index of value[1]
-         *  2: Displaying the function text
-         * 
-         */
+        *  0: Use the float array to render graph
+        *  1: Erase the graph with index of value[1]
+        *  2: Displaying the function text
+        * 
+        */
     public void onFloatArrayReceived(string _id, float[] value)
     {
         Debug.Log("ARRAY RECEIVED!!!!!!!!!!!!!!");
@@ -75,11 +71,12 @@ public class MeshManager : MonoBehaviour
                 int fs = findFirstSpace();
                 if (fs >= 0)
                 {
-                    float[] yArr = new float[value.Length - 1];
-                    Array.Copy(value, 1, yArr, 0, value.Length - 1);
+                    float[] yArr = new float[value.Length - 4];
+                    Array.Copy(value, 4, yArr, 0, yArr.Length);
+                    meshes[fs].InitGraphParameters((int)value[1], (int)value[2], value[3]);   
                     meshes[fs].RenderGraph(yArr);
                     colorSelected[fs] = nextAvailableColor() + 1;
-                    meshes[fs].c = ColorList[colorSelected[fs]-1];
+                    meshes[fs].c = colorList[colorSelected[fs]-1];
                     updateGraphList();
                 }
                 break;
@@ -106,34 +103,24 @@ public class MeshManager : MonoBehaviour
 
     }
 
-    /*
-    public void btnClick()
-    {
-        float[] tst = {1, 0};
-        GetComponent<ASLObject>().SendAndSetClaim(() =>
-        {
-            GetComponent<ASLObject>().SendFloatArray(tst);
-        });
-    }
-    */
-
     // send a function text message in the form of a float array, set first element of the array to 2f;
     public void SendFunctionToNetwork(string fn)
     {
-        GetComponent<ASLObject>().SendAndSetClaim(() =>
+        float[] fnTextFloat = StringToFloatArray.SToF(fn);
+        float[] msg = new float[fnTextFloat.Length + 1];
+        msg[0] = 2f;
+        Array.Copy(fnTextFloat, 0, msg, 1, fnTextFloat.Length);
+
+        aslObj.SendAndSetClaim(() =>
         {
-            float[] fnTextFloat = StringToFloatArray.SToF(fn);
-            float[] msg = new float[fnTextFloat.Length + 1];
-            msg[0] = 2f;
-            Array.Copy(fnTextFloat, 0, msg, 1, fnTextFloat.Length);
-            GetComponent<ASLObject>().SendFloatArray(msg);
+            aslObj.SendFloatArray(msg);
         });
     }
 
     // clear the current list, rebuild using current list
     void updateGraphList()
     {
-        foreach (Transform child in GraphList.transform)
+        foreach (Transform child in graphList.transform)
         {
             Debug.Log("CHILD NAME: " + child.name);
             child.GetComponent<ListEntry>().SelfExplode();
@@ -150,22 +137,16 @@ public class MeshManager : MonoBehaviour
             }*/
             if (!meshes[i].isEmpty())
             {
-                ListEntry newEntry = Instantiate(ListEntryPrefab);
-                newEntry.transform.parent = GraphList.transform;
+                ListEntry newEntry = Instantiate(listEntryPrefab);
+                newEntry.transform.parent = graphList.transform;
                 newEntry.GetComponent<RectTransform>().localPosition = new Vector3(0, 35 - 45 * i, 0);
 
                 newEntry.MeshC = meshes[i];
                 newEntry.ListIndex = i;
                 newEntry.delayUpdate();
-                newEntry.TMP.color = ColorList[colorSelected[i]-1];
-                
+                newEntry.TMP.color = colorList[colorSelected[i]-1];   
             }
-
-
         }
-
-
-
     }
 
     // return the index of the first slot on GraphList that's available
@@ -205,9 +186,9 @@ public class MeshManager : MonoBehaviour
     public void SendDeleteEntry(int index)
     {
         float[] msg = { 1, index };
-        GetComponent<ASLObject>().SendAndSetClaim(() =>
+        aslObj.SendAndSetClaim(() =>
         {
-            GetComponent<ASLObject>().SendFloatArray(msg);
+            aslObj.SendFloatArray(msg);
         });
 
     }

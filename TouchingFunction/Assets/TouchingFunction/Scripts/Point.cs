@@ -6,6 +6,7 @@ public class Point : MonoBehaviour
 {
     public Vector3 coordinates;
     public GameObject parentObject;
+    public float slope;
     // Start is called before the first frame update
     void Start()
     {

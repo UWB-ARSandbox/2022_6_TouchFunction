@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ASL;
 
-public partial class PlayerSpawn : MonoBehaviour
+public class PlayerSpawn : MonoBehaviour
 {
     private static GameObject _playerObject = null;
     private static ASLObject _playerAslObject = null;

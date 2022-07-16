@@ -11,8 +11,9 @@ using System.Text.RegularExpressions;
 
 public class WolframAlpha : MonoBehaviour
 {
-    public delegate void ObtainPointsEvent(float[] points);
-    public static event ObtainPointsEvent onObtainPoints;
+    public static Action<float[]> onObtainPoints;
+    // TO FIX
+    int index = 0;
 
 /*  
     //Used in GetTangentFunction
@@ -24,8 +25,7 @@ public class WolframAlpha : MonoBehaviour
     public static event ObtainFunctionFromPointsEvent onObtainFunction;
 */
     //Used in GetFunctionInfo
-    public delegate void ObtainFunctionInfoEvent(Dictionary<string, string> dic);
-    public static event ObtainFunctionInfoEvent onObtainFunctionInfo;
+    public static Action<Dictionary<string, string>> onObtainFunctionInfo;
 
 
     //Original WA APPID:
@@ -78,14 +78,21 @@ public class WolframAlpha : MonoBehaviour
         }
         //Debug.Log("Result String: " + resultString);
 
-        onObtainPoints?.Invoke(cleanResults(resultString));
+        var pointList = cleanResults(resultString);
+        pointList.InsertRange(0, new List<float> { start, end, inc });
+
+        onObtainPoints?.Invoke(pointList.ToArray<float>());
     }
 
     // cleanResults: 
     // @param: toClean -- string containing a list of floats from WA
     // @returns: list of floats
-    static float[] cleanResults(string toClean){
-        return Regex.Replace(toClean, @"{|}|\s", "").Split(',').Select(float.Parse).ToArray<float>();
+    static List<float> cleanResults(string toClean){
+        return Regex.Replace(toClean, @"{|}|\s", "")
+                    .Split(',')
+                    .Select((a) => Regex.Replace(a, @"\u00d710\^", "e"))
+                    .Select(float.Parse)
+                    .ToList<float>();
     }
 
     /* 
