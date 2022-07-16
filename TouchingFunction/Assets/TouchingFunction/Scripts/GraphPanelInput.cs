@@ -9,9 +9,11 @@ public class GraphPanelInput : MonoBehaviour
     public InputField xIntSizeInput;
     public InputField xNumIntInput;
     public InputField xIntSpaceInput;
+    public InputField xAxisLenInput;
     public InputField yIntSizeInput;
     public InputField yNumIntInput;
     public InputField yIntSpaceInput;
+    public InputField yAxisLenInput;
     public GameObject graphAxes;
 
     GraphManipulation graphManScript;
@@ -38,6 +40,10 @@ public class GraphPanelInput : MonoBehaviour
         string xIntervalSpace = graphManScript.GetXIntervalSpace().ToString();
         xIntSpaceInput.placeholder.GetComponent<Text>().text = xIntervalSpace;
 
+        // Get x axis length
+        string xAxisLen = graphManScript.GetXAxisLength().ToString();
+        xAxisLenInput.placeholder.GetComponent<Text>().text = xAxisLen;
+
         // Get y axis interval size
         string yIntervalSize = graphManScript.GetYIntervalSize().ToString();
         yIntSizeInput.placeholder.GetComponent<Text>().text = yIntervalSize;
@@ -47,8 +53,12 @@ public class GraphPanelInput : MonoBehaviour
         yNumIntInput.placeholder.GetComponent<Text>().text = yNumIntervals;
 
         // Get y axis interval spacing
-        string yIntervalSpace = graphManScript.GetYIntervalSpace().ToString();;
+        string yIntervalSpace = graphManScript.GetYIntervalSpace().ToString();
         yIntSpaceInput.placeholder.GetComponent<Text>().text = yIntervalSpace;
+
+        // Get y axis length
+        string yAxisLen = graphManScript.GetYAxisLength().ToString();
+        yAxisLenInput.placeholder.GetComponent<Text>().text = yAxisLen;
     }
 
     private void GetInputOnClickHandler() 
@@ -77,6 +87,12 @@ public class GraphPanelInput : MonoBehaviour
         }
         xIntSpaceInput.text = "";
 
+        isDouble = double.TryParse(xAxisLenInput.text, out numDouble);
+        if (isDouble) {
+            graphManScript.SetXAxisLength(numDouble);
+        }
+        xAxisLenInput.text = "";
+
         isDouble = double.TryParse(yIntSizeInput.text, out numDouble);
         if (isDouble) {
             graphManScript.SetYIntervalSize(numDouble);
@@ -94,5 +110,11 @@ public class GraphPanelInput : MonoBehaviour
             graphManScript.SetYIntervalSpace(numDouble);
         }
         yIntSpaceInput.text = "";
+
+        isDouble = double.TryParse(yAxisLenInput.text, out numDouble);
+        if (isDouble) {
+            graphManScript.SetYAxisLength(numDouble);
+        }
+        yAxisLenInput.text = "";
     }
 }
