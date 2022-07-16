@@ -59,7 +59,7 @@ public partial class Player : MonoBehaviour
     void Start()
     {
         LockCursor();
-        velocity = new Vector3(0, 0, 0);
+        velocity = Vector3.zero;
         gravityFall = false;
         gravityRise = false;
     }

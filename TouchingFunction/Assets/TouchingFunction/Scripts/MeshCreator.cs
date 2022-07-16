@@ -14,6 +14,9 @@ public class MeshCreator : MonoBehaviour
     public bool meshIsEmpty = true;
     public int minVal = 0;
     public int maxVal = 20;
+
+    public Color c;
+    public string functionText;
     // public int functionSelection = 0;
     Mesh mesh;
 
@@ -148,9 +151,12 @@ public class MeshCreator : MonoBehaviour
 
     public void clearMesh()
     {
-        mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
-        GetComponent<MeshCollider>().sharedMesh = mesh;
+        mesh.Clear();
+        //mesh = new Mesh();
+
+        //GetComponent<MeshFilter>().mesh = mesh;
+        //GetComponent<MeshCollider>().sharedMesh = mesh;
+        functionText = "";
         meshIsEmpty = true;
     }
 

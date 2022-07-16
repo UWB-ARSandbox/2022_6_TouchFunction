@@ -11,13 +11,13 @@ public class FunctionInput : MonoBehaviour
     public TMP_InputField min;
     public TMP_InputField max;
 
-    FunctionTextDisplay functionTextDisplay;
     WolframAlpha wolframAlpha;
+    MeshManager meshManager;
     
     void Start()
     {
         wolframAlpha = FindObjectOfType<WolframAlpha>();
-        functionTextDisplay = FindObjectOfType<FunctionTextDisplay>();
+        meshManager = FindObjectOfType<MeshManager>();
     }
 
     public void TriggerGraphRender()
@@ -26,7 +26,7 @@ public class FunctionInput : MonoBehaviour
         
         if(function != null)
         {
-            functionTextDisplay.SendFunctionToNetwork(function);
+            meshManager.SendFunctionToNetwork(function);
             wolframAlpha.Solve(function, float.Parse(min.text), float.Parse(max.text), 0.25f);
             wolframAlpha.GetFunctionInfo(function);
         }

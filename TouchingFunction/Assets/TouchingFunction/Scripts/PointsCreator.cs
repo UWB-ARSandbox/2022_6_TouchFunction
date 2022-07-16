@@ -17,9 +17,6 @@ public class PointsCreator : MonoBehaviour
         pointsObject = new List<GameObject>();
     }
 
-    
-    
-
    
     public void CreatePoints()
     {
