@@ -17122,6 +17122,18 @@ MonoBehaviour:
   xScale: {fileID: 2104790982012564634, guid: b223aa4b7340653449fe556f69962134, type: 3}
   yScale: {fileID: 5488505256145549587, guid: 31d4db2a2e6814346980b9390aa9702d, type: 3}
   meshManager: {fileID: 1438277363}
+--- !u!114 &1896179997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1896179995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03c58412da33e154692db87cbf8c6ff0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1904859550
 GameObject:
   m_ObjectHideFlags: 0

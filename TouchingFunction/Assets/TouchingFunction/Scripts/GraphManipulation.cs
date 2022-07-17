@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using ASL;
 
 public class GraphManipulation : MonoBehaviour
 {
+    ASLObject aslObj;
+
     public GameObject xAxis;
     public GameObject yAxis;
 
@@ -45,6 +48,9 @@ public class GraphManipulation : MonoBehaviour
         SetupYScales();
 
         meshManagerScript = meshManager.GetComponent<MeshManager>();
+
+        aslObj = GetComponent<ASLObject>();
+        aslObj._LocallySetFloatCallback(onFloatArrayReceived);
     }
 
     void CalcIntervalSpace()
@@ -122,6 +128,7 @@ public class GraphManipulation : MonoBehaviour
             xIntervalSize = size;
             SetupXScales();
             meshManagerScript.UpdateGraphs();
+            SendGraphDetails();
         }
     }
 
@@ -133,6 +140,7 @@ public class GraphManipulation : MonoBehaviour
             yIntervalSize = size;
             SetupYScales();
             meshManagerScript.UpdateGraphs();
+            SendGraphDetails();
         }
     }
 
@@ -145,6 +153,7 @@ public class GraphManipulation : MonoBehaviour
             CalcIntervalSpace();
             SetupXScales();
             meshManagerScript.UpdateGraphs();
+            SendGraphDetails();
         }
     }
 
@@ -157,6 +166,7 @@ public class GraphManipulation : MonoBehaviour
             CalcIntervalSpace();
             SetupYScales();
             meshManagerScript.UpdateGraphs();
+            SendGraphDetails();
         }
     }
 
@@ -169,6 +179,7 @@ public class GraphManipulation : MonoBehaviour
             CalcNumIntervals();
             SetupXScales();
             meshManagerScript.UpdateGraphs();
+            SendGraphDetails();
         }
     }
 
@@ -181,6 +192,7 @@ public class GraphManipulation : MonoBehaviour
             CalcNumIntervals();
             SetupYScales();
             meshManagerScript.UpdateGraphs();
+            SendGraphDetails();
         }
     }
 
@@ -194,6 +206,7 @@ public class GraphManipulation : MonoBehaviour
             CalcNumIntervals();
             SetupXScales();
             meshManagerScript.UpdateGraphs();
+            SendGraphDetails();
         }
     }
 
@@ -221,6 +234,7 @@ public class GraphManipulation : MonoBehaviour
             CalcNumIntervals();
             SetupYScales();
             meshManagerScript.UpdateGraphs();
+            SendGraphDetails();
         }
     }
 
@@ -289,5 +303,52 @@ public class GraphManipulation : MonoBehaviour
     public double GetYAxisLength()
     {
         return yAxisLength;
+    }
+
+    public void SendGraphDetails()
+    {
+        float[] graphDetails = new float[9];
+        graphDetails[0] = 0;
+        graphDetails[1] = (float)xIntervalSize;
+        graphDetails[2] = (float)yIntervalSize;
+        graphDetails[3] = (float)xNumIntervals;
+        graphDetails[4] = (float)yNumIntervals;
+        graphDetails[5] = (float)xIntervalSpace;
+        graphDetails[6] = (float)yIntervalSpace;
+        graphDetails[7] = (float)xAxisLength;
+        graphDetails[8] = (float)yAxisLength;
+
+        aslObj.SendAndSetClaim(() =>
+        {
+            aslObj.SendFloatArray(graphDetails);
+        });
+    }
+
+    public void onFloatArrayReceived(string _id, float[] value)
+    {
+        switch (value[0])
+        {
+            case 0f:
+                xIntervalSize = (double)value[1];
+                yIntervalSize = (double)value[2];
+                xNumIntervals = (int) value[3];
+                yNumIntervals = (int) value[4];
+                xIntervalSpace = (double)value[5];
+                yIntervalSpace = (double)value[6];
+                xAxisLength = (double)value[7];
+                yAxisLength = (double)value[8];
+                
+                ResetScales(xAxis);
+                ResetScales(yAxis);
+                SetupXAxis();
+                SetupYAxis();
+                SetupXScales();
+                SetupYScales();
+
+                meshManagerScript.UpdateGraphs();
+
+                break;
+
+        }
     }
 }
