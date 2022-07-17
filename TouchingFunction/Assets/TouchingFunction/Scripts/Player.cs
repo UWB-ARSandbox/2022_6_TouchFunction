@@ -155,6 +155,15 @@ public partial class Player : MonoBehaviour
     void Update()
     {
 
+        if (controller.isGrounded)
+        {
+            Debug.Log("IS GROUNDED");
+        } else
+        {
+            Debug.Log("IS FLYING");
+        }
+
+
         if (gravityFall)
         {
             DoFall();
@@ -165,7 +174,7 @@ public partial class Player : MonoBehaviour
         }
 
         Vector3 currPos = transform.position;
-        
+        /*
         if (velocity.y == 0)
         {
             inAir = false;
@@ -174,14 +183,14 @@ public partial class Player : MonoBehaviour
         {
             inAir = true;
         }
-
+        */
         if (IsCursorLocked())
         {
             MovePlayer();
 
         }
         //if gravity enabled, drag player to platform
-        if (gravityEnabled && inAir)
+        if (gravityEnabled && !controller.isGrounded)
         {
             velocity.y -= (gravity * Time.deltaTime) * .75f;
         }
@@ -205,7 +214,7 @@ public partial class Player : MonoBehaviour
         }
 
         // in the case when the player accidentally clip through the floor, reset y to 0
-        if (currPos.y < 0)
+        if (currPos.y < -20)
         {
             velocity.y = 0;
             transform.position = new Vector3(currPos.x, 0, currPos.z);
@@ -247,7 +256,7 @@ public partial class Player : MonoBehaviour
 // Flapping functions ============================================================================
     public bool IsFlappingEnabled()
     {
-        return inAir && !gravityEnabled;
+        return !controller.isGrounded && !gravityEnabled;
     }
 
     public bool IsWalkingEnabled()
@@ -279,7 +288,7 @@ public partial class Player : MonoBehaviour
         if (IsCursorLocked())
         {
 
-            if (inAir && !gravityEnabled)
+            if (!controller.isGrounded && !gravityEnabled)
             {
                 velocity.y = -Mathf.Sqrt(jumpSpeed * (gravity)) * .4f;
             }
@@ -308,7 +317,7 @@ public partial class Player : MonoBehaviour
         if (IsCursorLocked())
         {
             // if not in air and gravity enabled, normal jump
-            if (!inAir && gravityEnabled)
+            if (controller.isGrounded && gravityEnabled)
             {
                 velocity.y = Mathf.Sqrt(jumpSpeed * (gravity)) * .75f;
             }//else enter gravity jump
@@ -365,7 +374,7 @@ public partial class Player : MonoBehaviour
     public bool isFalling()
     {
         return velocity.y < 0;
-    }*/
+    }
 
 // Scaling funcitons ====================================================================
         private void BeginScalingUp(InputAction.CallbackContext obj)

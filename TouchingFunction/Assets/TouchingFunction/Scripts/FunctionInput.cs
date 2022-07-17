@@ -10,7 +10,9 @@ public class FunctionInput : MonoBehaviour
 
     public TMP_InputField min;
     public TMP_InputField max;
+    public TMP_InputField width;
 
+    public int MeshResolution = 4;
     WolframAlpha wolframAlpha;
     MeshManager meshManager;
     
@@ -22,13 +24,21 @@ public class FunctionInput : MonoBehaviour
 
     public void TriggerGraphRender()
     {
-        string function = obtainFunctionEvent?.Invoke();
-        
-        if(function != null)
+        if (!meshManager.ListIsFull ())
         {
-            meshManager.SendFunctionToNetwork(function);
-            wolframAlpha.Solve(function, float.Parse(min.text), float.Parse(max.text), 0.25f);
-            wolframAlpha.GetFunctionInfo(function);
+            string function = obtainFunctionEvent?.Invoke();
+        
+            if(function != null)
+            {
+                meshManager.SendFunctionToNetwork(function);
+                wolframAlpha.Solve(function, float.Parse(min.text), float.Parse(max.text), float.Parse(width.text), 1f /MeshResolution);
+                wolframAlpha.GetFunctionInfo(function);
+            }
+        } else
+        {
+            // list is full prompt
+            Debug.Log("LIST IS FULL");
         }
+        
     } 
 }
