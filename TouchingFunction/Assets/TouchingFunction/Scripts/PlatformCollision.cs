@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlatformCollision : MonoBehaviour
 {
    
-    // set player to layer 6
+    /*
+     * // set player to layer 6
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == 6)
@@ -34,6 +35,6 @@ public class PlatformCollision : MonoBehaviour
             Player p = other.GetComponent<Player>();
             p.onPlatform = -1;
         }
-    }
+    }*/
 
 }

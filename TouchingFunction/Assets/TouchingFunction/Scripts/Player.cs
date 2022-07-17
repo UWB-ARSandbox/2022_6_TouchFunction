@@ -16,7 +16,6 @@ public partial class Player : MonoBehaviour
     public float gravity = 10.0f;
     public int onPlatform = -1;
     public float verticalSpeed = 0f;
-    public bool inAir = false;
     MeshCreator currentStandingMesh;
     public MeshManager m_MeshManager;
 
@@ -71,6 +70,8 @@ public partial class Player : MonoBehaviour
         Debug.Assert(controller != null);
 
         playerAnimation = GetComponent<PlayerAnimation>();
+
+       
     }
 
     private void OnEnable()
@@ -154,6 +155,7 @@ public partial class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        velocity += checkFloorNormal() * 0.3f;
 
         if (controller.isGrounded)
         {
@@ -174,23 +176,18 @@ public partial class Player : MonoBehaviour
         }
 
         Vector3 currPos = transform.position;
-        /*
-        if (velocity.y == 0)
-        {
-            inAir = false;
-        }
-        else
-        {
-            inAir = true;
-        }
-        */
+
         if (IsCursorLocked())
         {
             MovePlayer();
-
+        }
+        // give velocity.y a little bit of downward force to make player stick to ground (Required by CharacterController)
+        if (controller.isGrounded)
+        {
+            velocity.y = -0.05f;
         }
         //if gravity enabled, drag player to platform
-        if (gravityEnabled && !controller.isGrounded)
+        if (gravityEnabled)//&& !controller.isGrounded)
         {
             velocity.y -= (gravity * Time.deltaTime) * .75f;
         }
@@ -364,13 +361,6 @@ public partial class Player : MonoBehaviour
     }
 
 
-    public void land()
-    {
-        inAir = false;
-        velocity = Vector3.zero;
-        Debug.Log("landed!!!!!!!!!");
-    }
-
     public bool isFalling()
     {
         return velocity.y < 0;
@@ -425,6 +415,17 @@ public partial class Player : MonoBehaviour
             // Vector3 forward = transform.TransformDirection(Vector3.forward);
             transform.position += positionChangeFactor * transform.forward;
         }
+    }
+
+    private Vector3 checkFloorNormal()
+    {
+        if (controller.isGrounded)
+        {
+            Physics.Raycast(transform.position, Vector3.down, out RaycastHit slopeHit, 1f);
+            Debug.Log(slopeHit.normal);
+            return slopeHit.normal + Vector3.down;
+        }
+        return Vector3.zero;
     }
 }
 

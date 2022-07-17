@@ -40,7 +40,7 @@ public class PointsCreator : MonoBehaviour
             newPoint.GetComponent<Point>().parentObject = gameObject;
             pointsObject.Add(newPoint);
         }
-                
+        
     }
 
     public void DeletePoints()
