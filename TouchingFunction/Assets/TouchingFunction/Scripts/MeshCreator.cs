@@ -8,6 +8,9 @@ using System;
 [RequireComponent(typeof(MeshFilter))]
 public class MeshCreator : MonoBehaviour
 {
+    public GameObject graphAxes;
+    GraphManipulation graphManScript;
+
     #region Graph Attributes
     public Vector3 origin;
     public int GraphIndex;
@@ -33,6 +36,26 @@ public class MeshCreator : MonoBehaviour
 
 
     string cachedFunction;
+
+    public void onGraphChanged() {
+        Vector3 meshScale = transform.localScale;
+        Vector3 meshPos = transform.position;
+        
+        double xUnitSpace = graphManScript.GetXUnitSpace();
+        float xScale = (float) xUnitSpace;
+        float xPos = (xScale - 1) * maxVal;
+        Debug.Log("xscale: " + xScale);
+        Debug.Log("xPos: " + xPos);
+
+        double yUnitSpace = graphManScript.GetYUnitSpace();
+        float yScale = (float) yUnitSpace;
+        float yPos = -(yScale / 2 - 0.5f);
+        Debug.Log("yscale: " + yScale);
+        Debug.Log("yPos: " + yPos);
+
+        transform.localScale = new Vector3(xScale, yScale, meshScale.z);
+        transform.position = new Vector3(xPos, yPos, meshPos.z);
+    }
 
     public void InitGraphParameters(int min, int max, int width, float increment)
     {
@@ -61,6 +84,7 @@ public class MeshCreator : MonoBehaviour
         createGraphMesh();
         UpdateMesh();
         GetComponent<PointsCreator>().CreatePoints();
+        onGraphChanged();
 
          //FindObjectOfType<MeshManager>().addMesh(GetComponent<MeshCreator>());
         
@@ -69,6 +93,7 @@ public class MeshCreator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        graphManScript = graphAxes.GetComponent<GraphManipulation>();
         //WolframAlpha.onObtainPoints += RenderGraph;
         //WolframAlpha.onObtainPoints += SendPointsToNetwork;
 
