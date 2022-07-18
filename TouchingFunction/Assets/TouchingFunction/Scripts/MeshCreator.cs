@@ -4,42 +4,63 @@ using UnityEngine;
 using ASL;
 using System;
 
+
 [RequireComponent(typeof(MeshFilter))]
 public class MeshCreator : MonoBehaviour
 {
+    #region Graph Attributes
     public Vector3 origin;
     public int GraphIndex;
-    int MeshM = 20;//widthwise;
-    public int MeshPerX = 4;//lengthwise;
-    public bool meshIsEmpty = true;
-    public int minVal = 0;
-    public int maxVal = 20;
+    public Color c;              // Render color of the graph
+    public string functionText;  // function expression string
+    public string functionProp;  // function property details
+    #endregion
 
-    public Color c;
-    public string functionText;
-    // public int functionSelection = 0;
+    #region Mesh Settings
+    float[] zVals; // z index of vertices
+    bool meshIsEmpty = true;
+    public int minVal = 0;       // minimum of X to render
+    public int maxVal = 20;      // maximum of X to render
+    public int MeshPerX;     // number of vertices per increment of X;
+    #endregion
+
+    #region Mesh Data
     Mesh mesh;
-
     Vector3[] vertices;
     int[] triangles;
-
     public float[] yVals;
+    #endregion
+
 
     string cachedFunction;
 
-    public void InitGraphParameters(int min, int max, float increment)
+    public void InitGraphParameters(int min, int max, int width, float increment)
     {
+        /*MeshPerX = Mathf.RoundToInt(1f / increment);
+        MeshM = 2 * width + 1;
         minVal = min;
         maxVal = max;
         //MeshPerX = (int)(1 / increment);
+        zVals = new float[MeshM];
+        for (int i = 0; i < MeshM; i++)
+        {
+            zVals[i] = -(width / 2f) + i * 0.5f;
+        }*/
+        MeshPerX = Mathf.RoundToInt(1f / increment);
+        minVal = min;
+        maxVal = max;
+        //MeshPerX = (int)(1 / increment);
+        zVals[0] = -(width / 2f);
+        zVals[1] = width / 2f;
     }
 
     public void RenderGraph(float[] values) {
-        
-         yVals = values;
-         createGraphMesh();
-         UpdateMesh();
-         GetComponent<PointsCreator>().CreatePoints();
+
+        //Array.Copy(values, yVals, maxVal*MeshPerX);
+        yVals = values;
+        createGraphMesh();
+        UpdateMesh();
+        GetComponent<PointsCreator>().CreatePoints();
 
          //FindObjectOfType<MeshManager>().addMesh(GetComponent<MeshCreator>());
         
@@ -52,9 +73,9 @@ public class MeshCreator : MonoBehaviour
         //WolframAlpha.onObtainPoints += SendPointsToNetwork;
 
         //GetComponent<ASLObject>()._LocallySetFloatCallback(ReceivePointsFromNetwork);
-
+        MeshPerX = FindObjectOfType<FunctionInput>().MeshResolution;
         mesh = new Mesh();
-
+        zVals = new float[2];
         GetComponent<MeshFilter>().mesh = mesh;
         GetComponent<MeshCollider>().sharedMesh = mesh;
     }
@@ -77,10 +98,10 @@ public class MeshCreator : MonoBehaviour
     void createGraphMesh()
     {
         meshIsEmpty = false;
-        vertices = new Vector3[MeshM * MeshPerX * maxVal];
-        triangles = new int[(MeshM - 1) * (MeshPerX * maxVal - 1) * 6];
+        vertices = new Vector3[2 * MeshPerX * maxVal];
+        triangles = new int[(MeshPerX * maxVal - 1) * 6];
 
-        float[] zArr = {-1f, -0.9f, -0.8f, -0.7f, -0.6f, -0.5f, -0.4f, -0.3f, -0.2f, -0.1f, 0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f};
+        //float[] zArr = {-1f, -0.9f, -0.8f, -0.7f, -0.6f, -0.5f, -0.4f, -0.3f, -0.2f, -0.1f, 0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f};
         float xIncrement = 1f / MeshPerX;
         float xOrigin = origin.x;
         float yOrigin = origin.y;
@@ -90,24 +111,23 @@ public class MeshCreator : MonoBehaviour
         {
             xVal = xOrigin + (i * xIncrement);
             yVal = yOrigin + getY(i);
-            for (int j = 0; j < MeshM; j++)
+            for (int j = 0; j < 2; j++)
             {
-                vertices[MeshM * i + j] = new Vector3(xVal, yVal, zArr[j]);
+                vertices[2 * i + j] = new Vector3(xVal, yVal, zVals[j]);
             }
         }
 
         for (int i = 0; i < MeshPerX * maxVal - 1; i++)
         {
-            for (int j = 0; j < (MeshM-1); j++)
-            {
-                triangles[6 * ((MeshM - 1) * i + j)] = MeshM * i + j;
-                triangles[6 * ((MeshM - 1) * i + j) + 1] = MeshM * i + j + 1;
-                triangles[6 * ((MeshM - 1) * i + j) + 2] = MeshM * (i + 1) + j;
 
-                triangles[6 * ((MeshM - 1) * i + j) + 3] = MeshM * i + j + 1;
-                triangles[6 * ((MeshM - 1) * i + j) + 4] = MeshM * (i + 1) + j + 1;
-                triangles[6 * ((MeshM - 1) * i + j) + 5] = MeshM * (i + 1) + j;
-            }
+             triangles[6 * i ] = 2 * i;
+             triangles[6 * i + 1] = 2 * i + 1;
+             triangles[6 * i + 2] = 2 * (i + 1) ;
+
+             triangles[6 * i + 3] = 2 * i + 1;
+             triangles[6 * i + 4] = 2 * (i + 1) + 1;
+             triangles[6 * i + 5] = 2 * (i + 1);
+            
         }
     }
 
@@ -122,6 +142,8 @@ public class MeshCreator : MonoBehaviour
         mesh.vertices = vertices;
         mesh.triangles = triangles;
         GetComponent<MeshCollider>().sharedMesh = mesh;
+        //GetComponent<Renderer>().material.color = c;
+
     }
 
     float getY(int x)
@@ -139,52 +161,13 @@ public class MeshCreator : MonoBehaviour
         // }
     }
 
-    public void onFxChanged(int newFx)
-    {
-        mesh.Clear();
-        //functionSelection = newFx;
-
-        createGraphMesh();
-        //Debug.Log(vertices[0]);
-        UpdateMesh();
-    }
 
     public void clearMesh()
     {
         mesh.Clear();
-        //mesh = new Mesh();
-
-        //GetComponent<MeshFilter>().mesh = mesh;
-        //GetComponent<MeshCollider>().sharedMesh = mesh;
         functionText = "";
         meshIsEmpty = true;
     }
 
-
-
-    // public void onMaxValChanged(System.Single newMax)
-    // {
-    //     mesh.Clear();
-    //     maxVal = Mathf.RoundToInt(newMax);
-
-    //     vertices = new Vector3[MeshM * MeshPerX * maxVal];
-
-    //     triangles = new int[(MeshM - 1) * (MeshPerX * maxVal - 1) * 6];
-    //     createGraphMesh();
-  
-    //     UpdateMesh();
-    // }
-
-    // public void onResolutionChanged(System.Single newRes)
-    // {
-    //     mesh.Clear();
-    //     MeshPerX = Mathf.RoundToInt(newRes);
-
-    //     vertices = new Vector3[MeshM * MeshPerX * maxVal];
-    //     triangles = new int[(MeshM - 1) * (MeshPerX * maxVal - 1) * 6];
-    //     createGraphMesh();
-
-    //     UpdateMesh();
-    // }
 
 }

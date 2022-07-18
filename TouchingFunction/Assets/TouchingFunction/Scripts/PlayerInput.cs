@@ -82,15 +82,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ToggleCursorLock"",
-                    ""type"": ""Button"",
-                    ""id"": ""0539639e-1670-41f3-9cf9-2513cbb1b296"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Look"",
                     ""type"": ""Value"",
                     ""id"": ""e5011cc6-9d76-42ea-8530-d7b74961c1f8"",
@@ -130,6 +121,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""name"": ""ScaleDown"",
                     ""type"": ""Button"",
                     ""id"": ""ddcb3ef0-75d4-4880-a864-0f49a0ea9d17"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleCursorLock"",
+                    ""type"": ""Button"",
+                    ""id"": ""6cb4a10a-ef3f-46d5-88c2-70a1326c3733"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -315,28 +315,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c5ad06cc-c6f0-4753-bf0d-452244836a68"",
-                    ""path"": ""<Keyboard>/leftCtrl"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PC"",
-                    ""action"": ""ToggleCursorLock"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""cce191ea-5648-4751-82be-e8891c50aeaa"",
-                    ""path"": ""<WMRSpatialController>{RightHand}/joystickClicked"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""VR"",
-                    ""action"": ""ToggleCursorLock"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""2f92ab67-e85d-447f-8ac4-1d3e34dec7fb"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
@@ -389,6 +367,28 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""ScaleDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b9db82ee-6815-43a4-bb61-0fcebe8e00a1"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""ToggleCursorLock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""80d502fe-1977-4639-a33a-b8e01d40456c"",
+                    ""path"": ""<WMRSpatialController>{RightHand}/joystickClicked"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""ToggleCursorLock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -430,12 +430,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_PlayerControls_Quit = m_PlayerControls.FindAction("Quit", throwIfNotFound: true);
         m_PlayerControls_EnableGravity = m_PlayerControls.FindAction("EnableGravity", throwIfNotFound: true);
         m_PlayerControls_DisableGravity = m_PlayerControls.FindAction("DisableGravity", throwIfNotFound: true);
-        m_PlayerControls_ToggleCursorLock = m_PlayerControls.FindAction("ToggleCursorLock", throwIfNotFound: true);
         m_PlayerControls_Look = m_PlayerControls.FindAction("Look", throwIfNotFound: true);
         m_PlayerControls_VRLook = m_PlayerControls.FindAction("VRLook", throwIfNotFound: true);
         m_PlayerControls_VRLookCont = m_PlayerControls.FindAction("VRLookCont", throwIfNotFound: true);
         m_PlayerControls_ScaleUp = m_PlayerControls.FindAction("ScaleUp", throwIfNotFound: true);
         m_PlayerControls_ScaleDown = m_PlayerControls.FindAction("ScaleDown", throwIfNotFound: true);
+        m_PlayerControls_ToggleCursorLock = m_PlayerControls.FindAction("ToggleCursorLock", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -501,12 +501,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControls_Quit;
     private readonly InputAction m_PlayerControls_EnableGravity;
     private readonly InputAction m_PlayerControls_DisableGravity;
-    private readonly InputAction m_PlayerControls_ToggleCursorLock;
     private readonly InputAction m_PlayerControls_Look;
     private readonly InputAction m_PlayerControls_VRLook;
     private readonly InputAction m_PlayerControls_VRLookCont;
     private readonly InputAction m_PlayerControls_ScaleUp;
     private readonly InputAction m_PlayerControls_ScaleDown;
+    private readonly InputAction m_PlayerControls_ToggleCursorLock;
     public struct PlayerControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -517,12 +517,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Quit => m_Wrapper.m_PlayerControls_Quit;
         public InputAction @EnableGravity => m_Wrapper.m_PlayerControls_EnableGravity;
         public InputAction @DisableGravity => m_Wrapper.m_PlayerControls_DisableGravity;
-        public InputAction @ToggleCursorLock => m_Wrapper.m_PlayerControls_ToggleCursorLock;
         public InputAction @Look => m_Wrapper.m_PlayerControls_Look;
         public InputAction @VRLook => m_Wrapper.m_PlayerControls_VRLook;
         public InputAction @VRLookCont => m_Wrapper.m_PlayerControls_VRLookCont;
         public InputAction @ScaleUp => m_Wrapper.m_PlayerControls_ScaleUp;
         public InputAction @ScaleDown => m_Wrapper.m_PlayerControls_ScaleDown;
+        public InputAction @ToggleCursorLock => m_Wrapper.m_PlayerControls_ToggleCursorLock;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -550,9 +550,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @DisableGravity.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDisableGravity;
                 @DisableGravity.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDisableGravity;
                 @DisableGravity.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDisableGravity;
-                @ToggleCursorLock.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleCursorLock;
-                @ToggleCursorLock.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleCursorLock;
-                @ToggleCursorLock.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleCursorLock;
                 @Look.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnLook;
                 @Look.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnLook;
                 @Look.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnLook;
@@ -568,6 +565,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @ScaleDown.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnScaleDown;
                 @ScaleDown.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnScaleDown;
                 @ScaleDown.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnScaleDown;
+                @ToggleCursorLock.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleCursorLock;
+                @ToggleCursorLock.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleCursorLock;
+                @ToggleCursorLock.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleCursorLock;
             }
             m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -590,9 +590,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @DisableGravity.started += instance.OnDisableGravity;
                 @DisableGravity.performed += instance.OnDisableGravity;
                 @DisableGravity.canceled += instance.OnDisableGravity;
-                @ToggleCursorLock.started += instance.OnToggleCursorLock;
-                @ToggleCursorLock.performed += instance.OnToggleCursorLock;
-                @ToggleCursorLock.canceled += instance.OnToggleCursorLock;
                 @Look.started += instance.OnLook;
                 @Look.performed += instance.OnLook;
                 @Look.canceled += instance.OnLook;
@@ -608,6 +605,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @ScaleDown.started += instance.OnScaleDown;
                 @ScaleDown.performed += instance.OnScaleDown;
                 @ScaleDown.canceled += instance.OnScaleDown;
+                @ToggleCursorLock.started += instance.OnToggleCursorLock;
+                @ToggleCursorLock.performed += instance.OnToggleCursorLock;
+                @ToggleCursorLock.canceled += instance.OnToggleCursorLock;
             }
         }
     }
@@ -638,11 +638,11 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnQuit(InputAction.CallbackContext context);
         void OnEnableGravity(InputAction.CallbackContext context);
         void OnDisableGravity(InputAction.CallbackContext context);
-        void OnToggleCursorLock(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnVRLook(InputAction.CallbackContext context);
         void OnVRLookCont(InputAction.CallbackContext context);
         void OnScaleUp(InputAction.CallbackContext context);
         void OnScaleDown(InputAction.CallbackContext context);
+        void OnToggleCursorLock(InputAction.CallbackContext context);
     }
 }

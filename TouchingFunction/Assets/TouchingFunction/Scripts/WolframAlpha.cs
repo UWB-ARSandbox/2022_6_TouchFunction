@@ -51,7 +51,7 @@ public class WolframAlpha : MonoBehaviour
     // @param: end      -- float end point of plot
     // @param: inc      -- float increment amount 
     // @returns: list of y coordinate floats
-    public async void Solve(string equation, float start, float end, float inc){
+    public async void Solve(string equation, float start, float end, float width, float inc){
         string input = "Table[" + equation + "], {x, " + start + ", " + end + ", " + inc + "}]";
 
         Debug.Log(input);
@@ -76,10 +76,10 @@ public class WolframAlpha : MonoBehaviour
                 }
             }
         }
-        Debug.Log("Result String: " + resultString);
+        //Debug.Log("Result String: " + resultString);
 
         var pointList = cleanResults(resultString);
-        pointList.InsertRange(0, new List<float> { start, end, inc });
+        pointList.InsertRange(0, new List<float> { start, end, width, inc });
 
         onObtainPoints?.Invoke(pointList.ToArray<float>());
     }

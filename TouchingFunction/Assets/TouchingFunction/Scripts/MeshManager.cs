@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ASL;
-
+using UnityEngine.UI;
 public class MeshManager : MonoBehaviour
 {
     ASLObject aslObj;
@@ -14,6 +14,7 @@ public class MeshManager : MonoBehaviour
     public Color[] colorList;
     public int[] colorSelected;
 
+    
     private void Start()
     {
         aslObj = GetComponent<ASLObject>();
@@ -41,6 +42,7 @@ public class MeshManager : MonoBehaviour
         return -1;
     }
 
+    // when received y values from Wolfram Alpha, attach a 0f to the first element of the array
     private void SendPointsToNetwork(float[] _f)
     {
         float[] yArr = new float[_f.Length + 1];
@@ -71,11 +73,11 @@ public class MeshManager : MonoBehaviour
                 int fs = findFirstSpace();
                 if (fs >= 0)
                 {
-                    float[] yArr = new float[value.Length - 4];
-                    Array.Copy(value, 4, yArr, 0, yArr.Length);
-                    meshes[fs].InitGraphParameters((int)value[1], (int)value[2], value[3]);   
+                    float[] yArr = new float[value.Length - 5];
+                    Array.Copy(value, 5, yArr, 0, yArr.Length);
+                    meshes[fs].InitGraphParameters((int)value[1], (int)value[2], (int)value[3], value[4]);   
                     meshes[fs].RenderGraph(yArr);
-                    colorSelected[fs] = nextAvailableColor() + 1;
+                    colorSelected[fs] = nextAvailableColor() + 1;            
                     meshes[fs].c = colorList[colorSelected[fs]-1];
                     updateGraphList();
                 }
@@ -203,6 +205,16 @@ public class MeshManager : MonoBehaviour
                 li.SelfExplode();
             }
         }
+    }
+
+    // check if there's no more space available for a new mesh
+    public bool ListIsFull()
+    {
+        foreach (MeshCreator i in meshes)
+        {
+            if (i.isEmpty()) return false;
+        }
+        return true;
     }
 
 }

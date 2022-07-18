@@ -60,15 +60,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ToggleCursorLock",
-                    "type": "Button",
-                    "id": "0539639e-1670-41f3-9cf9-2513cbb1b296",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Look",
                     "type": "Value",
                     "id": "e5011cc6-9d76-42ea-8530-d7b74961c1f8",
@@ -108,6 +99,15 @@
                     "name": "ScaleDown",
                     "type": "Button",
                     "id": "ddcb3ef0-75d4-4880-a864-0f49a0ea9d17",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleCursorLock",
+                    "type": "Button",
+                    "id": "6cb4a10a-ef3f-46d5-88c2-70a1326c3733",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -293,28 +293,6 @@
                 },
                 {
                     "name": "",
-                    "id": "c5ad06cc-c6f0-4753-bf0d-452244836a68",
-                    "path": "<Keyboard>/leftCtrl",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "PC",
-                    "action": "ToggleCursorLock",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "cce191ea-5648-4751-82be-e8891c50aeaa",
-                    "path": "<WMRSpatialController>{RightHand}/joystickClicked",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "VR",
-                    "action": "ToggleCursorLock",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "2f92ab67-e85d-447f-8ac4-1d3e34dec7fb",
                     "path": "<Mouse>/delta",
                     "interactions": "",
@@ -365,6 +343,28 @@
                     "processors": "",
                     "groups": "PC",
                     "action": "ScaleDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b9db82ee-6815-43a4-bb61-0fcebe8e00a1",
+                    "path": "<Keyboard>/leftCtrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "ToggleCursorLock",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "80d502fe-1977-4639-a33a-b8e01d40456c",
+                    "path": "<WMRSpatialController>{RightHand}/joystickClicked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "ToggleCursorLock",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

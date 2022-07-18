@@ -16,6 +16,7 @@ public class ChangeColor : MonoBehaviour
 
     public void ChangePlayerColor()
     {
+
         // Debug.Log("color changed");
         // playerASL.GetComponentInChildren<MeshRenderer>().material.color = colorPicker.color;
         if(playerASL != null) 
