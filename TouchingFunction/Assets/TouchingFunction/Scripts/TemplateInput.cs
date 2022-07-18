@@ -25,17 +25,14 @@ public class TemplateInput : MonoBehaviour
 
     void OnEnable()
     {
-        FunctionInput.obtainFunctionEvent += GetInput;
-    }
-
-    void OnDisable()
-    {
-        FunctionInput.obtainFunctionEvent -= GetInput;
+        FunctionInput.obtainFunctionEvent = GetInput;
     }
 
     public void ChangeInput(int value)
     {
-        switch((FunctionType)value)
+        functionType = (FunctionType) value;
+
+        switch(functionType)
         {
             case FunctionType.sin:
                 functionText.text = "sin("; break;
@@ -65,29 +62,7 @@ public class TemplateInput : MonoBehaviour
         ValidateInput(ABCD[2], "0");
         ValidateInput(ABCD[3], "0");
 
-        switch(functionType)
-        {
-            case FunctionType.sin:
-                return String.Format("{0}sin({1}x+{2})+{3}", ABCD[0].text, ABCD[1].text, ABCD[2].text, ABCD[3].text);
-            case FunctionType.cos:
-                return String.Format("{0}cos({1}x+{2})+{3}", ABCD[0].text, ABCD[1].text, ABCD[2].text, ABCD[3].text);
-            case FunctionType.tan:
-                return String.Format("{0}tan({1}x+{2})+{3}", ABCD[0].text, ABCD[1].text, ABCD[2].text, ABCD[3].text);
-            case FunctionType.log:
-                return String.Format("{0}log({1}x+{2})+{3}", ABCD[0].text, ABCD[1].text, ABCD[2].text, ABCD[3].text);
-            case FunctionType.ln:
-                return String.Format("{0}ln({1}x+{2})+{3}", ABCD[0].text, ABCD[1].text, ABCD[2].text, ABCD[3].text);
-            case FunctionType.exp:
-                return String.Format("{0}e^({1}x+{2})+{3}", ABCD[0].text, ABCD[1].text, ABCD[2].text, ABCD[3].text);
-            case FunctionType.reciprocal:
-                return String.Format("{0}/({1}x+{2})+{3}", ABCD[0].text, ABCD[1].text, ABCD[2].text, ABCD[3].text);
-            case FunctionType.sqrt:
-                return String.Format("{0}sqrt({1}x+{2})+{3}", ABCD[0].text, ABCD[1].text, ABCD[2].text, ABCD[3].text);
-            case FunctionType.abs:
-                return String.Format("{0}abs({1}x+{2})+{3}", ABCD[0].text, ABCD[1].text, ABCD[2].text, ABCD[3].text);
-        }
-
-        return null;
+        return String.Format("{0}{1}{2}x+{3})+{4}", ABCD[0].text, functionText.text, ABCD[1].text, ABCD[2].text, ABCD[3].text);
     }
 
     void ValidateInput(TMP_InputField numInput, string defaultString) 

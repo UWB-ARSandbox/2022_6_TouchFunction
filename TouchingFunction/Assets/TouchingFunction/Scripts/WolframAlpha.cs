@@ -76,7 +76,7 @@ public class WolframAlpha : MonoBehaviour
                 }
             }
         }
-        //Debug.Log("Result String: " + resultString);
+        Debug.Log("Result String: " + resultString);
 
         var pointList = cleanResults(resultString);
         pointList.InsertRange(0, new List<float> { start, end, width, inc });
@@ -90,8 +90,12 @@ public class WolframAlpha : MonoBehaviour
     static List<float> cleanResults(string toClean){
         return Regex.Replace(toClean, @"{|}|\s", "")
                     .Split(',')
-                    .Select((a) => Regex.Replace(a, @"\u00d710\^", "e"))
-                    .Select(float.Parse)
+                    .Select((a) => 
+                    {
+                        Regex.Replace(a, @"\u00d710\^", "e");
+                        float ret;
+                        return float.TryParse(a, out ret) ? ret : 0; 
+                    })
                     .ToList<float>();
     }
 

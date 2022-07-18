@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1781558, g: 0.22306523, b: 0.30514213, a: 1}
+  m_IndirectSpecularColor: {r: 0.1781555, g: 0.2230649, b: 0.30514145, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3416,7 +3416,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 365913462}
-  - component: {fileID: 365913463}
   m_Layer: 5
   m_Name: Template Function
   m_TagString: Untagged
@@ -3450,25 +3449,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -45}
   m_SizeDelta: {x: 350, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &365913463
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 365913461}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee7ed2ba7bace79418bb4192bb59b82d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  functionType: 0
-  functionText: {fileID: 0}
-  ABCD:
-  - {fileID: 999441213}
-  - {fileID: 1834947379}
-  - {fileID: 1694524841}
-  - {fileID: 540871029}
 --- !u!1 &368482914
 GameObject:
   m_ObjectHideFlags: 0

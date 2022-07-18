@@ -9,12 +9,7 @@ public class RawInput : MonoBehaviour
     
     void OnEnable()
     {
-        FunctionInput.obtainFunctionEvent += GetInput;
-    }
-
-    void OnDisable()
-    {
-        FunctionInput.obtainFunctionEvent -= GetInput;
+        FunctionInput.obtainFunctionEvent = GetInput;
     }
 
     public string GetInput()

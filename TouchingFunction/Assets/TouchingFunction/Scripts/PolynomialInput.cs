@@ -15,12 +15,7 @@ public class PolynomialInput : MonoBehaviour
 
     void OnEnable()
     {
-        FunctionInput.obtainFunctionEvent += GetInput;
-    }
-
-    void OnDisable()
-    {
-        FunctionInput.obtainFunctionEvent -= GetInput;
+        FunctionInput.obtainFunctionEvent = GetInput;
     }
 
     // Runs on button click
