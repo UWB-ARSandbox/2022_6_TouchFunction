@@ -83,7 +83,7 @@ public class MeshCreator : MonoBehaviour
         yVals = values;
         createGraphMesh();
         UpdateMesh();
-        GetComponent<PointsCreator>().CreatePoints();
+        //GetComponent<PointsCreator>().CreatePoints();
         onGraphChanged();
 
          //FindObjectOfType<MeshManager>().addMesh(GetComponent<MeshCreator>());
