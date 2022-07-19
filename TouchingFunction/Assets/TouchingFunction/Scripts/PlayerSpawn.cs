@@ -30,7 +30,7 @@ public class PlayerSpawn : MonoBehaviour
         _playerObject = obj;
         _playerAslObject = obj.GetComponent<ASLObject>();
         obj.layer = 6;
-        obj.GetComponent<Player>().m_MeshManager = FindObjectOfType<MeshManager>();
+        //obj.GetComponent<Player>().m_MeshManager = FindObjectOfType<MeshManager>();
         FindObjectOfType<ChangeColor>().playerASL = _playerObject.GetComponent<PlayerASL>();
     }
 

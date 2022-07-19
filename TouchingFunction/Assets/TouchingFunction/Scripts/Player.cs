@@ -13,11 +13,13 @@ public partial class Player : MonoBehaviour
     #region Player movement variables
     public float speed = 5.0f;
     public float jumpSpeed = 10.0f;
+    public float SlideSpeed = 0.1f;
     public float gravity = 10.0f;
     public int onPlatform = -1;
     public float verticalSpeed = 0f;
-    MeshCreator currentStandingMesh;
-    public MeshManager m_MeshManager;
+    public float SlideLimit = 45f;
+    public Vector3 SlidingVector;
+    public bool isSliding = false;
 
     private float scalingFactor = 0.2f;
     private float positionChangeFactor = 0.3f;
@@ -46,7 +48,7 @@ public partial class Player : MonoBehaviour
     private InputAction scaleUp;
     private InputAction scaleDown;
     public Vector3 velocity;
-
+    
     private bool gravityFall;
     private bool gravityRise;
     private bool mouseLook;
@@ -155,8 +157,9 @@ public partial class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        velocity += checkFloorNormal() * 0.3f;
 
+
+        
         if (controller.isGrounded)
         {
             Debug.Log("IS GROUNDED");
@@ -179,13 +182,28 @@ public partial class Player : MonoBehaviour
 
         if (IsCursorLocked())
         {
-            MovePlayer();
+            horizontalMove();
+            //MovePlayer();
         }
+        MovePlayer();
+        /*
+        if (checkFloorNormal() != Vector3.zero)
+        {
+            Debug.Log(checkFloorNormal());
+            velocity += checkFloorNormal();
+            velocity += Vector3.down / 2;
+        }
+        else
+        {
+            
+        }*/
+
         // give velocity.y a little bit of downward force to make player stick to ground (Required by CharacterController)
         if (controller.isGrounded)
         {
-            velocity.y = -0.05f;
+            velocity.y -= 0.05f;
         }
+
         //if gravity enabled, drag player to platform
         if (gravityEnabled)//&& !controller.isGrounded)
         {
@@ -228,13 +246,48 @@ public partial class Player : MonoBehaviour
         }
     }
 
-    void MovePlayer()
+    void horizontalMove()
     {
         Vector2 moveValue = movement.ReadValue<Vector2>();
-        Vector3 move = transform.right * (moveValue.x * 1.25f) + transform.up * velocity.y + transform.forward * (moveValue.y * 1.25f);
+        //Vector3 move = transform.right * (moveValue.x * 1.25f) + transform.up * velocity.y + transform.forward * (moveValue.y * 1.25f);
+        velocity += transform.right * moveValue.x * 1.5f + transform.forward * moveValue.y * 1.5f;
+        if (moveValue != Vector2.zero)
+        {
+            playerMoving = true;
+        } else
+        {
+            playerMoving = false;
+        }
 
-        controller.Move(move * speed * Time.deltaTime);
+    }
 
+    void MovePlayer()
+    {
+        //Vector2 moveValue = movement.ReadValue<Vector2>();
+        //Vector3 move = transform.right * (moveValue.x * 1.25f) + transform.up * velocity.y + transform.forward * (moveValue.y * 1.25f);
+        
+
+        Vector3 finalMoveVector = velocity * speed * Time.deltaTime;
+
+        checkFloorNormal();
+
+        //Debug.Log("Normal Vector : " + norm);
+        if (isSliding)
+        {
+
+            finalMoveVector += SlidingVector * SlideSpeed;
+        }
+
+        controller.Move(finalMoveVector);
+
+        if (controller.isGrounded)
+        {
+            velocity = Vector3.zero;
+        } else
+        {
+            velocity = new Vector3(0, velocity.y, 0);
+        }
+        /*
         if (move.z != 0 || move.x != 0) // movement in x or z axis
         {
             playerMoving = true;
@@ -243,7 +296,7 @@ public partial class Player : MonoBehaviour
         {
             playerMoving = false;
         }
-        /*
+        
         if (onPlatform >= 0)
         {
             MovePositionOnGraph();
@@ -313,10 +366,12 @@ public partial class Player : MonoBehaviour
     {
         if (IsCursorLocked())
         {
+            Debug.Log("Jump!");
             // if not in air and gravity enabled, normal jump
             if (controller.isGrounded && gravityEnabled)
             {
                 velocity.y = Mathf.Sqrt(jumpSpeed * (gravity)) * .75f;
+                Debug.Log("After jump Velocity : " + velocity);
             }//else enter gravity jump
             else if (!gravityEnabled)
             {
@@ -339,6 +394,7 @@ public partial class Player : MonoBehaviour
         gravityRise = false;
     }
 
+    /*
 // Movement on graph ===============================================================================
     // change Y value when player is moving on a graph, the Y value will be based on the resolution (MeshPerX)
     private void MovePositionOnGraph()
@@ -365,6 +421,7 @@ public partial class Player : MonoBehaviour
     {
         return velocity.y < 0;
     }
+    */
 
 // Scaling funcitons ====================================================================
         private void BeginScalingUp(InputAction.CallbackContext obj)
@@ -417,15 +474,34 @@ public partial class Player : MonoBehaviour
         }
     }
 
-    private Vector3 checkFloorNormal()
+    private void checkFloorNormal()
     {
+        Debug.DrawRay(transform.position, Vector3.down, Color.red, 1f);
         if (controller.isGrounded)
         {
-            Physics.Raycast(transform.position, Vector3.down, out RaycastHit slopeHit, 1f);
-            Debug.Log(slopeHit.normal);
-            return slopeHit.normal + Vector3.down;
+
+            if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit slopeHit, 50f)) {
+                Vector3 norm = slopeHit.normal;
+                //Debug.Log(slopeHit.normal);
+                if (Vector3.Angle(norm, Vector3.up) > SlideLimit)   // if on a slope steeper than limit
+                {
+                    isSliding = true;
+                    SlidingVector = norm + Mathf.Sqrt(1 + (norm.x / norm.y) * (norm.x / norm.y)) * Vector3.down;
+                }
+                else
+                {
+
+                    isSliding = false;
+                    SlidingVector = Vector3.zero;
+                }
+            } // if grounded but no RaycastHit, it means the slope is too steep for ray to detect
+            else
+            {
+                Debug.Log("Too far for Ray to reach");
+            }
+
         }
-        return Vector3.zero;
+      
     }
 }
 
