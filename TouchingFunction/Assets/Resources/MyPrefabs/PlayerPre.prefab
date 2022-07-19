@@ -1299,8 +1299,6 @@ MonoBehaviour:
   gravity: 10
   onPlatform: -1
   verticalSpeed: 0
-  inAir: 0
-  m_MeshManager: {fileID: 0}
   scalingUp: 0
   scalingDown: 0
   velocity: {x: 0, y: 0, z: 0}

@@ -60,7 +60,7 @@ public class MeshCreator : MonoBehaviour
         yVals = values;
         createGraphMesh();
         UpdateMesh();
-        GetComponent<PointsCreator>().CreatePoints();
+        //GetComponent<PointsCreator>().CreatePoints();
 
          //FindObjectOfType<MeshManager>().addMesh(GetComponent<MeshCreator>());
         
@@ -98,8 +98,8 @@ public class MeshCreator : MonoBehaviour
     void createGraphMesh()
     {
         meshIsEmpty = false;
-        vertices = new Vector3[2 * MeshPerX * maxVal];
-        triangles = new int[(MeshPerX * maxVal - 1) * 6];
+        vertices = new Vector3[2 * MeshPerX * (maxVal - minVal)];
+        triangles = new int[(MeshPerX * (maxVal - minVal) - 1) * 6];
 
         //float[] zArr = {-1f, -0.9f, -0.8f, -0.7f, -0.6f, -0.5f, -0.4f, -0.3f, -0.2f, -0.1f, 0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f};
         float xIncrement = 1f / MeshPerX;
@@ -107,9 +107,9 @@ public class MeshCreator : MonoBehaviour
         float yOrigin = origin.y;
         float xVal, yVal;
         
-        for (int i = 0; i < MeshPerX * maxVal; i++)
+        for (int i = 0; i < MeshPerX * (maxVal - minVal); i++)
         {
-            xVal = xOrigin + (i * xIncrement);
+            xVal = xOrigin + minVal + (i * xIncrement);
             yVal = yOrigin + getY(i);
             for (int j = 0; j < 2; j++)
             {
@@ -117,7 +117,7 @@ public class MeshCreator : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < MeshPerX * maxVal - 1; i++)
+        for (int i = 0; i < MeshPerX * (maxVal - minVal) - 1; i++)
         {
 
              triangles[6 * i ] = 2 * i;
