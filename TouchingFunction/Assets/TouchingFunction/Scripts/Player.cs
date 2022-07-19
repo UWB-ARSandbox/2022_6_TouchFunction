@@ -159,10 +159,10 @@ public partial class Player : MonoBehaviour
 
         if (controller.isGrounded)
         {
-            Debug.Log("IS GROUNDED");
+            //Debug.Log("IS GROUNDED");
         } else
         {
-            Debug.Log("IS FLYING");
+            //Debug.Log("IS FLYING");
         }
 
 
