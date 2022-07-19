@@ -217,4 +217,16 @@ public class MeshManager : MonoBehaviour
         return true;
     }
 
+    public void UpdateGraphs() {
+        for (int i = 0; i < meshes.Length; i++)
+        {
+            if (!meshes[i].isEmpty())
+            {
+                Debug.Log("Here 2");
+                meshes[i].onGraphChanged();
+                Debug.Log("And Back 2");
+            }
+        }
+    }
+
 }
