@@ -112,6 +112,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SummonUI",
+                    "type": "Button",
+                    "id": "a5ee3444-1d86-4f44-8e61-44f8e1a05512",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RightTrigger",
+                    "type": "Button",
+                    "id": "55a3088d-7ca4-42d6-b80d-9200e6c4436a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -365,6 +383,39 @@
                     "processors": "",
                     "groups": "VR",
                     "action": "ToggleCursorLock",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ea5041fa-e7dc-448a-a760-b7ff60660dd3",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "SummonUI",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "91c82105-6caa-4a7f-83d7-6aa3bc1b648b",
+                    "path": "<XRController>{RightHand}/secondaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "SummonUI",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4a4ba0a0-2556-4e78-a487-41355bc3a28b",
+                    "path": "<XRController>{RightHand}/triggerPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "RightTrigger",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

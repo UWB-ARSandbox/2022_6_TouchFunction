@@ -123,6 +123,11 @@ public partial class Player : MonoBehaviour
 
         // script to check for VR input to activate VR hands
         gameObject.GetComponent<PlayerActivateVRHands>().enabled = true;
+
+        // Script to attatch PlayerCamera to Player as a child of Head
+        GameObject tmpCam = GameObject.Find("PlayerCamera");
+        tmpCam.transform.parent = head;
+        tmpCam.transform.position = head.position;//new Vector3(0,2f,0);
     }
 
     private void togMouseLook(InputAction.CallbackContext obj)
@@ -422,7 +427,7 @@ public partial class Player : MonoBehaviour
         if (controller.isGrounded)
         {
             Physics.Raycast(transform.position, Vector3.down, out RaycastHit slopeHit, 1f);
-            Debug.Log(slopeHit.normal);
+            //Debug.Log(slopeHit.normal);
             return slopeHit.normal + Vector3.down;
         }
         return Vector3.zero;

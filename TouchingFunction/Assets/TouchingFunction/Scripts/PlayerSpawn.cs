@@ -44,7 +44,7 @@ public class PlayerSpawn : MonoBehaviour
         }
 
         _playerObject.GetComponent<Player>().enabled = true;
-        _playerObject.GetComponentInChildren<Camera>().enabled = true;
+        //_playerObject.GetComponentInChildren<Camera>().enabled = true;
 
         yield return new WaitForSeconds(1f);
         _playerAslObject.SendAndSetClaim(() =>
