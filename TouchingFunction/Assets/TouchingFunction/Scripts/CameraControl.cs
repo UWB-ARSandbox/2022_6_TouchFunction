@@ -7,7 +7,7 @@ public partial class Player : MonoBehaviour
     public Transform head;
     public float mouseSensitivity = 10f;
     public float contSensitivity = 100f;
-    public float clampAngle = 80.0f;
+    public float clampAngle = 60.0f;
 
     private float rotY = 0.0f; // rotation around the up/y axis
     private float rotX = 0.0f; // rotation around the right/x axis

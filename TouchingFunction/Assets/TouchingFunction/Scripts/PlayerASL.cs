@@ -15,6 +15,8 @@ public class PlayerASL : MonoBehaviour
     public Transform playerBody;
     public Transform playerLeftArm;
     public Transform playerRightArm;
+    public Transform playerLeftShoulder;
+    public Transform playerRightShoulder;
 
     public void SetLocal()
     {
@@ -91,6 +93,8 @@ public class PlayerASL : MonoBehaviour
                 playerBody.GetComponent<MeshRenderer>().material.color = color;
                 playerLeftArm.GetComponent<MeshRenderer>().material.color = color;
                 playerRightArm.GetComponent<MeshRenderer>().material.color = color;
+                playerRightShoulder.GetComponent<MeshRenderer>().material.color = color;
+                playerLeftShoulder.GetComponent<MeshRenderer>().material.color = color;
                 break;
         }
     }

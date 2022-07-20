@@ -91,4 +91,5 @@ public class PlayerAnimation : MonoBehaviour
             armFlappingUp = true;
         }
     }
+
 }
