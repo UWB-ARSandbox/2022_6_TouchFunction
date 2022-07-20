@@ -19,19 +19,22 @@ public partial class Player : MonoBehaviour
     public float verticalSpeed = 0f;
     public float SlideLimit = 45f;
     public Vector3 SlidingVector;
-    public bool isSliding = false;
+    
+    public Vector3 CollidePosition;
 
     private float scalingFactor = 0.2f;
     private float positionChangeFactor = 0.3f;
     public bool scalingUp = false;
     public bool scalingDown = false;
-    
+
     #endregion
 
     #region Player animation
-    PlayerAnimation playerAnimation;
+    //PlayerAnimation playerAnimation;
 
-    bool playerMoving = false;
+    
+    
+
     bool gravityEnabled = true;
     # endregion
 
@@ -48,13 +51,22 @@ public partial class Player : MonoBehaviour
     private InputAction scaleUp;
     private InputAction scaleDown;
     public Vector3 velocity;
-    
+
     private bool gravityFall;
     private bool gravityRise;
     private bool mouseLook;
     private bool vrLookB;
 
     public PlayerASL playerASL;
+
+    #region Animator Booleans
+    public bool isSliding = false;
+    public bool isMoving = false;
+    public bool isFalling = false;
+    public bool isFlying = false;
+    #endregion
+    public Animator PlayerAnimator;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -70,10 +82,9 @@ public partial class Player : MonoBehaviour
         playerInput = new PlayerInput();
         controller = gameObject.GetComponent<CharacterController>();
         Debug.Assert(controller != null);
+        //PlayerAnimator = GetComponent<Animator>();
+        //playerAnimation = GetComponent<PlayerAnimation>();
 
-        playerAnimation = GetComponent<PlayerAnimation>();
-
-       
     }
 
     private void OnEnable()
@@ -159,11 +170,12 @@ public partial class Player : MonoBehaviour
     {
 
 
-        
+
         if (controller.isGrounded)
         {
             Debug.Log("IS GROUNDED");
-        } else
+        }
+        else
         {
             Debug.Log("IS FLYING");
         }
@@ -202,15 +214,27 @@ public partial class Player : MonoBehaviour
         if (controller.isGrounded)
         {
             velocity.y -= 0.05f;
+            //PlayerAnimator.SetBool("IsFalling", false);
+            isFalling = false;
+        } else
+        {
+            isSliding = false;
         }
 
         //if gravity enabled, drag player to platform
         if (gravityEnabled)//&& !controller.isGrounded)
         {
             velocity.y -= (gravity * Time.deltaTime) * .75f;
+            if (velocity.y < 0 && !controller.isGrounded)
+            {
+                //PlayerAnimator.SetBool("IsFalling", true);
+                isFalling = true;
+            }
         }
         else
-        {   
+        {
+            isFalling = false;
+            //PlayerAnimator.SetBool("IsFalling", false);
             if (velocity.y > 0)
             {
                 // Add negative acceleration to drop player
@@ -241,9 +265,22 @@ public partial class Player : MonoBehaviour
             ScalePlayerUp();
         }
 
-        if (scalingDown) {
+        if (scalingDown)
+        {
             ScalePlayerDown();
         }
+
+        setAnimatorBool();
+
+        /*else if (isSliding)
+        {
+            PlayerAnimator.Play("Sliding");
+        } else if (IsFlappingEnabled())
+        {
+            PlayerAnimator.Play("Flapping");
+        }*/
+
+
     }
 
     void horizontalMove()
@@ -253,23 +290,33 @@ public partial class Player : MonoBehaviour
         velocity += transform.right * moveValue.x * 1.5f + transform.forward * moveValue.y * 1.5f;
         if (moveValue != Vector2.zero)
         {
-            playerMoving = true;
-        } else
-        {
-            playerMoving = false;
+            isMoving = true;
         }
-
+        else
+        {
+            isMoving = false;
+        }
+        if (isMoving)
+        {
+            isMoving = true;
+            //PlayerAnimator.SetBool("IsWalking", true);
+        }
+        else
+        {
+            isMoving = false;
+            //PlayerAnimator.SetBool("IsWalking", false);
+        }
     }
 
     void MovePlayer()
     {
         //Vector2 moveValue = movement.ReadValue<Vector2>();
         //Vector3 move = transform.right * (moveValue.x * 1.25f) + transform.up * velocity.y + transform.forward * (moveValue.y * 1.25f);
-        
+
 
         Vector3 finalMoveVector = velocity * speed * Time.deltaTime;
 
-        checkFloorNormal();
+        //checkFloorNormal();
 
         //Debug.Log("Normal Vector : " + norm);
         if (isSliding)
@@ -283,35 +330,24 @@ public partial class Player : MonoBehaviour
         if (controller.isGrounded)
         {
             velocity = Vector3.zero;
-        } else
-        {
-            velocity = new Vector3(0, velocity.y, 0);
-        }
-        /*
-        if (move.z != 0 || move.x != 0) // movement in x or z axis
-        {
-            playerMoving = true;
         }
         else
         {
-            playerMoving = false;
+            velocity = new Vector3(0, velocity.y, 0);
         }
-        
-        if (onPlatform >= 0)
-        {
-            MovePositionOnGraph();
-        }*/
+
     }
 
-// Flapping functions ============================================================================
+    // Flapping functions ============================================================================
     public bool IsFlappingEnabled()
     {
-        return !controller.isGrounded && !gravityEnabled;
+        //return !controller.isGrounded && !gravityEnabled;
+        return !gravityEnabled;
     }
 
     public bool IsWalkingEnabled()
     {
-        return !IsFlappingEnabled() && playerMoving;
+        return !IsFlappingEnabled() && isMoving;
     }
 
 
@@ -329,9 +365,19 @@ public partial class Player : MonoBehaviour
             gravityEnabled = !gravityEnabled;
             velocity.y = 0;
         }
+        if (!gravityEnabled)
+        {
+            isFlying = true;
+            //PlayerAnimator.SetBool("IsFlapping", true);
+        }
+        else
+        {
+            isFlying = false;
+            //PlayerAnimator.SetBool("IsFlapping", false);
+        }
     }
 
-// Falling functions =============================================================================
+    // Falling functions =============================================================================
     // drop flying player drown (leaves gravity turned off unless hits ground)
     private void DoFall()
     {
@@ -360,7 +406,7 @@ public partial class Player : MonoBehaviour
         }
     }
 
-// Rising functions ===============================================================================
+    // Rising functions ===============================================================================
     // jump. if player gravity = false, moves 
     private void StartJump(InputAction.CallbackContext obj)
     {
@@ -385,7 +431,7 @@ public partial class Player : MonoBehaviour
     {
         if (IsCursorLocked())
         {
-            velocity.y = Mathf.Sqrt(jumpSpeed  * (gravity)) * .4f;
+            velocity.y = Mathf.Sqrt(jumpSpeed * (gravity)) * .4f;
         }
     }
 
@@ -394,37 +440,8 @@ public partial class Player : MonoBehaviour
         gravityRise = false;
     }
 
-    /*
-// Movement on graph ===============================================================================
-    // change Y value when player is moving on a graph, the Y value will be based on the resolution (MeshPerX)
-    private void MovePositionOnGraph()
-    {
-        float xVal = transform.position.x - currentStandingMesh.origin.x;
-        int wn = (int)Mathf.Floor(xVal / currentStandingMesh.MeshPerX);
-        int snapXVal = wn + (int)Mathf.Floor((xVal - wn) * currentStandingMesh.MeshPerX);
-        float newY = currentStandingMesh.origin.y + currentStandingMesh.yVals[snapXVal] + .5f;
-        transform.position = new Vector3(transform.position.x, newY, transform.position.z);
-
-        Debug.Log("snapX: " + snapXVal);
-        Debug.Log("Y: " + currentStandingMesh.yVals[snapXVal]);
-    }
-
-    // Mount the platform currently standing on to currentStandingMesh
-    public void mountMesh(int meshIndex)
-    {
-        currentStandingMesh = m_MeshManager.meshes[meshIndex];
-        //Debug.Log("Index mount: " + meshIndex);
-    }
-
-
-    public bool isFalling()
-    {
-        return velocity.y < 0;
-    }
-    */
-
-// Scaling funcitons ====================================================================
-        private void BeginScalingUp(InputAction.CallbackContext obj)
+    // Scaling funcitons ====================================================================
+    private void BeginScalingUp(InputAction.CallbackContext obj)
     {
         scalingUp = true;
     }
@@ -472,35 +489,40 @@ public partial class Player : MonoBehaviour
         }
     }
 
-    private void checkFloorNormal()
+    // When standing on a slope, calculate the sliding Vector3 and store into the global variables
+    private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        Debug.DrawRay(transform.position, Vector3.down, Color.red, 1f);
+        //CollidePosition = hit.transform.position;
+        //Debug.Log("Controller hit Normal: " + hit.normal);
+        //Debug.Log("Controller hit position: " + hit.transform.position);
         if (controller.isGrounded)
         {
+            Vector3 norm = hit.normal;
 
-            if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit slopeHit, 50f)) {
-                Vector3 norm = slopeHit.normal;
-                //Debug.Log(slopeHit.normal);
-                if (Vector3.Angle(norm, Vector3.up) > SlideLimit)   // if on a slope steeper than limit
-                {
-                    isSliding = true;
-                    SlidingVector = norm + Mathf.Sqrt(1 + (norm.x / norm.y) * (norm.x / norm.y)) * Vector3.down;
-                }
-                else
-                {
-
-                    isSliding = false;
-                    SlidingVector = Vector3.zero;
-                }
-            } // if grounded but no RaycastHit, it means the slope is too steep for ray to detect
+            //Debug.Log(slopeHit.normal);
+            if (Vector3.Angle(norm, Vector3.up) > SlideLimit)   // if on a slope steeper than limit
+            {
+                isSliding = true;
+                //PlayerAnimator.SetBool("IsSliding", true);
+                SlidingVector = norm + Mathf.Sqrt(1 + (norm.x / norm.y) * (norm.x / norm.y)) * Vector3.down * Mathf.Abs(norm.x/norm.y);
+            }
             else
             {
-                Debug.Log("Too far for Ray to reach");
+                isSliding = false;
+                //PlayerAnimator.SetBool("IsSliding", false);
+                SlidingVector = Vector3.zero;
             }
-
-        }
-      
+        } // if grounded but no RaycastHit, it means the slope is too steep for ray to detect
     }
+
+    void setAnimatorBool()
+    {
+        PlayerAnimator.SetBool("IsSliding", isSliding);
+        PlayerAnimator.SetBool("IsWalking", isMoving);
+        PlayerAnimator.SetBool("IsFalling", isFalling);
+        PlayerAnimator.SetBool("IsFlapping", isFlying);
+    }
+
 }
 
 
