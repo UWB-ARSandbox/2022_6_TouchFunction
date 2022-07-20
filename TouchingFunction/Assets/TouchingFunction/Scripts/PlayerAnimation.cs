@@ -33,7 +33,7 @@ public class PlayerAnimation : MonoBehaviour
         }
 
         // Walking animation movement
-        if (forceFlappingAnimation || player.isActiveAndEnabled && player.IsWalkingEnabled())
+        if (forceWalkingAnimation || player.isActiveAndEnabled && player.IsWalkingEnabled())
         {
             WalkingArmMovement(0.25f);
         }

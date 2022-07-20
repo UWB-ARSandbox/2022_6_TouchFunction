@@ -432,7 +432,6 @@ public partial class Player : MonoBehaviour
     private void EndScalingUp(InputAction.CallbackContext obj)
     {
         scalingUp = false;
-        playerASL.SendScale();
     }
     private void ScalePlayerUp()
     {
@@ -454,7 +453,6 @@ public partial class Player : MonoBehaviour
     private void EndScalingDown(InputAction.CallbackContext obj)
     {
         scalingDown = false;
-        playerASL.SendScale();
     }
 
     private void ScalePlayerDown()

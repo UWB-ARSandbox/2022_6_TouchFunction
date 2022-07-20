@@ -5,9 +5,13 @@ using ASL;
 
 public class ChangeColor : MonoBehaviour
 {
-    public PlayerASL playerASL;
+    PlayerASL playerASL;
     FlexibleColorPicker colorPicker;
     
+    public void SetPlayer(PlayerASL playerASL)
+    {
+        this.playerASL = playerASL;
+    }
     // Start is called before the first frame update
     void Awake()
     {

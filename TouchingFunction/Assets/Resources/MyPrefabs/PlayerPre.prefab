@@ -1296,10 +1296,13 @@ MonoBehaviour:
   clampAngle: 80
   speed: 5
   jumpSpeed: 10
+  SlideSpeed: 0.1
   gravity: 10
   onPlatform: -1
   verticalSpeed: 0
-  m_MeshManager: {fileID: 0}
+  SlideLimit: 45
+  SlidingVector: {x: 0, y: 0, z: 0}
+  isSliding: 0
   scalingUp: 0
   scalingDown: 0
   velocity: {x: 0, y: 0, z: 0}
@@ -1335,9 +1338,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ff16f125924324cb3d33affe357298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ASL_id: 0
   nameText: {fileID: 5324479024114406258}
   player: {fileID: 7473864094519733550}
+  playerHead: {fileID: 8995529675970596643}
   playerBody: {fileID: 8995529675655909488}
   playerLeftArm: {fileID: 8995529675127677283}
   playerRightArm: {fileID: 8995529675894755462}
