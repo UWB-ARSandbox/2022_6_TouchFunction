@@ -43,13 +43,15 @@ public class PlayerASL : MonoBehaviour
 
     public void SendTransform()
     {
-        var f = new float[6];
+        var f = new float[8];
         f[0] = 1; // Identifier
-        f[1] = player.IsFlappingEnabled() ? 1 : -1;
-        f[2] = player.IsWalkingEnabled() ? 1 : -1;
-        f[3] = playerHead.transform.localRotation.eulerAngles.x;
-        f[4] = transform.localRotation.eulerAngles.y;
-        f[5] = transform.localScale.x;
+        f[1] = player.isFlying ? 1 : -1;
+        f[2] = player.isMoving ? 1 : -1;
+        f[3] = player.isSliding ? 1 : -1;
+        f[4] = player.isFalling ? 1 : -1;
+        f[5] = playerHead.transform.localRotation.eulerAngles.x;
+        f[6] = transform.localRotation.eulerAngles.y;
+        f[7] = transform.localScale.x;
 
         aslObj.SendAndSetClaim(() =>
         {
@@ -80,12 +82,13 @@ public class PlayerASL : MonoBehaviour
                 break;
             case 1: // Set transform
                 if (isLocal) break;
-
-                GetComponent<PlayerAnimation>().forceFlappingAnimation = _f[1] > 0;
-                GetComponent<PlayerAnimation>().forceWalkingAnimation = _f[2] > 0;
-                playerHead.transform.localRotation = Quaternion.Euler(_f[3], 0, 0);
-                transform.localRotation = Quaternion.Euler(0, _f[4], 0);
-                transform.localScale = new Vector3(_f[5], _f[5], _f[5]);
+                player.isFlying = _f[1] > 0;
+                player.isMoving = _f[2] > 0;
+                player.isSliding = _f[3] > 0;
+                player.isFalling = _f[4] > 0;
+                playerHead.transform.localRotation = Quaternion.Euler(_f[5], 0, 0);
+                transform.localRotation = Quaternion.Euler(0, _f[6], 0);
+                transform.localScale = new Vector3(_f[7], _f[7], _f[7]);
                 break;
 
             case 3: // Set color
