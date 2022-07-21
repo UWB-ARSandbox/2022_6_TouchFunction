@@ -112,6 +112,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "GraphManipulation",
+                    "type": "Button",
+                    "id": "ce991ddd-c920-4e48-93a2-d472a2cd778c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -365,6 +374,17 @@
                     "processors": "",
                     "groups": "VR",
                     "action": "ToggleCursorLock",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cfa4123f-36a6-4122-967d-52eb6a254f59",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "GraphManipulation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

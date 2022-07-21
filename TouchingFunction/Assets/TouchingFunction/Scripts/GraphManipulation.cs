@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.InputSystem;
 using UnityEngine;
+using System;
 using TMPro;
 using ASL;
 
@@ -31,6 +31,26 @@ public class GraphManipulation : MonoBehaviour
     double xAxisLength;
     double yAxisLength;
 
+    private PlayerInput playerInput;
+    private InputAction rightClick;
+    bool rightClicked;
+    Vector3 originalMousePos;
+    bool xSelected = false;
+    bool ySelected = false;
+    bool xTipSelected = false;
+    bool yTipSelected = false;
+
+    enum SelectedType
+    {
+        XAxisScale,
+        YAxisScale,
+        XAxisLine,
+        YAxisLine,
+        XAxisTip,
+        YAxisTip,
+        None
+    }
+    SelectedType selectedType;
 
     // Start is called before the first frame update
     void Start()
@@ -51,7 +71,154 @@ public class GraphManipulation : MonoBehaviour
 
         aslObj = GetComponent<ASLObject>();
         aslObj._LocallySetFloatCallback(onFloatArrayReceived);
+
+        rightClicked = false;
+        selectedType = SelectedType.None;
     }
+
+    void Awake()
+    {
+        playerInput = new PlayerInput();
+    }
+
+    private void OnEnable()
+    {
+        rightClick = playerInput.PlayerControls.GraphManipulation;
+        rightClick.started += StartRightClick;
+        rightClick.canceled += EndRightClick;
+        rightClick.Enable();
+    }
+
+    void Update()
+    {
+        if (selectedType == SelectedType.XAxisScale)
+        {
+            Debug.Log("Right Click");
+            Vector3 currPos = Input.mousePosition;
+            Debug.Log("Curr Pos: " + currPos);
+            float diff = currPos.x - originalMousePos.x;
+            float delta = diff / 100.0f;
+            Debug.Log("Diff: " + diff.ToString());
+            SetXIntervalSpace(xIntervalSpace + Math.Round((double)delta, 1));
+            originalMousePos = currPos;
+        }
+
+        else if (selectedType == SelectedType.YAxisScale)
+        {
+            Debug.Log("Right Click");
+            Vector3 currPos = Input.mousePosition;
+            Debug.Log("Curr Pos: " + currPos);
+            float diff = currPos.y - originalMousePos.y;
+            float delta = diff / 100.0f;
+            Debug.Log("Diff: " + diff.ToString());
+            SetYIntervalSpace(yIntervalSpace + Math.Round((double)delta, 1));
+            originalMousePos = currPos;
+        }
+
+        else if (selectedType == SelectedType.XAxisTip)
+        {
+            Debug.Log("Right Click");
+            Vector3 currPos = Input.mousePosition;
+            Debug.Log("Curr Pos: " + currPos);
+            float diff = currPos.x - originalMousePos.x;
+            float delta = diff / 10.0f;
+            Debug.Log("Diff: " + diff.ToString());
+            SetXAxisLength(xAxisLength + Math.Round((double)delta, 1));
+            originalMousePos = currPos;
+        }
+
+        else if (selectedType == SelectedType.YAxisTip)
+        {
+            Debug.Log("Right Click");
+            Vector3 currPos = Input.mousePosition;
+            Debug.Log("Curr Pos: " + currPos);
+            float diff = currPos.y - originalMousePos.y;
+            float delta = diff / 10.0f;
+            Debug.Log("Diff: " + diff.ToString());
+            SetYAxisLength(yAxisLength + Math.Round((double)delta, 1));
+            originalMousePos = currPos;
+        }
+        else if (selectedType == SelectedType.XAxisLine)
+        {
+            Debug.Log("Right Click");
+            Vector3 currPos = Input.mousePosition;
+            Debug.Log("Curr Pos: " + currPos);
+            float diff = currPos.x - originalMousePos.x;
+            float delta = diff / 50.0f;
+            Debug.Log("Diff: " + diff.ToString());
+            SetXIntervalSize(xIntervalSize - Math.Round((double)delta, 1));
+            originalMousePos = currPos;
+        }
+        else if (selectedType == SelectedType.YAxisLine)
+        {
+            Debug.Log("Right Click");
+            Vector3 currPos = Input.mousePosition;
+            Debug.Log("Curr Pos: " + currPos);
+            float diff = currPos.y - originalMousePos.y;
+            float delta = diff / 50.0f;
+            Debug.Log("Diff: " + diff.ToString());
+            SetYIntervalSize(yIntervalSize - Math.Round((double)delta, 1));
+            originalMousePos = currPos;
+        }
+    }
+
+    private void StartRightClick(InputAction.CallbackContext obj)
+    {
+        originalMousePos = Input.mousePosition;
+        rightClicked = true;
+        Debug.Log("Original Pos: " + originalMousePos);
+
+
+        RaycastHit hitInfo = new RaycastHit();
+        bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
+        if (hit)
+        {
+            Debug.Log("HIT");
+            GameObject selected = hitInfo.transform.gameObject;
+            if (selected.name.Equals("xScale"))
+            {
+                Debug.Log("Selected x scale");
+                selectedType = SelectedType.XAxisScale;
+            }
+            else if (selected.name.Equals("yScale"))
+            {
+                Debug.Log("Selected y scale");
+                selectedType = SelectedType.YAxisScale;
+            }
+            else if (selected.name.Equals("xAxisLine"))
+            {
+                Debug.Log("Selected x axis");
+                selectedType = SelectedType.XAxisLine;
+            }
+            else if (selected.name.Equals("yAxisLine"))
+            {
+                Debug.Log("Selected y axis");
+                selectedType = SelectedType.YAxisLine;
+            }
+            else if (selected.name.Equals("xTip"))
+            {
+                Debug.Log("Selected x tip");
+                selectedType = SelectedType.XAxisTip;
+            }
+            else if (selected.name.Equals("yTip"))
+            {
+                Debug.Log("Selected y tip");
+                selectedType = SelectedType.YAxisTip;
+            }
+            else
+            {
+                Debug.Log("No selection");
+                selectedType = SelectedType.None;
+            }
+        }
+    }
+
+    private void EndRightClick(InputAction.CallbackContext obj)
+    {
+        rightClicked = false;
+        selectedType = SelectedType.None;
+    }
+
 
     void CalcIntervalSpace()
     {
@@ -78,6 +245,7 @@ public class GraphManipulation : MonoBehaviour
         for (int i = 0; i < xAxisCoordinates.Length; i++)
         {
             GameObject scale = Instantiate(xScale);
+            scale.name = "xScale";
             Vector3 scalePos = new Vector3((i + 1) * (float)xIntervalSpace + origin.x, origin.y, origin.z);
             scale.transform.position = scalePos;
             scale.transform.parent = xAxis.transform;
@@ -93,6 +261,7 @@ public class GraphManipulation : MonoBehaviour
         for (int i = 0; i < yAxisCoordinates.Length; i++)
         {
             GameObject scale = Instantiate(yScale);
+            scale.name = "yScale";
             Vector3 scalePos = new Vector3(origin.x, (i + 1) * (float)yIntervalSpace + origin.y, origin.z);
             scale.transform.position = scalePos;
             scale.transform.parent = yAxis.transform;
@@ -329,15 +498,15 @@ public class GraphManipulation : MonoBehaviour
         switch (value[0])
         {
             case 0f:
-                xIntervalSize = (double)value[1];
-                yIntervalSize = (double)value[2];
-                xNumIntervals = (int) value[3];
-                yNumIntervals = (int) value[4];
-                xIntervalSpace = (double)value[5];
-                yIntervalSpace = (double)value[6];
-                xAxisLength = (double)value[7];
-                yAxisLength = (double)value[8];
-                
+                xIntervalSize = Math.Round((double)value[1], 2);
+                yIntervalSize = Math.Round((double)value[2], 2);
+                xNumIntervals = (int)value[3];
+                yNumIntervals = (int)value[4];
+                xIntervalSpace = Math.Round((double)value[5], 2);
+                yIntervalSpace = Math.Round((double)value[6], 2);
+                xAxisLength = Math.Round((double)value[7], 2);
+                yAxisLength = Math.Round((double)value[8], 2);
+
                 ResetScales(xAxis);
                 ResetScales(yAxis);
                 SetupXAxis();
