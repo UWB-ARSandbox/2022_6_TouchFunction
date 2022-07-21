@@ -33,13 +33,23 @@ public class UIControls : MonoBehaviour
     public GameObject Controlbutton;
     #endregion
 
+    #region QuitWindow
+    public GameObject QuitWindowPanel;
+    public GameObject QuitWindowButton;
+    #endregion
+
+    #region Virtual Keyboard
+    public GameObject VKeyboard;
+    #endregion
+
     #region PlayerControls
     private PlayerInput playerInput;
     private InputAction summonUI;
-    private InputAction rightTrigger;
-
-    private LayerMask layerMask;
     #endregion
+
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -56,14 +66,6 @@ public class UIControls : MonoBehaviour
         summonUI.performed += TeleportUI;
         summonUI.Enable();
 
-        layerMask = LayerMask.GetMask("UI");
-
-        // rightTrigger = playerInput.PlayerControls.RightTrigger;
-        // rightTrigger.performed += RightVRclick;
-        // rightTrigger.Enable();
-        rightTrigger = new InputAction(binding: "<XRController>{RightHand}/triggerPressed");
-        rightTrigger.performed += RightVRclick;
-        rightTrigger.Enable();
     }
 
 
@@ -80,6 +82,7 @@ public class UIControls : MonoBehaviour
         GraphControlButton.SetActive(false);
         FlexibleColorPickerButton.SetActive(false);
         Controlbutton.SetActive(false);
+        QuitWindowButton.SetActive(false);
     }
 
     public void ResetUI()
@@ -99,6 +102,10 @@ public class UIControls : MonoBehaviour
         // User controls
         ControlsPanel.SetActive(false);
         Controlbutton.SetActive(true);
+
+        // Quit Window
+        QuitWindowPanel.SetActive(false);
+        QuitWindowButton.SetActive(true);
     }
 
     public void SetFunctionInputActive()
@@ -125,10 +132,28 @@ public class UIControls : MonoBehaviour
         ControlsPanel.SetActive(true);
     }
 
+    public void SetQuitWindowActive()
+    {
+        DisableBaseUI();
+        QuitWindowPanel.SetActive(true);
+    }
+
+    public void ToggleVirtualKeyboard()
+    {
+        if(VKeyboard.active)
+        {
+            VKeyboard.SetActive(false);
+        }
+        else{
+            VKeyboard.SetActive(true);
+        }
+ 
+    }
+
     private void TeleportUI(InputAction.CallbackContext obj)
     {
         Debug.Log("UI Summoned");
-        gameObject.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 6;
+        gameObject.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 4.5f;
         if(gameObject.transform.position.y < 1)
         {
             Transform tempLoc = gameObject.transform;
@@ -136,25 +161,5 @@ public class UIControls : MonoBehaviour
         }
     }
 
-    private void RightVRclick(InputAction.CallbackContext obj)
-    {
-        Debug.Log("In trigger");
-        //test code
 
-        GameObject rightCon = GameObject.Find("RightHandController");
-        Debug.Log(rightCon != null);
-        RaycastHit hit;
-        if(Physics.Raycast(rightCon.transform.position, rightCon.transform.TransformDirection(Vector3.forward), out hit, 10, layerMask))
-        {
-            Debug.Log("Raycast successful");
-            //tryHit(hit);
-            if(hit.collider.gameObject != null)
-            {
-                Debug.Log("Object found");
-                IPointerClickHandler clickHandler = hit.collider.gameObject.GetComponent<IPointerClickHandler>();
-                PointerEventData ped = new PointerEventData(EventSystem.current);
-                clickHandler.OnPointerClick(ped);
-            }
-        }
-    }
 }

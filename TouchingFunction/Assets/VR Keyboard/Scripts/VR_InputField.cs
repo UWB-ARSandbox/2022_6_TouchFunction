@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class VR_InputField : MonoBehaviour
 {
-    InputField inputField;
+    TMP_InputField inputField;
     VR_Keyboard keyboard;
 
     // Start is called before the first frame update
     void Start()
     {
-        inputField = gameObject.GetComponent<InputField>();
+        inputField = gameObject.GetComponent<TMP_InputField>();
         keyboard = FindObjectOfType<VR_Keyboard>();
     }
 
