@@ -136,6 +136,11 @@ public partial class Player : MonoBehaviour
 
         // script to check for VR input to activate VR hands
         gameObject.GetComponent<PlayerActivateVRHands>().enabled = true;
+
+        // Script to attatch PlayerCamera to Player as a child of Head
+        GameObject tmpCam = GameObject.Find("PlayerCamera");
+        tmpCam.transform.parent = head;
+        tmpCam.transform.position = head.position;//new Vector3(0,2f,0);
     }
 
     private void togMouseLook(InputAction.CallbackContext obj)
@@ -177,7 +182,7 @@ public partial class Player : MonoBehaviour
         }
         else
         {
-            Debug.Log("IS FLYING");
+            //Debug.Log("IS FLYING");
         }
 
 

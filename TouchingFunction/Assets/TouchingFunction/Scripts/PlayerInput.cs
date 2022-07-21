@@ -134,6 +134,24 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SummonUI"",
+                    ""type"": ""Button"",
+                    ""id"": ""a5ee3444-1d86-4f44-8e61-44f8e1a05512"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RightTrigger"",
+                    ""type"": ""Button"",
+                    ""id"": ""55a3088d-7ca4-42d6-b80d-9200e6c4436a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -389,6 +407,39 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""ToggleCursorLock"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ea5041fa-e7dc-448a-a760-b7ff60660dd3"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""SummonUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""91c82105-6caa-4a7f-83d7-6aa3bc1b648b"",
+                    ""path"": ""<XRController>{RightHand}/secondaryButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""SummonUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4a4ba0a0-2556-4e78-a487-41355bc3a28b"",
+                    ""path"": ""<XRController>{RightHand}/triggerPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""RightTrigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -436,6 +487,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_PlayerControls_ScaleUp = m_PlayerControls.FindAction("ScaleUp", throwIfNotFound: true);
         m_PlayerControls_ScaleDown = m_PlayerControls.FindAction("ScaleDown", throwIfNotFound: true);
         m_PlayerControls_ToggleCursorLock = m_PlayerControls.FindAction("ToggleCursorLock", throwIfNotFound: true);
+        m_PlayerControls_SummonUI = m_PlayerControls.FindAction("SummonUI", throwIfNotFound: true);
+        m_PlayerControls_RightTrigger = m_PlayerControls.FindAction("RightTrigger", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -507,6 +560,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControls_ScaleUp;
     private readonly InputAction m_PlayerControls_ScaleDown;
     private readonly InputAction m_PlayerControls_ToggleCursorLock;
+    private readonly InputAction m_PlayerControls_SummonUI;
+    private readonly InputAction m_PlayerControls_RightTrigger;
     public struct PlayerControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -523,6 +578,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @ScaleUp => m_Wrapper.m_PlayerControls_ScaleUp;
         public InputAction @ScaleDown => m_Wrapper.m_PlayerControls_ScaleDown;
         public InputAction @ToggleCursorLock => m_Wrapper.m_PlayerControls_ToggleCursorLock;
+        public InputAction @SummonUI => m_Wrapper.m_PlayerControls_SummonUI;
+        public InputAction @RightTrigger => m_Wrapper.m_PlayerControls_RightTrigger;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -568,6 +625,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @ToggleCursorLock.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleCursorLock;
                 @ToggleCursorLock.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleCursorLock;
                 @ToggleCursorLock.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleCursorLock;
+                @SummonUI.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnSummonUI;
+                @SummonUI.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnSummonUI;
+                @SummonUI.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnSummonUI;
+                @RightTrigger.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRightTrigger;
+                @RightTrigger.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRightTrigger;
+                @RightTrigger.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRightTrigger;
             }
             m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -608,6 +671,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @ToggleCursorLock.started += instance.OnToggleCursorLock;
                 @ToggleCursorLock.performed += instance.OnToggleCursorLock;
                 @ToggleCursorLock.canceled += instance.OnToggleCursorLock;
+                @SummonUI.started += instance.OnSummonUI;
+                @SummonUI.performed += instance.OnSummonUI;
+                @SummonUI.canceled += instance.OnSummonUI;
+                @RightTrigger.started += instance.OnRightTrigger;
+                @RightTrigger.performed += instance.OnRightTrigger;
+                @RightTrigger.canceled += instance.OnRightTrigger;
             }
         }
     }
@@ -644,5 +713,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnScaleUp(InputAction.CallbackContext context);
         void OnScaleDown(InputAction.CallbackContext context);
         void OnToggleCursorLock(InputAction.CallbackContext context);
+        void OnSummonUI(InputAction.CallbackContext context);
+        void OnRightTrigger(InputAction.CallbackContext context);
     }
 }

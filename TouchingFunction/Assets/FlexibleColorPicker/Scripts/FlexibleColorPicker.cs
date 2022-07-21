@@ -21,9 +21,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-#if TMPro
 using TMPro;
-#endif
+
 
 
 /// <summary>
@@ -57,7 +56,7 @@ public class FlexibleColorPicker : MonoBehaviour {
 #if TMPro
     private TMPro.TMP_InputField hexInput;
 #else
-    private InputField hexInput;
+    private TMP_InputField hexInput;
 #endif
 
     [Tooltip("Connection to the FCP's mode dropdown menu.")]

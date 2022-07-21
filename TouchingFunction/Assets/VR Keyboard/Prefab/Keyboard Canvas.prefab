@@ -7891,7 +7891,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3754563031915766770}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Keyboard, Assembly-CSharp
         m_MethodName: InsertSpace
         m_Mode: 1
@@ -8694,7 +8694,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3754563031915766770}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Keyboard, Assembly-CSharp
         m_MethodName: DeleteChar
         m_Mode: 1
@@ -12192,8 +12192,8 @@ GameObject:
   - component: {fileID: 3754563031915766768}
   - component: {fileID: 3754563031915766775}
   - component: {fileID: 3754563031915766774}
-  - component: {fileID: 3754563031915766770}
   - component: {fileID: 3754563031915766771}
+  - component: {fileID: 1531600090892800204}
   m_Layer: 5
   m_Name: Keyboard Canvas
   m_TagString: Untagged
@@ -12224,7 +12224,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.65}
+  m_AnchoredPosition: {x: 0, y: 0.6500244}
   m_SizeDelta: {x: 640, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &3754563031915766768
@@ -12270,7 +12270,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &3754563031915766774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12288,21 +12288,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &3754563031915766770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3754563031915766773}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bc158e5ee8b2c84989200128e893826, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputField: {fileID: 0}
-  normalButtons: {fileID: 3754563031922836481}
-  capsButtons: {fileID: 3754563031776166006}
 --- !u!114 &3754563031915766771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12322,6 +12307,21 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RaycastTriggerInteraction: 1
+--- !u!114 &1531600090892800204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3754563031915766773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f7514b3de1e09b4da906b3f946ee80e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_InputField: {fileID: 0}
+  normalButtons: {fileID: 0}
+  capsButtons: {fileID: 0}
 --- !u!1 &3754563031921904770
 GameObject:
   m_ObjectHideFlags: 0
@@ -15951,7 +15951,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3754563031915766770}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Keyboard, Assembly-CSharp
         m_MethodName: CapsPressed
         m_Mode: 1
