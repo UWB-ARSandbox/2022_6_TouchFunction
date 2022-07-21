@@ -21,6 +21,9 @@ public class UIControls : MonoBehaviour
     #region Flexible Color Picker
     public GameObject FlexibleColorPickerPanel;
     public GameObject FlexibleColorPickerButton;
+    public GameObject TargetSelector;
+    public ChangeColor CColor;
+    public GameObject FaceChange;
     #endregion
 
     #region GraphList
@@ -47,8 +50,8 @@ public class UIControls : MonoBehaviour
     private InputAction summonUI;
     #endregion
 
-
-
+    //public Canvas canvas;
+    //public Camera camera;
 
     // Start is called before the first frame update
     void Start()
@@ -58,6 +61,7 @@ public class UIControls : MonoBehaviour
         Invoke("ResetUI", .1f);
         UISetup();
         Invoke("SetControlsActive", .11f);
+        //canvas.worldCamera = camera;
     }
 
     void UISetup()
@@ -97,6 +101,9 @@ public class UIControls : MonoBehaviour
 
         // Flexible Color Picker
         FlexibleColorPickerPanel.SetActive(false);
+        TargetSelector.SetActive(false);
+        FaceChange.SetActive(false);
+        CColor.player.isThinking = false;
         FlexibleColorPickerButton.SetActive(true);
 
         // User controls
@@ -125,6 +132,9 @@ public class UIControls : MonoBehaviour
     {
         DisableBaseUI();
         FlexibleColorPickerPanel.SetActive(true);
+        FaceChange.SetActive(true);
+        CColor.player.isThinking = true;
+        TargetSelector.SetActive(true);
     }
     public void SetControlsActive()
     {

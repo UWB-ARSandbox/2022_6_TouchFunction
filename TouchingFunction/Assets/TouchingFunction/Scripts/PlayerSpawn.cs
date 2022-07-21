@@ -1,21 +1,36 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ASL;
 
 public class PlayerSpawn : MonoBehaviour
 {
+    private static GameObject _playerObject = null;
+    private static ASLObject _playerAslObject = null;
+
+    private static readonly float UPDATES_PER_SECOND = 30.0f;
+
+    public Transform[] playerSpawn;
+    public int playerID;
+
     // Instantiates a player for each client
     void Start()
     {
-        ASL.ASLHelper.InstantiateASLObject("PlayerPre", Vector3.zero, Quaternion.identity, null, null, OnPlayerCreated);
+        playerID = ASL.GameLiftManager.GetInstance().m_PeerId;
+
+        //ASLHelper.InstantiateASLObject("PlayerPre", playerSpawn[playerID -1].position, Quaternion.identity, null, null, OnPlayerCreated);
+        ASLHelper.InstantiateASLObject("PlayerPre", Vector3.zero, Quaternion.identity, null, null, OnPlayerCreated);
+
+        StartCoroutine(DelayedInit());
+        StartCoroutine(NetworkedUpdate());
     }
 
     private static void OnPlayerCreated(GameObject obj)
     {
+        _playerObject = obj;
+        _playerAslObject = obj.GetComponent<ASLObject>();
         obj.layer = 6;
-        obj.GetComponent<PlayerASL>().SetLocal();
-        obj.GetComponent<PlayerASL>().InitLocalPlayer();
-        obj.GetComponent<PlayerASL>().nameText.gameObject.SetActive(false);
+    }
 
     // Ensures that the ASLObject is initialized
     // You can also do this in the callback if you prefer, but that has to be static.
@@ -53,5 +68,30 @@ public class PlayerSpawn : MonoBehaviour
 
             yield return new WaitForSeconds(1 / UPDATES_PER_SECOND);
         }
+    }
+}*/
+
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerSpawn : MonoBehaviour
+{
+    // Instantiates a player for each client
+    void Start()
+    {
+        ASL.ASLHelper.InstantiateASLObject("PlayerPre", Vector3.zero, Quaternion.identity, null, null, OnPlayerCreated);
+    }
+
+    private static void OnPlayerCreated(GameObject obj)
+    {
+        obj.layer = 6;
+        obj.GetComponent<PlayerASL>().SetLocal();
+        obj.GetComponent<PlayerASL>().InitLocalPlayer();
+        obj.GetComponent<PlayerASL>().nameText.gameObject.SetActive(false);
+
+        obj.GetComponent<Player>().enabled = true;
+        obj.GetComponentInChildren<Camera>().enabled = true;
     }
 }

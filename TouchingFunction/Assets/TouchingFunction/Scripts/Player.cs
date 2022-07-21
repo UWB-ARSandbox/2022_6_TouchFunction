@@ -64,6 +64,7 @@ public partial class Player : MonoBehaviour
     public bool isMoving = false;
     public bool isFalling = false;
     public bool isFlying = false;
+    public bool isThinking = false;
     #endregion
     public Animator PlayerAnimator;
     
@@ -526,6 +527,7 @@ public partial class Player : MonoBehaviour
         PlayerAnimator.SetBool("IsWalking", isMoving);
         PlayerAnimator.SetBool("IsFalling", isFalling);
         PlayerAnimator.SetBool("IsFlapping", isFlying);
+        PlayerAnimator.SetBool("IsThinking", isThinking);
     }
 
 }
