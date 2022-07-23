@@ -299,20 +299,14 @@ public class GraphManipulation : MonoBehaviour
 
     void CalcIntervalSpace()
     {
-        xIntervalSpace = xAxisLength / xNumIntervals;
-        yIntervalSpace = yAxisLength / yNumIntervals;
+        xIntervalSpace = Math.Round(xAxisLength / xNumIntervals, 2);
+        yIntervalSpace = Math.Round(yAxisLength / yNumIntervals, 2);
     }
 
     void CalcNumIntervals()
     {
-        Debug.Log("Here");
-        Debug.Log(xAxisLength);
-        Debug.Log(yAxisLength);
         xNumIntervals = (int)(xAxisLength / xIntervalSpace);
         yNumIntervals = (int)(yAxisLength / yIntervalSpace);
-        Debug.Log(xNumIntervals);
-        Debug.Log(yNumIntervals);
-        Debug.Log("Going back");
     }
 
     void SetupXScales()
@@ -352,7 +346,7 @@ public class GraphManipulation : MonoBehaviour
         double[] axisCoordinates = new double[numIntervals];
         for (int i = 0; i < axisCoordinates.Length; i++)
         {
-            axisCoordinates[i] = (i + 1) * intervalSize;
+            axisCoordinates[i] = Math.Round((i + 1) * intervalSize, 2);
         }
 
         return axisCoordinates;
@@ -371,7 +365,7 @@ public class GraphManipulation : MonoBehaviour
         if (size > 0 && xIntervalSize != size)
         {
             ResetScales(xAxis);
-            xIntervalSize = size;
+            xIntervalSize = Math.Round(size, 2);
             SetupXScales();
             meshManagerScript.UpdateGraphs();
             SendGraphDetails();
@@ -383,7 +377,7 @@ public class GraphManipulation : MonoBehaviour
         if (size > 0 && yIntervalSize != size)
         {
             ResetScales(yAxis);
-            yIntervalSize = size;
+            yIntervalSize = Math.Round(size, 2);
             SetupYScales();
             meshManagerScript.UpdateGraphs();
             SendGraphDetails();
@@ -421,7 +415,7 @@ public class GraphManipulation : MonoBehaviour
         if (intervalSpace > 0 && xIntervalSpace != intervalSpace)
         {
             ResetScales(xAxis);
-            xIntervalSpace = intervalSpace;
+            xIntervalSpace = Math.Round(intervalSpace, 2);
             CalcNumIntervals();
             SetupXScales();
             meshManagerScript.UpdateGraphs();
@@ -434,7 +428,7 @@ public class GraphManipulation : MonoBehaviour
         if (intervalSpace > 0 && yIntervalSpace != intervalSpace)
         {
             ResetScales(yAxis);
-            yIntervalSpace = intervalSpace;
+            yIntervalSpace = Math.Round(intervalSpace, 2);
             CalcNumIntervals();
             SetupYScales();
             meshManagerScript.UpdateGraphs();
@@ -446,7 +440,7 @@ public class GraphManipulation : MonoBehaviour
     {
         if (axisLength > 0 && xAxisLength != axisLength)
         {
-            xAxisLength = axisLength;
+            xAxisLength = Math.Round(axisLength, 2);
             SetupXAxis();
             ResetScales(xAxis);
             CalcNumIntervals();
@@ -474,7 +468,7 @@ public class GraphManipulation : MonoBehaviour
     {
         if (axisLength > 0 && yAxisLength != axisLength)
         {
-            yAxisLength = axisLength;
+            yAxisLength = Math.Round(axisLength, 2);
             SetupYAxis();
             ResetScales(yAxis);
             CalcNumIntervals();
