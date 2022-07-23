@@ -51,6 +51,9 @@ public class GraphManipulation : MonoBehaviour
         None
     }
     SelectedType selectedType;
+    GameObject selected;
+    Color selectedColor;
+    Color defaultColor;
 
     // Start is called before the first frame update
     void Start()
@@ -74,6 +77,9 @@ public class GraphManipulation : MonoBehaviour
 
         rightClicked = false;
         selectedType = SelectedType.None;
+        selected = null;
+        selectedColor = new Color(1, 1, 0, 1);
+        defaultColor = new Color(1, 1, 1, 1);
     }
 
     void Awake()
@@ -90,7 +96,8 @@ public class GraphManipulation : MonoBehaviour
     }
 
     void Update()
-    {
+    {        
+        Debug.Log("This camera id: " + Camera.main.GetInstanceID());
         if (selectedType == SelectedType.XAxisScale)
         {
             Debug.Log("Right Click");
@@ -101,6 +108,16 @@ public class GraphManipulation : MonoBehaviour
             Debug.Log("Diff: " + diff.ToString());
             SetXIntervalSpace(xIntervalSpace + Math.Round((double)delta, 1));
             originalMousePos = currPos;
+
+            for (int i = 0; i < xAxis.transform.childCount; i++)
+            {
+                GameObject child = xAxis.transform.GetChild(i).gameObject;
+                if (child.name.Equals("xScale"))
+                {
+                    GameObject scale = child.transform.Find("scale").gameObject;
+                    scale.GetComponent<Renderer>().material.color = selectedColor;
+                }
+            }
         }
 
         else if (selectedType == SelectedType.YAxisScale)
@@ -113,6 +130,16 @@ public class GraphManipulation : MonoBehaviour
             Debug.Log("Diff: " + diff.ToString());
             SetYIntervalSpace(yIntervalSpace + Math.Round((double)delta, 1));
             originalMousePos = currPos;
+
+            for (int i = 0; i < yAxis.transform.childCount; i++)
+            {
+                GameObject child = yAxis.transform.GetChild(i).gameObject;
+                if (child.name.Equals("yScale"))
+                {
+                    GameObject scale = child.transform.Find("scale").gameObject;
+                    scale.GetComponent<Renderer>().material.color = selectedColor;
+                }
+            }
         }
 
         else if (selectedType == SelectedType.XAxisTip)
@@ -168,55 +195,109 @@ public class GraphManipulation : MonoBehaviour
         rightClicked = true;
         Debug.Log("Original Pos: " + originalMousePos);
 
-
         RaycastHit hitInfo = new RaycastHit();
         bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
         if (hit)
         {
             Debug.Log("HIT");
-            GameObject selected = hitInfo.transform.gameObject;
+            selected = hitInfo.transform.gameObject;
             if (selected.name.Equals("xScale"))
             {
                 Debug.Log("Selected x scale");
                 selectedType = SelectedType.XAxisScale;
+
+                for (int i = 0; i < xAxis.transform.childCount; i++)
+                {
+                    GameObject child = xAxis.transform.GetChild(i).gameObject;
+                    if (child.name.Equals("xScale"))
+                    {
+                        GameObject scale = child.transform.Find("scale").gameObject;
+                        scale.GetComponent<Renderer>().material.color = selectedColor;
+                    }
+                }
+
             }
             else if (selected.name.Equals("yScale"))
             {
                 Debug.Log("Selected y scale");
                 selectedType = SelectedType.YAxisScale;
+                selected.GetComponent<Renderer>().material.color = selectedColor;
+
+                for (int i = 0; i < yAxis.transform.childCount; i++)
+                {
+                    GameObject child = yAxis.transform.GetChild(i).gameObject;
+                    if (child.name.Equals("yScale"))
+                    {
+                        GameObject scale = child.transform.Find("scale").gameObject;
+                        scale.GetComponent<Renderer>().material.color = selectedColor;
+                    }
+                }
             }
             else if (selected.name.Equals("xAxisLine"))
             {
                 Debug.Log("Selected x axis");
                 selectedType = SelectedType.XAxisLine;
+                selected.GetComponent<Renderer>().material.color = selectedColor;
             }
             else if (selected.name.Equals("yAxisLine"))
             {
                 Debug.Log("Selected y axis");
                 selectedType = SelectedType.YAxisLine;
+                selected.GetComponent<Renderer>().material.color = selectedColor;
             }
             else if (selected.name.Equals("xTip"))
             {
                 Debug.Log("Selected x tip");
                 selectedType = SelectedType.XAxisTip;
+                selected.GetComponent<Renderer>().material.color = selectedColor;
             }
             else if (selected.name.Equals("yTip"))
             {
                 Debug.Log("Selected y tip");
                 selectedType = SelectedType.YAxisTip;
+                selected.GetComponent<Renderer>().material.color = selectedColor;
             }
             else
             {
                 Debug.Log("No selection");
                 selectedType = SelectedType.None;
+                selected = null;
             }
         }
     }
 
     private void EndRightClick(InputAction.CallbackContext obj)
     {
+        if (selectedType == SelectedType.XAxisScale)
+        {
+            for (int i = 0; i < xAxis.transform.childCount; i++)
+            {
+                GameObject child = xAxis.transform.GetChild(i).gameObject;
+                if (child.name.Equals("xScale"))
+                {
+                    Debug.Log("Clearing x color");
+                    GameObject scale = child.transform.Find("scale").gameObject;
+                    scale.GetComponent<Renderer>().material.color = defaultColor;
+                }
+            }
+        }
+        else if (selectedType == SelectedType.YAxisScale)
+        {
+            for (int i = 0; i < yAxis.transform.childCount; i++)
+            {
+                Debug.Log("Clearing y color");
+                GameObject child = yAxis.transform.GetChild(i).gameObject;
+                if (child.name.Equals("yScale"))
+                {
+                    GameObject scale = child.transform.Find("scale").gameObject;
+                    scale.GetComponent<Renderer>().material.color = defaultColor;
+                }
+            }
+        }
+
         rightClicked = false;
         selectedType = SelectedType.None;
+        selected.GetComponent<Renderer>().material.color = defaultColor;
     }
 
 
@@ -291,7 +372,7 @@ public class GraphManipulation : MonoBehaviour
 
     public void SetXIntervalSize(double size)
     {
-        if (size > 0)
+        if (size > 0 && xIntervalSize != size)
         {
             ResetScales(xAxis);
             xIntervalSize = size;
@@ -303,7 +384,7 @@ public class GraphManipulation : MonoBehaviour
 
     public void SetYIntervalSize(double size)
     {
-        if (size > 0)
+        if (size > 0 && yIntervalSize != size)
         {
             ResetScales(yAxis);
             yIntervalSize = size;
@@ -315,7 +396,7 @@ public class GraphManipulation : MonoBehaviour
 
     public void SetXNumIntervals(int numIntervals)
     {
-        if (numIntervals > 0)
+        if (numIntervals > 0 && xNumIntervals != numIntervals)
         {
             ResetScales(xAxis);
             xNumIntervals = numIntervals;
@@ -328,7 +409,7 @@ public class GraphManipulation : MonoBehaviour
 
     public void SetYNumIntervals(int numIntervals)
     {
-        if (numIntervals > 0)
+        if (numIntervals > 0 && yNumIntervals != numIntervals)
         {
             ResetScales(yAxis);
             yNumIntervals = numIntervals;
@@ -341,7 +422,7 @@ public class GraphManipulation : MonoBehaviour
 
     public void SetXIntervalSpace(double intervalSpace)
     {
-        if (intervalSpace > 0)
+        if (intervalSpace > 0 && xIntervalSpace != intervalSpace)
         {
             ResetScales(xAxis);
             xIntervalSpace = intervalSpace;
@@ -354,7 +435,7 @@ public class GraphManipulation : MonoBehaviour
 
     public void SetYIntervalSpace(double intervalSpace)
     {
-        if (intervalSpace > 0)
+        if (intervalSpace > 0 && yIntervalSpace != intervalSpace)
         {
             ResetScales(yAxis);
             yIntervalSpace = intervalSpace;
@@ -367,7 +448,7 @@ public class GraphManipulation : MonoBehaviour
 
     public void SetXAxisLength(double axisLength)
     {
-        if (axisLength > 0)
+        if (axisLength > 0 && xAxisLength != axisLength)
         {
             xAxisLength = axisLength;
             SetupXAxis();
@@ -395,7 +476,7 @@ public class GraphManipulation : MonoBehaviour
 
     public void SetYAxisLength(double axisLength)
     {
-        if (axisLength > 0)
+        if (axisLength > 0 && yAxisLength != axisLength)
         {
             yAxisLength = axisLength;
             SetupYAxis();
@@ -476,7 +557,7 @@ public class GraphManipulation : MonoBehaviour
 
     public void SendGraphDetails()
     {
-        float[] graphDetails = new float[9];
+        float[] graphDetails = new float[10];
         graphDetails[0] = 0;
         graphDetails[1] = (float)xIntervalSize;
         graphDetails[2] = (float)yIntervalSize;
@@ -486,6 +567,7 @@ public class GraphManipulation : MonoBehaviour
         graphDetails[6] = (float)yIntervalSpace;
         graphDetails[7] = (float)xAxisLength;
         graphDetails[8] = (float)yAxisLength;
+        graphDetails[9] = Camera.main.GetInstanceID();
 
         aslObj.SendAndSetClaim(() =>
         {
@@ -498,6 +580,10 @@ public class GraphManipulation : MonoBehaviour
         switch (value[0])
         {
             case 0f:
+                if (Camera.main.GetInstanceID() == value[9])
+                {
+                    break;
+                }
                 xIntervalSize = Math.Round((double)value[1], 2);
                 yIntervalSize = Math.Round((double)value[2], 2);
                 xNumIntervals = (int)value[3];
