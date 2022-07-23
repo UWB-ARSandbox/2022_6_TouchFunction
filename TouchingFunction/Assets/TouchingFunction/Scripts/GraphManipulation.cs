@@ -96,9 +96,9 @@ public class GraphManipulation : MonoBehaviour
     }
 
     void Update()
-    {        
+    {
         Debug.Log("This camera id: " + Camera.main.GetInstanceID());
-        if (selectedType == SelectedType.XAxisScale)
+        if (rightClicked && selectedType == SelectedType.XAxisScale)
         {
             Debug.Log("Right Click");
             Vector3 currPos = Input.mousePosition;
@@ -120,7 +120,7 @@ public class GraphManipulation : MonoBehaviour
             }
         }
 
-        else if (selectedType == SelectedType.YAxisScale)
+        else if (rightClicked && selectedType == SelectedType.YAxisScale)
         {
             Debug.Log("Right Click");
             Vector3 currPos = Input.mousePosition;
@@ -142,7 +142,7 @@ public class GraphManipulation : MonoBehaviour
             }
         }
 
-        else if (selectedType == SelectedType.XAxisTip)
+        else if (rightClicked && selectedType == SelectedType.XAxisTip)
         {
             Debug.Log("Right Click");
             Vector3 currPos = Input.mousePosition;
@@ -154,7 +154,7 @@ public class GraphManipulation : MonoBehaviour
             originalMousePos = currPos;
         }
 
-        else if (selectedType == SelectedType.YAxisTip)
+        else if (rightClicked && selectedType == SelectedType.YAxisTip)
         {
             Debug.Log("Right Click");
             Vector3 currPos = Input.mousePosition;
@@ -165,7 +165,7 @@ public class GraphManipulation : MonoBehaviour
             SetYAxisLength(yAxisLength + Math.Round((double)delta, 1));
             originalMousePos = currPos;
         }
-        else if (selectedType == SelectedType.XAxisLine)
+        else if (rightClicked && selectedType == SelectedType.XAxisLine)
         {
             Debug.Log("Right Click");
             Vector3 currPos = Input.mousePosition;
@@ -176,7 +176,7 @@ public class GraphManipulation : MonoBehaviour
             SetXIntervalSize(xIntervalSize - Math.Round((double)delta, 1));
             originalMousePos = currPos;
         }
-        else if (selectedType == SelectedType.YAxisLine)
+        else if (rightClicked && selectedType == SelectedType.YAxisLine)
         {
             Debug.Log("Right Click");
             Vector3 currPos = Input.mousePosition;
@@ -187,13 +187,17 @@ public class GraphManipulation : MonoBehaviour
             SetYIntervalSize(yIntervalSize - Math.Round((double)delta, 1));
             originalMousePos = currPos;
         }
+        else
+        {
+            SelectObject();
+        }
     }
 
-    private void StartRightClick(InputAction.CallbackContext obj)
+    private void SelectObject()
     {
-        originalMousePos = Input.mousePosition;
-        rightClicked = true;
-        Debug.Log("Original Pos: " + originalMousePos);
+        if (selected != null) {
+            SetSelectedColor(defaultColor);
+        }
 
         RaycastHit hitInfo = new RaycastHit();
         bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
@@ -205,57 +209,31 @@ public class GraphManipulation : MonoBehaviour
             {
                 Debug.Log("Selected x scale");
                 selectedType = SelectedType.XAxisScale;
-
-                for (int i = 0; i < xAxis.transform.childCount; i++)
-                {
-                    GameObject child = xAxis.transform.GetChild(i).gameObject;
-                    if (child.name.Equals("xScale"))
-                    {
-                        GameObject scale = child.transform.Find("scale").gameObject;
-                        scale.GetComponent<Renderer>().material.color = selectedColor;
-                    }
-                }
-
             }
             else if (selected.name.Equals("yScale"))
             {
                 Debug.Log("Selected y scale");
                 selectedType = SelectedType.YAxisScale;
-                selected.GetComponent<Renderer>().material.color = selectedColor;
-
-                for (int i = 0; i < yAxis.transform.childCount; i++)
-                {
-                    GameObject child = yAxis.transform.GetChild(i).gameObject;
-                    if (child.name.Equals("yScale"))
-                    {
-                        GameObject scale = child.transform.Find("scale").gameObject;
-                        scale.GetComponent<Renderer>().material.color = selectedColor;
-                    }
-                }
             }
             else if (selected.name.Equals("xAxisLine"))
             {
                 Debug.Log("Selected x axis");
                 selectedType = SelectedType.XAxisLine;
-                selected.GetComponent<Renderer>().material.color = selectedColor;
             }
             else if (selected.name.Equals("yAxisLine"))
             {
                 Debug.Log("Selected y axis");
                 selectedType = SelectedType.YAxisLine;
-                selected.GetComponent<Renderer>().material.color = selectedColor;
             }
             else if (selected.name.Equals("xTip"))
             {
                 Debug.Log("Selected x tip");
                 selectedType = SelectedType.XAxisTip;
-                selected.GetComponent<Renderer>().material.color = selectedColor;
             }
             else if (selected.name.Equals("yTip"))
             {
                 Debug.Log("Selected y tip");
                 selectedType = SelectedType.YAxisTip;
-                selected.GetComponent<Renderer>().material.color = selectedColor;
             }
             else
             {
@@ -264,9 +242,28 @@ public class GraphManipulation : MonoBehaviour
                 selected = null;
             }
         }
+
+        if (selected != null) {
+            SetSelectedColor(selectedColor);
+        }
+    }
+
+    private void StartRightClick(InputAction.CallbackContext obj)
+    {
+        originalMousePos = Input.mousePosition;
+        rightClicked = true;
+        Debug.Log("Original Pos: " + originalMousePos);
     }
 
     private void EndRightClick(InputAction.CallbackContext obj)
+    {
+        SetSelectedColor(defaultColor);
+        rightClicked = false;
+        selectedType = SelectedType.None;
+        selected = null;
+    }
+
+    private void SetSelectedColor(Color color)
     {
         if (selectedType == SelectedType.XAxisScale)
         {
@@ -277,7 +274,7 @@ public class GraphManipulation : MonoBehaviour
                 {
                     Debug.Log("Clearing x color");
                     GameObject scale = child.transform.Find("scale").gameObject;
-                    scale.GetComponent<Renderer>().material.color = defaultColor;
+                    scale.GetComponent<Renderer>().material.color = color;
                 }
             }
         }
@@ -290,16 +287,15 @@ public class GraphManipulation : MonoBehaviour
                 if (child.name.Equals("yScale"))
                 {
                     GameObject scale = child.transform.Find("scale").gameObject;
-                    scale.GetComponent<Renderer>().material.color = defaultColor;
+                    scale.GetComponent<Renderer>().material.color = color;
                 }
             }
         }
-
-        rightClicked = false;
-        selectedType = SelectedType.None;
-        selected.GetComponent<Renderer>().material.color = defaultColor;
+        else
+        {
+            selected.GetComponent<Renderer>().material.color = color;
+        }
     }
-
 
     void CalcIntervalSpace()
     {
