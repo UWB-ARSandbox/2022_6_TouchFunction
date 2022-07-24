@@ -1,10 +1,9 @@
-using UnityEngine.InputSystem;
 using UnityEngine;
 using System;
 using TMPro;
 using ASL;
 
-public class GraphManipulation : MonoBehaviour
+public partial class GraphManipulation : MonoBehaviour
 {
     ASLObject aslObj;
 
@@ -31,30 +30,6 @@ public class GraphManipulation : MonoBehaviour
     double xAxisLength;
     double yAxisLength;
 
-    private PlayerInput playerInput;
-    private InputAction rightClick;
-    bool rightClicked;
-    Vector3 originalMousePos;
-    bool xSelected = false;
-    bool ySelected = false;
-    bool xTipSelected = false;
-    bool yTipSelected = false;
-
-    enum SelectedType
-    {
-        XAxisScale,
-        YAxisScale,
-        XAxisLine,
-        YAxisLine,
-        XAxisTip,
-        YAxisTip,
-        None
-    }
-    SelectedType selectedType;
-    GameObject selected;
-    Color selectedColor;
-    Color defaultColor;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -75,240 +50,28 @@ public class GraphManipulation : MonoBehaviour
         aslObj = GetComponent<ASLObject>();
         aslObj._LocallySetFloatCallback(onFloatArrayReceived);
 
-        rightClicked = false;
+        enabledGraphManip = false;
         selectedType = SelectedType.None;
         selected = null;
-        selectedColor = new Color(1, 1, 0, 1);
-        defaultColor = new Color(1, 1, 1, 1);
+        selectedColor = new Color(1, 1, 0, 1);  // yellow
+        defaultColor = new Color(1, 1, 1, 1);   // white
     }
 
-    void Awake()
-    {
-        playerInput = new PlayerInput();
-    }
-
-    private void OnEnable()
-    {
-        rightClick = playerInput.PlayerControls.GraphManipulation;
-        rightClick.started += StartRightClick;
-        rightClick.canceled += EndRightClick;
-        rightClick.Enable();
-    }
-
-    void Update()
-    {
-        Debug.Log("This camera id: " + Camera.main.GetInstanceID());
-        if (rightClicked && selectedType == SelectedType.XAxisScale)
-        {
-            Debug.Log("Right Click");
-            Vector3 currPos = Input.mousePosition;
-            Debug.Log("Curr Pos: " + currPos);
-            float diff = currPos.x - originalMousePos.x;
-            float delta = diff / 100.0f;
-            Debug.Log("Diff: " + diff.ToString());
-            SetXIntervalSpace(xIntervalSpace + Math.Round((double)delta, 1));
-            originalMousePos = currPos;
-
-            for (int i = 0; i < xAxis.transform.childCount; i++)
-            {
-                GameObject child = xAxis.transform.GetChild(i).gameObject;
-                if (child.name.Equals("xScale"))
-                {
-                    GameObject scale = child.transform.Find("scale").gameObject;
-                    scale.GetComponent<Renderer>().material.color = selectedColor;
-                }
-            }
-        }
-
-        else if (rightClicked && selectedType == SelectedType.YAxisScale)
-        {
-            Debug.Log("Right Click");
-            Vector3 currPos = Input.mousePosition;
-            Debug.Log("Curr Pos: " + currPos);
-            float diff = currPos.y - originalMousePos.y;
-            float delta = diff / 100.0f;
-            Debug.Log("Diff: " + diff.ToString());
-            SetYIntervalSpace(yIntervalSpace + Math.Round((double)delta, 1));
-            originalMousePos = currPos;
-
-            for (int i = 0; i < yAxis.transform.childCount; i++)
-            {
-                GameObject child = yAxis.transform.GetChild(i).gameObject;
-                if (child.name.Equals("yScale"))
-                {
-                    GameObject scale = child.transform.Find("scale").gameObject;
-                    scale.GetComponent<Renderer>().material.color = selectedColor;
-                }
-            }
-        }
-
-        else if (rightClicked && selectedType == SelectedType.XAxisTip)
-        {
-            Debug.Log("Right Click");
-            Vector3 currPos = Input.mousePosition;
-            Debug.Log("Curr Pos: " + currPos);
-            float diff = currPos.x - originalMousePos.x;
-            float delta = diff / 10.0f;
-            Debug.Log("Diff: " + diff.ToString());
-            SetXAxisLength(xAxisLength + Math.Round((double)delta, 1));
-            originalMousePos = currPos;
-        }
-
-        else if (rightClicked && selectedType == SelectedType.YAxisTip)
-        {
-            Debug.Log("Right Click");
-            Vector3 currPos = Input.mousePosition;
-            Debug.Log("Curr Pos: " + currPos);
-            float diff = currPos.y - originalMousePos.y;
-            float delta = diff / 10.0f;
-            Debug.Log("Diff: " + diff.ToString());
-            SetYAxisLength(yAxisLength + Math.Round((double)delta, 1));
-            originalMousePos = currPos;
-        }
-        else if (rightClicked && selectedType == SelectedType.XAxisLine)
-        {
-            Debug.Log("Right Click");
-            Vector3 currPos = Input.mousePosition;
-            Debug.Log("Curr Pos: " + currPos);
-            float diff = currPos.x - originalMousePos.x;
-            float delta = diff / 50.0f;
-            Debug.Log("Diff: " + diff.ToString());
-            SetXIntervalSize(xIntervalSize - Math.Round((double)delta, 1));
-            originalMousePos = currPos;
-        }
-        else if (rightClicked && selectedType == SelectedType.YAxisLine)
-        {
-            Debug.Log("Right Click");
-            Vector3 currPos = Input.mousePosition;
-            Debug.Log("Curr Pos: " + currPos);
-            float diff = currPos.y - originalMousePos.y;
-            float delta = diff / 50.0f;
-            Debug.Log("Diff: " + diff.ToString());
-            SetYIntervalSize(yIntervalSize - Math.Round((double)delta, 1));
-            originalMousePos = currPos;
-        }
-        else
-        {
-            SelectObject();
-        }
-    }
-
-    private void SelectObject()
-    {
-        if (selected != null) {
-            SetSelectedColor(defaultColor);
-        }
-
-        RaycastHit hitInfo = new RaycastHit();
-        bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
-        if (hit)
-        {
-            Debug.Log("HIT");
-            selected = hitInfo.transform.gameObject;
-            if (selected.name.Equals("xScale"))
-            {
-                Debug.Log("Selected x scale");
-                selectedType = SelectedType.XAxisScale;
-            }
-            else if (selected.name.Equals("yScale"))
-            {
-                Debug.Log("Selected y scale");
-                selectedType = SelectedType.YAxisScale;
-            }
-            else if (selected.name.Equals("xAxisLine"))
-            {
-                Debug.Log("Selected x axis");
-                selectedType = SelectedType.XAxisLine;
-            }
-            else if (selected.name.Equals("yAxisLine"))
-            {
-                Debug.Log("Selected y axis");
-                selectedType = SelectedType.YAxisLine;
-            }
-            else if (selected.name.Equals("xTip"))
-            {
-                Debug.Log("Selected x tip");
-                selectedType = SelectedType.XAxisTip;
-            }
-            else if (selected.name.Equals("yTip"))
-            {
-                Debug.Log("Selected y tip");
-                selectedType = SelectedType.YAxisTip;
-            }
-            else
-            {
-                Debug.Log("No selection");
-                selectedType = SelectedType.None;
-                selected = null;
-            }
-        }
-
-        if (selected != null) {
-            SetSelectedColor(selectedColor);
-        }
-    }
-
-    private void StartRightClick(InputAction.CallbackContext obj)
-    {
-        originalMousePos = Input.mousePosition;
-        rightClicked = true;
-        Debug.Log("Original Pos: " + originalMousePos);
-    }
-
-    private void EndRightClick(InputAction.CallbackContext obj)
-    {
-        SetSelectedColor(defaultColor);
-        rightClicked = false;
-        selectedType = SelectedType.None;
-        selected = null;
-    }
-
-    private void SetSelectedColor(Color color)
-    {
-        if (selectedType == SelectedType.XAxisScale)
-        {
-            for (int i = 0; i < xAxis.transform.childCount; i++)
-            {
-                GameObject child = xAxis.transform.GetChild(i).gameObject;
-                if (child.name.Equals("xScale"))
-                {
-                    Debug.Log("Clearing x color");
-                    GameObject scale = child.transform.Find("scale").gameObject;
-                    scale.GetComponent<Renderer>().material.color = color;
-                }
-            }
-        }
-        else if (selectedType == SelectedType.YAxisScale)
-        {
-            for (int i = 0; i < yAxis.transform.childCount; i++)
-            {
-                Debug.Log("Clearing y color");
-                GameObject child = yAxis.transform.GetChild(i).gameObject;
-                if (child.name.Equals("yScale"))
-                {
-                    GameObject scale = child.transform.Find("scale").gameObject;
-                    scale.GetComponent<Renderer>().material.color = color;
-                }
-            }
-        }
-        else
-        {
-            selected.GetComponent<Renderer>().material.color = color;
-        }
-    }
-
+    // Calculates the space between each interval (for both x and y axis)
     void CalcIntervalSpace()
     {
         xIntervalSpace = Math.Round(xAxisLength / xNumIntervals, 2);
         yIntervalSpace = Math.Round(yAxisLength / yNumIntervals, 2);
     }
 
+    // Calculates the number of intervals that can fit on each axis
     void CalcNumIntervals()
     {
         xNumIntervals = (int)(xAxisLength / xIntervalSpace);
         yNumIntervals = (int)(yAxisLength / yIntervalSpace);
     }
 
+    // Renders the x axis scales
     void SetupXScales()
     {
         double[] xAxisCoordinates = CalcAxisCoordinates(xNumIntervals, xIntervalSize);
@@ -325,6 +88,7 @@ public class GraphManipulation : MonoBehaviour
         }
     }
 
+    // Renders the y axis scales
     void SetupYScales()
     {
         double[] yAxisCoordinates = CalcAxisCoordinates(yNumIntervals, yIntervalSize);
@@ -341,6 +105,7 @@ public class GraphManipulation : MonoBehaviour
         }
     }
 
+    // Calculates the numbers at each interval of the specified axis 
     double[] CalcAxisCoordinates(int numIntervals, double intervalSize)
     {
         double[] axisCoordinates = new double[numIntervals];
@@ -352,6 +117,7 @@ public class GraphManipulation : MonoBehaviour
         return axisCoordinates;
     }
 
+    // Clears the intervals from the specified axis
     void ResetScales(GameObject axis)
     {
         foreach (Transform scale in axis.transform)
@@ -360,6 +126,7 @@ public class GraphManipulation : MonoBehaviour
         }
     }
 
+    // Setter for interval increment (x axis)
     public void SetXIntervalSize(double size)
     {
         if (size > 0 && xIntervalSize != size)
@@ -372,6 +139,7 @@ public class GraphManipulation : MonoBehaviour
         }
     }
 
+    // Setter for interval increment (y axis)
     public void SetYIntervalSize(double size)
     {
         if (size > 0 && yIntervalSize != size)
@@ -384,6 +152,7 @@ public class GraphManipulation : MonoBehaviour
         }
     }
 
+    // Setter for number of intervals (x axis)
     public void SetXNumIntervals(int numIntervals)
     {
         if (numIntervals > 0 && xNumIntervals != numIntervals)
@@ -397,6 +166,7 @@ public class GraphManipulation : MonoBehaviour
         }
     }
 
+    // Setter for number of intervals (y axis)
     public void SetYNumIntervals(int numIntervals)
     {
         if (numIntervals > 0 && yNumIntervals != numIntervals)
@@ -410,6 +180,7 @@ public class GraphManipulation : MonoBehaviour
         }
     }
 
+    // Setter for amount of space between each interval (x axis)
     public void SetXIntervalSpace(double intervalSpace)
     {
         if (intervalSpace > 0 && xIntervalSpace != intervalSpace)
@@ -423,6 +194,7 @@ public class GraphManipulation : MonoBehaviour
         }
     }
 
+    // Setter for amount of space between each interval (y axis)
     public void SetYIntervalSpace(double intervalSpace)
     {
         if (intervalSpace > 0 && yIntervalSpace != intervalSpace)
@@ -436,6 +208,7 @@ public class GraphManipulation : MonoBehaviour
         }
     }
 
+    // Setter for length of x axis
     public void SetXAxisLength(double axisLength)
     {
         if (axisLength > 0 && xAxisLength != axisLength)
@@ -450,6 +223,7 @@ public class GraphManipulation : MonoBehaviour
         }
     }
 
+    // Modifies the x axis position and scale based on axis length
     public void SetupXAxis()
     {
         Vector3 axisScale = xAxis.transform.localScale;
@@ -464,6 +238,7 @@ public class GraphManipulation : MonoBehaviour
         xAxisEnd.transform.localPosition = new Vector3((float)endPosX, 0, 0);
     }
 
+    // Setter for length of y axis
     public void SetYAxisLength(double axisLength)
     {
         if (axisLength > 0 && yAxisLength != axisLength)
@@ -478,6 +253,7 @@ public class GraphManipulation : MonoBehaviour
         }
     }
 
+    // Modifies the y axis position and scale based on axis length
     public void SetupYAxis()
     {
         Vector3 axisScale = yAxis.transform.localScale;
@@ -492,36 +268,43 @@ public class GraphManipulation : MonoBehaviour
         yAxisEnd.transform.localPosition = new Vector3(0, (float)endPosY, 0);
     }
 
+    // Getter for interval increment (x axis)
     public double GetXIntervalSize()
     {
         return xIntervalSize;
     }
 
+    // Getter for interval increment (y axis)
     public double GetYIntervalSize()
     {
         return yIntervalSize;
     }
 
+    // Getter for number of intervals (x axis)
     public int GetXNumIntervals()
     {
         return xNumIntervals;
     }
 
+    // Getter for number of intervals (y axis)
     public int GetYNumIntervals()
     {
         return yNumIntervals;
     }
 
+    // Getter for amount of space between intervals (x axis)
     public double GetXIntervalSpace()
     {
         return xIntervalSpace;
     }
 
+    // Getter for amount of space between intervals (y axis)
     public double GetYIntervalSpace()
     {
         return yIntervalSpace;
     }
 
+    // Getter for amount of space between a coordinate difference of 1 (x axis)
     public double GetXUnitSpace()
     {
         double xUnitSize = 1 / xIntervalSize;
@@ -529,6 +312,7 @@ public class GraphManipulation : MonoBehaviour
         return xUnitSpace;
     }
 
+    // Getter for amount of space between a coordinate difference of 1 (y axis)
     public double GetYUnitSpace()
     {
         double yUnitSize = 1 / yIntervalSize;
@@ -536,15 +320,19 @@ public class GraphManipulation : MonoBehaviour
         return yUnitSpace;
     }
 
+    // Getter for axis length (x axis)
     public double GetXAxisLength()
     {
         return xAxisLength;
     }
+    
+    // Getter for axis length (x axis)
     public double GetYAxisLength()
     {
         return yAxisLength;
     }
 
+    // Sends graph parameter details to other players in game
     public void SendGraphDetails()
     {
         float[] graphDetails = new float[10];
@@ -565,6 +353,9 @@ public class GraphManipulation : MonoBehaviour
         });
     }
 
+    /*  Determine what we do with the array based on value[0]
+        *  0: Use the float array to set graph parameters 
+        */
     public void onFloatArrayReceived(string _id, float[] value)
     {
         switch (value[0])
