@@ -134,6 +134,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GraphManipulation"",
+                    ""type"": ""Button"",
+                    ""id"": ""d627d73d-90a2-4dc7-b844-fb256a41ec8c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -389,6 +398,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""ToggleCursorLock"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""196c5527-e410-4b66-a1c4-fb4fce509027"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""GraphManipulation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -436,6 +456,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_PlayerControls_ScaleUp = m_PlayerControls.FindAction("ScaleUp", throwIfNotFound: true);
         m_PlayerControls_ScaleDown = m_PlayerControls.FindAction("ScaleDown", throwIfNotFound: true);
         m_PlayerControls_ToggleCursorLock = m_PlayerControls.FindAction("ToggleCursorLock", throwIfNotFound: true);
+        m_PlayerControls_GraphManipulation = m_PlayerControls.FindAction("GraphManipulation", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -507,6 +528,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControls_ScaleUp;
     private readonly InputAction m_PlayerControls_ScaleDown;
     private readonly InputAction m_PlayerControls_ToggleCursorLock;
+    private readonly InputAction m_PlayerControls_GraphManipulation;
     public struct PlayerControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -523,6 +545,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @ScaleUp => m_Wrapper.m_PlayerControls_ScaleUp;
         public InputAction @ScaleDown => m_Wrapper.m_PlayerControls_ScaleDown;
         public InputAction @ToggleCursorLock => m_Wrapper.m_PlayerControls_ToggleCursorLock;
+        public InputAction @GraphManipulation => m_Wrapper.m_PlayerControls_GraphManipulation;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -568,6 +591,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @ToggleCursorLock.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleCursorLock;
                 @ToggleCursorLock.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleCursorLock;
                 @ToggleCursorLock.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleCursorLock;
+                @GraphManipulation.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGraphManipulation;
+                @GraphManipulation.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGraphManipulation;
+                @GraphManipulation.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGraphManipulation;
             }
             m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -608,6 +634,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @ToggleCursorLock.started += instance.OnToggleCursorLock;
                 @ToggleCursorLock.performed += instance.OnToggleCursorLock;
                 @ToggleCursorLock.canceled += instance.OnToggleCursorLock;
+                @GraphManipulation.started += instance.OnGraphManipulation;
+                @GraphManipulation.performed += instance.OnGraphManipulation;
+                @GraphManipulation.canceled += instance.OnGraphManipulation;
             }
         }
     }
@@ -644,5 +673,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnScaleUp(InputAction.CallbackContext context);
         void OnScaleDown(InputAction.CallbackContext context);
         void OnToggleCursorLock(InputAction.CallbackContext context);
+        void OnGraphManipulation(InputAction.CallbackContext context);
     }
 }

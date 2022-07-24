@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System;
 using TMPro;
 using ASL;
 
-public class GraphManipulation : MonoBehaviour
+public partial class GraphManipulation : MonoBehaviour
 {
     ASLObject aslObj;
 
@@ -31,7 +30,6 @@ public class GraphManipulation : MonoBehaviour
     double xAxisLength;
     double yAxisLength;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -51,26 +49,29 @@ public class GraphManipulation : MonoBehaviour
 
         aslObj = GetComponent<ASLObject>();
         aslObj._LocallySetFloatCallback(onFloatArrayReceived);
+
+        enabledGraphManip = false;
+        selectedType = SelectedType.None;
+        selected = null;
+        selectedColor = new Color(1, 1, 0, 1);  // yellow
+        defaultColor = new Color(1, 1, 1, 1);   // white
     }
 
+    // Calculates the space between each interval (for both x and y axis)
     void CalcIntervalSpace()
     {
-        xIntervalSpace = xAxisLength / xNumIntervals;
-        yIntervalSpace = yAxisLength / yNumIntervals;
+        xIntervalSpace = Math.Round(xAxisLength / xNumIntervals, 2);
+        yIntervalSpace = Math.Round(yAxisLength / yNumIntervals, 2);
     }
 
+    // Calculates the number of intervals that can fit on each axis
     void CalcNumIntervals()
     {
-        Debug.Log("Here");
-        Debug.Log(xAxisLength);
-        Debug.Log(yAxisLength);
         xNumIntervals = (int)(xAxisLength / xIntervalSpace);
         yNumIntervals = (int)(yAxisLength / yIntervalSpace);
-        Debug.Log(xNumIntervals);
-        Debug.Log(yNumIntervals);
-        Debug.Log("Going back");
     }
 
+    // Renders the x axis scales
     void SetupXScales()
     {
         double[] xAxisCoordinates = CalcAxisCoordinates(xNumIntervals, xIntervalSize);
@@ -78,6 +79,7 @@ public class GraphManipulation : MonoBehaviour
         for (int i = 0; i < xAxisCoordinates.Length; i++)
         {
             GameObject scale = Instantiate(xScale);
+            scale.name = "xScale";
             Vector3 scalePos = new Vector3((i + 1) * (float)xIntervalSpace + origin.x, origin.y, origin.z);
             scale.transform.position = scalePos;
             scale.transform.parent = xAxis.transform;
@@ -86,6 +88,7 @@ public class GraphManipulation : MonoBehaviour
         }
     }
 
+    // Renders the y axis scales
     void SetupYScales()
     {
         double[] yAxisCoordinates = CalcAxisCoordinates(yNumIntervals, yIntervalSize);
@@ -93,6 +96,7 @@ public class GraphManipulation : MonoBehaviour
         for (int i = 0; i < yAxisCoordinates.Length; i++)
         {
             GameObject scale = Instantiate(yScale);
+            scale.name = "yScale";
             Vector3 scalePos = new Vector3(origin.x, (i + 1) * (float)yIntervalSpace + origin.y, origin.z);
             scale.transform.position = scalePos;
             scale.transform.parent = yAxis.transform;
@@ -101,17 +105,19 @@ public class GraphManipulation : MonoBehaviour
         }
     }
 
+    // Calculates the numbers at each interval of the specified axis 
     double[] CalcAxisCoordinates(int numIntervals, double intervalSize)
     {
         double[] axisCoordinates = new double[numIntervals];
         for (int i = 0; i < axisCoordinates.Length; i++)
         {
-            axisCoordinates[i] = (i + 1) * intervalSize;
+            axisCoordinates[i] = Math.Round((i + 1) * intervalSize, 2);
         }
 
         return axisCoordinates;
     }
 
+    // Clears the intervals from the specified axis
     void ResetScales(GameObject axis)
     {
         foreach (Transform scale in axis.transform)
@@ -120,33 +126,36 @@ public class GraphManipulation : MonoBehaviour
         }
     }
 
+    // Setter for interval increment (x axis)
     public void SetXIntervalSize(double size)
     {
-        if (size > 0)
+        if (size > 0 && xIntervalSize != size)
         {
             ResetScales(xAxis);
-            xIntervalSize = size;
+            xIntervalSize = Math.Round(size, 2);
             SetupXScales();
             meshManagerScript.UpdateGraphs();
             SendGraphDetails();
         }
     }
 
+    // Setter for interval increment (y axis)
     public void SetYIntervalSize(double size)
     {
-        if (size > 0)
+        if (size > 0 && yIntervalSize != size)
         {
             ResetScales(yAxis);
-            yIntervalSize = size;
+            yIntervalSize = Math.Round(size, 2);
             SetupYScales();
             meshManagerScript.UpdateGraphs();
             SendGraphDetails();
         }
     }
 
+    // Setter for number of intervals (x axis)
     public void SetXNumIntervals(int numIntervals)
     {
-        if (numIntervals > 0)
+        if (numIntervals > 0 && xNumIntervals != numIntervals)
         {
             ResetScales(xAxis);
             xNumIntervals = numIntervals;
@@ -157,9 +166,10 @@ public class GraphManipulation : MonoBehaviour
         }
     }
 
+    // Setter for number of intervals (y axis)
     public void SetYNumIntervals(int numIntervals)
     {
-        if (numIntervals > 0)
+        if (numIntervals > 0 && yNumIntervals != numIntervals)
         {
             ResetScales(yAxis);
             yNumIntervals = numIntervals;
@@ -170,12 +180,13 @@ public class GraphManipulation : MonoBehaviour
         }
     }
 
+    // Setter for amount of space between each interval (x axis)
     public void SetXIntervalSpace(double intervalSpace)
     {
-        if (intervalSpace > 0)
+        if (intervalSpace > 0 && xIntervalSpace != intervalSpace)
         {
             ResetScales(xAxis);
-            xIntervalSpace = intervalSpace;
+            xIntervalSpace = Math.Round(intervalSpace, 2);
             CalcNumIntervals();
             SetupXScales();
             meshManagerScript.UpdateGraphs();
@@ -183,12 +194,13 @@ public class GraphManipulation : MonoBehaviour
         }
     }
 
+    // Setter for amount of space between each interval (y axis)
     public void SetYIntervalSpace(double intervalSpace)
     {
-        if (intervalSpace > 0)
+        if (intervalSpace > 0 && yIntervalSpace != intervalSpace)
         {
             ResetScales(yAxis);
-            yIntervalSpace = intervalSpace;
+            yIntervalSpace = Math.Round(intervalSpace, 2);
             CalcNumIntervals();
             SetupYScales();
             meshManagerScript.UpdateGraphs();
@@ -196,11 +208,12 @@ public class GraphManipulation : MonoBehaviour
         }
     }
 
+    // Setter for length of x axis
     public void SetXAxisLength(double axisLength)
     {
-        if (axisLength > 0)
+        if (axisLength > 0 && xAxisLength != axisLength)
         {
-            xAxisLength = axisLength;
+            xAxisLength = Math.Round(axisLength, 2);
             SetupXAxis();
             ResetScales(xAxis);
             CalcNumIntervals();
@@ -210,6 +223,7 @@ public class GraphManipulation : MonoBehaviour
         }
     }
 
+    // Modifies the x axis position and scale based on axis length
     public void SetupXAxis()
     {
         Vector3 axisScale = xAxis.transform.localScale;
@@ -224,11 +238,12 @@ public class GraphManipulation : MonoBehaviour
         xAxisEnd.transform.localPosition = new Vector3((float)endPosX, 0, 0);
     }
 
+    // Setter for length of y axis
     public void SetYAxisLength(double axisLength)
     {
-        if (axisLength > 0)
+        if (axisLength > 0 && yAxisLength != axisLength)
         {
-            yAxisLength = axisLength;
+            yAxisLength = Math.Round(axisLength, 2);
             SetupYAxis();
             ResetScales(yAxis);
             CalcNumIntervals();
@@ -238,6 +253,7 @@ public class GraphManipulation : MonoBehaviour
         }
     }
 
+    // Modifies the y axis position and scale based on axis length
     public void SetupYAxis()
     {
         Vector3 axisScale = yAxis.transform.localScale;
@@ -252,36 +268,43 @@ public class GraphManipulation : MonoBehaviour
         yAxisEnd.transform.localPosition = new Vector3(0, (float)endPosY, 0);
     }
 
+    // Getter for interval increment (x axis)
     public double GetXIntervalSize()
     {
         return xIntervalSize;
     }
 
+    // Getter for interval increment (y axis)
     public double GetYIntervalSize()
     {
         return yIntervalSize;
     }
 
+    // Getter for number of intervals (x axis)
     public int GetXNumIntervals()
     {
         return xNumIntervals;
     }
 
+    // Getter for number of intervals (y axis)
     public int GetYNumIntervals()
     {
         return yNumIntervals;
     }
 
+    // Getter for amount of space between intervals (x axis)
     public double GetXIntervalSpace()
     {
         return xIntervalSpace;
     }
 
+    // Getter for amount of space between intervals (y axis)
     public double GetYIntervalSpace()
     {
         return yIntervalSpace;
     }
 
+    // Getter for amount of space between a coordinate difference of 1 (x axis)
     public double GetXUnitSpace()
     {
         double xUnitSize = 1 / xIntervalSize;
@@ -289,6 +312,7 @@ public class GraphManipulation : MonoBehaviour
         return xUnitSpace;
     }
 
+    // Getter for amount of space between a coordinate difference of 1 (y axis)
     public double GetYUnitSpace()
     {
         double yUnitSize = 1 / yIntervalSize;
@@ -296,18 +320,22 @@ public class GraphManipulation : MonoBehaviour
         return yUnitSpace;
     }
 
+    // Getter for axis length (x axis)
     public double GetXAxisLength()
     {
         return xAxisLength;
     }
+    
+    // Getter for axis length (x axis)
     public double GetYAxisLength()
     {
         return yAxisLength;
     }
 
+    // Sends graph parameter details to other players in game
     public void SendGraphDetails()
     {
-        float[] graphDetails = new float[9];
+        float[] graphDetails = new float[10];
         graphDetails[0] = 0;
         graphDetails[1] = (float)xIntervalSize;
         graphDetails[2] = (float)yIntervalSize;
@@ -317,6 +345,7 @@ public class GraphManipulation : MonoBehaviour
         graphDetails[6] = (float)yIntervalSpace;
         graphDetails[7] = (float)xAxisLength;
         graphDetails[8] = (float)yAxisLength;
+        graphDetails[9] = Camera.main.GetInstanceID();
 
         aslObj.SendAndSetClaim(() =>
         {
@@ -324,20 +353,27 @@ public class GraphManipulation : MonoBehaviour
         });
     }
 
+    /*  Determine what we do with the array based on value[0]
+        *  0: Use the float array to set graph parameters 
+        */
     public void onFloatArrayReceived(string _id, float[] value)
     {
         switch (value[0])
         {
             case 0f:
-                xIntervalSize = (double)value[1];
-                yIntervalSize = (double)value[2];
-                xNumIntervals = (int) value[3];
-                yNumIntervals = (int) value[4];
-                xIntervalSpace = (double)value[5];
-                yIntervalSpace = (double)value[6];
-                xAxisLength = (double)value[7];
-                yAxisLength = (double)value[8];
-                
+                if (Camera.main.GetInstanceID() == value[9])
+                {
+                    break;
+                }
+                xIntervalSize = Math.Round((double)value[1], 2);
+                yIntervalSize = Math.Round((double)value[2], 2);
+                xNumIntervals = (int)value[3];
+                yNumIntervals = (int)value[4];
+                xIntervalSpace = Math.Round((double)value[5], 2);
+                yIntervalSpace = Math.Round((double)value[6], 2);
+                xAxisLength = Math.Round((double)value[7], 2);
+                yAxisLength = Math.Round((double)value[8], 2);
+
                 ResetScales(xAxis);
                 ResetScales(yAxis);
                 SetupXAxis();
