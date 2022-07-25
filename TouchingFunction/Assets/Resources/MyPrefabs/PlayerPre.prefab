@@ -2281,7 +2281,7 @@ MonoBehaviour:
   head: {fileID: 8995529675970596643}
   mouseSensitivity: 10
   contSensitivity: 100
-  clampAngle: 60
+  clampAngle: 80
   speed: 5
   jumpSpeed: 10
   SlideSpeed: 0.1
@@ -2299,7 +2299,6 @@ MonoBehaviour:
   isMoving: 0
   isFalling: 0
   isFlying: 0
-  isThinking: 0
   PlayerAnimator: {fileID: 595010146701498904}
 --- !u!114 &7453444277320579165
 MonoBehaviour:
@@ -2316,6 +2315,11 @@ MonoBehaviour:
   nameText: {fileID: 5324479024114406258}
   player: {fileID: 7473864094519733550}
   playerHead: {fileID: 8995529675970596643}
+  playerBody: {fileID: 8995529675655909488}
+  playerLeftArm: {fileID: 8875772313663473382}
+  playerRightArm: {fileID: 1112130603833992415}
+  playerLeftShoulder: {fileID: 340102156024196018}
+  playerRightShoulder: {fileID: 1214636715004848611}
   HairParts:
   - {fileID: 2418823273632728419}
   - {fileID: 4386464899208848550}
@@ -2395,7 +2399,7 @@ Transform:
   m_GameObject: {fileID: 8995529675655909503}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.04523641, y: -0.073851824, z: -0.5352002}
-  m_LocalScale: {x: 1, y: 0.7, z: 0.7}
+  m_LocalScale: {x: 1, y: 0.7, z: 1}
   m_Children: []
   m_Father: {fileID: 5778486578691742602}
   m_RootOrder: 0
@@ -2558,7 +2562,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8995529675970596655}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.04523641, y: 1.026148, z: -0.486}
+  m_LocalPosition: {x: 0.04523641, y: 1.026148, z: -0.5352002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8995529675708157642}
@@ -2594,7 +2598,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f31d17728c3b37949987babefe0001fc, type: 2}
+  - {fileID: 2100000, guid: a3cad8b5f81bade4d992553dfd3a4d27, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
