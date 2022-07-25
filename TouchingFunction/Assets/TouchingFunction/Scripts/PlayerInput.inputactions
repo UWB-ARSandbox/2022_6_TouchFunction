@@ -213,7 +213,18 @@
                 {
                     "name": "",
                     "id": "1cd3ee25-f2c8-4918-b9c9-ec6dc5a156b4",
-                    "path": "<XRController>{RightHand}/gripButton",
+                    "path": "<XRController>{RightHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4b31cda6-6a6e-4efb-9b29-184cc73c8e6d",
+                    "path": "<XRController>{RightHand}/touchpadClicked",
                     "interactions": "",
                     "processors": "",
                     "groups": "VR",
@@ -257,7 +268,18 @@
                 {
                     "name": "",
                     "id": "eeb7afe4-c071-4d2a-9020-a3f076cc251b",
-                    "path": "<XRController>{LeftHand}/gripButton",
+                    "path": "<XRController>{LeftHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "EnableGravity",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "28d243bc-252d-4c77-9a35-eb9d89ecff07",
+                    "path": "<XRController>{LeftHand}/touchpadClicked",
                     "interactions": "",
                     "processors": "",
                     "groups": "VR",
@@ -333,33 +355,11 @@
                 },
                 {
                     "name": "",
-                    "id": "ee104524-213d-497e-9c96-f3f59250649a",
-                    "path": "<XRController>{RightHand}/primaryButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "VR",
-                    "action": "ScaleUp",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "875d734f-50e3-4f2c-84ed-005ed9264c2f",
                     "path": "<Keyboard>/x",
                     "interactions": "",
                     "processors": "",
                     "groups": "PC",
-                    "action": "ScaleDown",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ccebc115-d1f4-4f37-b4c8-710fc8671440",
-                    "path": "<XRController>{LeftHand}/primaryButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "VR",
                     "action": "ScaleDown",
                     "isComposite": false,
                     "isPartOfComposite": false

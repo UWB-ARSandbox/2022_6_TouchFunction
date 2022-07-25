@@ -31,35 +31,35 @@ public class GraphPanelInput : MonoBehaviour
     {
         // Get x axis interval size
         string xIntervalSize = graphManScript.GetXIntervalSize().ToString(); 
-        xIntSizeInput.placeholder.GetComponent<TMP_Text>().text = xIntervalSize;
+        xIntSizeInput.placeholder.GetComponent<Text>().text = xIntervalSize;
 
         // Get x axis number of intervals
         string xNumIntervals = graphManScript.GetXNumIntervals().ToString();
-        xNumIntInput.placeholder.GetComponent<TMP_Text>().text = xNumIntervals;
+        xNumIntInput.placeholder.GetComponent<Text>().text = xNumIntervals;
 
         // Get x axis interval spacing
         string xIntervalSpace = graphManScript.GetXIntervalSpace().ToString();
-        xIntSpaceInput.placeholder.GetComponent<TMP_Text>().text = xIntervalSpace;
+        xIntSpaceInput.placeholder.GetComponent<Text>().text = xIntervalSpace;
 
         // Get x axis length
         string xAxisLen = graphManScript.GetXAxisLength().ToString();
-        xAxisLenInput.placeholder.GetComponent<TMP_Text>().text = xAxisLen;
+        xAxisLenInput.placeholder.GetComponent<Text>().text = xAxisLen;
 
         // Get y axis interval size
         string yIntervalSize = graphManScript.GetYIntervalSize().ToString();
-        yIntSizeInput.placeholder.GetComponent<TMP_Text>().text = yIntervalSize;
+        yIntSizeInput.placeholder.GetComponent<Text>().text = yIntervalSize;
 
         // Get y axis number of intervals
         string yNumIntervals = graphManScript.GetYNumIntervals().ToString();
-        yNumIntInput.placeholder.GetComponent<TMP_Text>().text = yNumIntervals;
+        yNumIntInput.placeholder.GetComponent<Text>().text = yNumIntervals;
 
         // Get y axis interval spacing
         string yIntervalSpace = graphManScript.GetYIntervalSpace().ToString();
-        yIntSpaceInput.placeholder.GetComponent<TMP_Text>().text = yIntervalSpace;
+        yIntSpaceInput.placeholder.GetComponent<Text>().text = yIntervalSpace;
 
         // Get y axis length
         string yAxisLen = graphManScript.GetYAxisLength().ToString();
-        yAxisLenInput.placeholder.GetComponent<TMP_Text>().text = yAxisLen;
+        yAxisLenInput.placeholder.GetComponent<Text>().text = yAxisLen;
     }
 
     private void GetInputOnClickHandler() 

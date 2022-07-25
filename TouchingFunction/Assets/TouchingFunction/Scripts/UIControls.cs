@@ -43,7 +43,6 @@ public class UIControls : MonoBehaviour
 
     #region Virtual Keyboard
     public GameObject VKeyboard;
-    public GameObject VKeyboardButton;
     #endregion
 
     #region PlayerControls
@@ -61,9 +60,8 @@ public class UIControls : MonoBehaviour
         // Delay needed to ensure all MeshGen have been instantiated before UI is reset
         Invoke("ResetUI", .1f);
         UISetup();
-        Invoke("SetControlsActive", .12f);
+        Invoke("SetControlsActive", .11f);
         //canvas.worldCamera = camera;
-        //Invoke("ToggleVirtualKeyboard", 0.12f);
     }
 
     void UISetup()
@@ -105,7 +103,7 @@ public class UIControls : MonoBehaviour
         FlexibleColorPickerPanel.SetActive(false);
         TargetSelector.SetActive(false);
         FaceChange.SetActive(false);
-        //CColor.player.isThinking = false;
+        CColor.player.isThinking = false;
         FlexibleColorPickerButton.SetActive(true);
 
         // User controls
@@ -115,9 +113,6 @@ public class UIControls : MonoBehaviour
         // Quit Window
         QuitWindowPanel.SetActive(false);
         QuitWindowButton.SetActive(true);
-
-        // VR Keyboard
-        VKeyboardButton.SetActive(true);
     }
 
     public void SetFunctionInputActive()
@@ -138,14 +133,13 @@ public class UIControls : MonoBehaviour
         DisableBaseUI();
         FlexibleColorPickerPanel.SetActive(true);
         FaceChange.SetActive(true);
-        //CColor.player.isThinking = true;
+        CColor.player.isThinking = true;
         TargetSelector.SetActive(true);
     }
     public void SetControlsActive()
     {
         DisableBaseUI();
         ControlsPanel.SetActive(true);
-        VKeyboardButton.SetActive(false);
     }
 
     public void SetQuitWindowActive()
@@ -156,36 +150,20 @@ public class UIControls : MonoBehaviour
 
     public void ToggleVirtualKeyboard()
     {
-        VKeyboard.GetComponent<VKeyboard>().TrackPlayer = !VKeyboard.GetComponent<VKeyboard>().TrackPlayer;
+        if(VKeyboard.active)
+        {
+            VKeyboard.SetActive(false);
+        }
+        else{
+            VKeyboard.SetActive(true);
+        }
+ 
     }
 
     private void TeleportUI(InputAction.CallbackContext obj)
     {
-        GameObject player = GameObject.Find("PlayerPre(Clone)");
-        float playerScale = 1;
-        Debug.Log(player.transform.localScale.x);
-        if(player.transform.localScale.x == 1)
-        {
-            playerScale = 1f;
-        }
-        else if (player.transform.localScale.x <= 2.5f)
-        {
-            playerScale = 1.1f;
-        }
-        else if (player.transform.localScale.x <= 4.5)
-        {
-            playerScale = 1.3f;
-        }
-        else if (player.transform.localScale.x <= 6.5f)
-        {
-            playerScale = 1.5f;
-        }
-        else 
-        {
-            playerScale = 2;
-        }
         Debug.Log("UI Summoned");
-        gameObject.transform.position = Camera.main.transform.position + Camera.main.transform.forward * (7f * playerScale);
+        gameObject.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 4.5f;
         if(gameObject.transform.position.y < 1)
         {
             Transform tempLoc = gameObject.transform;
