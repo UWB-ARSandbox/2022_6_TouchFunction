@@ -12,11 +12,11 @@ public class PlayerASL : MonoBehaviour
     public Player player;
 
     public Transform playerHead;
-    public Transform playerBody;
+    /*public Transform playerBody;
     public Transform playerLeftArm;
     public Transform playerRightArm;
     public Transform playerLeftShoulder;
-    public Transform playerRightShoulder;
+    public Transform playerRightShoulder;*/
 
     public Transform[] HairParts;
     public Transform[] ShirtParts;
@@ -95,6 +95,8 @@ public class PlayerASL : MonoBehaviour
                 player.isSliding = _f[3] > 0;
                 player.isFalling = _f[4] > 0;
                 player.isThinking = _f[5] > 0;
+                player.setAnimatorBool();
+                
                 playerHead.transform.localRotation = Quaternion.Euler(_f[6], 0, 0);
                 transform.localRotation = Quaternion.Euler(0, _f[7], 0);
                 transform.localScale = new Vector3(_f[8], _f[8], _f[8]);

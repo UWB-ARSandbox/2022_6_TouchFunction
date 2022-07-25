@@ -66,7 +66,7 @@ public partial class Player : MonoBehaviour
     public bool isFlying = false;
     public bool isThinking = false;
     #endregion
-    public Animator PlayerAnimator;
+    Animator PlayerAnimator;
     
 
     // Start is called before the first frame update
@@ -83,7 +83,8 @@ public partial class Player : MonoBehaviour
         playerInput = new PlayerInput();
         controller = gameObject.GetComponent<CharacterController>();
         Debug.Assert(controller != null);
-        //PlayerAnimator = GetComponent<Animator>();
+        PlayerAnimator = GetComponentInChildren<Animator>();
+
         //playerAnimation = GetComponent<PlayerAnimation>();
 
     }
@@ -175,16 +176,16 @@ public partial class Player : MonoBehaviour
     void Update()
     {
 
+        setAnimatorBool();
 
-
-        if (controller.isGrounded)
+        /*if (controller.isGrounded)
         {
             Debug.Log("IS GROUNDED");
         }
         else
         {
-            //Debug.Log("IS FLYING");
-        }
+            Debug.Log("IS FLYING");
+        }*/
 
 
         if (gravityFall)
@@ -276,8 +277,6 @@ public partial class Player : MonoBehaviour
             ScalePlayerDown();
         }
 
-        setAnimatorBool();
-
         /*else if (isSliding)
         {
             PlayerAnimator.Play("Sliding");
@@ -302,16 +301,16 @@ public partial class Player : MonoBehaviour
         {
             isMoving = false;
         }
-        if (isMoving)
+        /*if (isMoving)
         {
             isMoving = true;
-            //PlayerAnimator.SetBool("IsWalking", true);
+            PlayerAnimator.SetBool("IsWalking", true);
         }
         else
         {
             isMoving = false;
-            //PlayerAnimator.SetBool("IsWalking", false);
-        }
+            PlayerAnimator.SetBool("IsWalking", false);
+        }*/
     }
 
     void MovePlayer()
@@ -521,7 +520,7 @@ public partial class Player : MonoBehaviour
         } // if grounded but no RaycastHit, it means the slope is too steep for ray to detect
     }
 
-    void setAnimatorBool()
+    public void setAnimatorBool()
     {
         PlayerAnimator.SetBool("IsSliding", isSliding);
         PlayerAnimator.SetBool("IsWalking", isMoving);
@@ -529,6 +528,8 @@ public partial class Player : MonoBehaviour
         PlayerAnimator.SetBool("IsFlapping", isFlying);
         PlayerAnimator.SetBool("IsThinking", isThinking);
     }
+
+
 
 }
 
