@@ -419,7 +419,7 @@ MonoBehaviour:
   m_HapticHoverCancelDuration: 0
   m_LineType: 0
   m_BlendVisualLinePoints: 1
-  m_MaxRaycastDistance: 5
+  m_MaxRaycastDistance: 10
   m_RayOriginTransform: {fileID: 0}
   m_ReferenceFrame: {fileID: 0}
   m_Velocity: 16
@@ -435,7 +435,7 @@ MonoBehaviour:
   m_SphereCastRadius: 0.1
   m_RaycastMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 4294967295
   m_RaycastTriggerInteraction: 1
   m_HitClosestOnly: 0
   m_HoverToSelect: 0
@@ -567,7 +567,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LineWidth: 0.01
   m_OverrideInteractorLineLength: 1
-  m_LineLength: 5
+  m_LineLength: 10
   m_WidthCurve:
     serializedVersion: 2
     m_Curve:
@@ -1533,7 +1533,7 @@ MonoBehaviour:
   m_HapticHoverCancelDuration: 0
   m_LineType: 0
   m_BlendVisualLinePoints: 1
-  m_MaxRaycastDistance: 5
+  m_MaxRaycastDistance: 10
   m_RayOriginTransform: {fileID: 0}
   m_ReferenceFrame: {fileID: 0}
   m_Velocity: 16
@@ -1549,7 +1549,7 @@ MonoBehaviour:
   m_SphereCastRadius: 0.1
   m_RaycastMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 4294967295
   m_RaycastTriggerInteraction: 1
   m_HitClosestOnly: 0
   m_HoverToSelect: 0
@@ -1681,7 +1681,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LineWidth: 0.01
   m_OverrideInteractorLineLength: 1
-  m_LineLength: 5
+  m_LineLength: 10
   m_WidthCurve:
     serializedVersion: 2
     m_Curve:
@@ -2300,7 +2300,6 @@ MonoBehaviour:
   isFalling: 0
   isFlying: 0
   isThinking: 0
-  PlayerAnimator: {fileID: 595010146701498904}
 --- !u!114 &7453444277320579165
 MonoBehaviour:
   m_ObjectHideFlags: 0

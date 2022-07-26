@@ -376,6 +376,39 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""7a10c807-cc79-4fa8-9d95-97608bcc1b7b"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ScaleUp"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""f9c0d664-9d2e-4ae1-beeb-09493e3da31a"",
+                    ""path"": ""<XRController>{RightHand}/gripPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""ScaleUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""7d327c39-8321-4342-8c38-dfb5eaa49c32"",
+                    ""path"": ""<XRController>{RightHand}/primaryButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""ScaleUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
                     ""name"": """",
                     ""id"": ""875d734f-50e3-4f2c-84ed-005ed9264c2f"",
                     ""path"": ""<Keyboard>/x"",
@@ -385,6 +418,39 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""ScaleDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""d98a01e9-f02d-4fb2-ac13-b0129101ff69"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ScaleDown"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""0a6d05e8-c90b-4f4c-99a0-a34d7c4a38c7"",
+                    ""path"": ""<XRController>{RightHand}/gripPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""ScaleDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""66f10ebe-aba3-41cb-9b40-43a94e09b660"",
+                    ""path"": ""<XRController>{LeftHand}/primaryButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ScaleDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",

@@ -73,7 +73,7 @@ public class FunctionPropertyDisplay : MonoBehaviour
                 {
                     FindObjectOfType<FuncitonPropertyManager>().ReleaseButton(ListIndex);
                     FindObjectOfType<GraphListButtonControl>().releaseButton(ListIndex);
-                    //ResetFunctionProperty();
+                    ResetFunctionProperty();
                 }
                 break;
             case 1:

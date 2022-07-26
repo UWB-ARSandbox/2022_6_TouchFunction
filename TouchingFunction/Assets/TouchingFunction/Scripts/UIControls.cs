@@ -43,6 +43,7 @@ public class UIControls : MonoBehaviour
 
     #region Virtual Keyboard
     public GameObject VKeyboard;
+    public GameObject VKeyboardButton;
     #endregion
 
     #region PlayerControls
@@ -113,12 +114,15 @@ public class UIControls : MonoBehaviour
         // Quit Window
         QuitWindowPanel.SetActive(false);
         QuitWindowButton.SetActive(true);
+
+        VKeyboardButton.SetActive(false);
     }
 
     public void SetFunctionInputActive()
     {
         DisableBaseUI();
         FunctionInputPanel.SetActive(true);
+        VKeyboardButton.SetActive(true);
         
     }
 
@@ -126,6 +130,7 @@ public class UIControls : MonoBehaviour
     {
         DisableBaseUI();
         GraphControlPanel.SetActive(true);
+        VKeyboardButton.SetActive(true);
     }
 
     public void SetFlexibleColorPickerActive()
@@ -135,6 +140,7 @@ public class UIControls : MonoBehaviour
         FaceChange.SetActive(true);
         CColor.player.isThinking = true;
         TargetSelector.SetActive(true);
+        VKeyboardButton.SetActive(true);
     }
     public void SetControlsActive()
     {
@@ -150,20 +156,37 @@ public class UIControls : MonoBehaviour
 
     public void ToggleVirtualKeyboard()
     {
-        if(VKeyboard.active)
-        {
-            VKeyboard.SetActive(false);
-        }
-        else{
-            VKeyboard.SetActive(true);
-        }
+        VKeyboard.GetComponent<VKeyboard>().TrackPlayer = !VKeyboard.GetComponent<VKeyboard>().TrackPlayer;
  
     }
 
     private void TeleportUI(InputAction.CallbackContext obj)
     {
+        GameObject player = GameObject.Find("PlayerPre(Clone)");
+        float playerScale = 1;
+        Debug.Log(player.transform.localScale.x);
+        if(player.transform.localScale.x == 1)
+        {
+            playerScale = 1f;
+        }
+        else if (player.transform.localScale.x <= 2.5f)
+        {
+            playerScale = 1.1f;
+        }
+        else if (player.transform.localScale.x <= 4.5)
+        {
+            playerScale = 1.3f;
+        }
+        else if (player.transform.localScale.x <= 6.5f)
+        {
+            playerScale = 1.5f;
+        }
+        else 
+        {
+            playerScale = 2;
+        }
         Debug.Log("UI Summoned");
-        gameObject.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 4.5f;
+        gameObject.transform.position = Camera.main.transform.position + Camera.main.transform.forward * (7f * playerScale);
         if(gameObject.transform.position.y < 1)
         {
             Transform tempLoc = gameObject.transform;

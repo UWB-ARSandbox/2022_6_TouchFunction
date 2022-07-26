@@ -9872,6 +9872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b19a840b121d254a84149832d8ba746, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TrackPlayer: 0
 --- !u!1 &829824555
 GameObject:
   m_ObjectHideFlags: 0
@@ -14365,7 +14366,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3754563031915766773, guid: da9082a65f40bef4fbf6a48cd28c0b9f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3754563031915766775, guid: da9082a65f40bef4fbf6a48cd28c0b9f, type: 3}
       propertyPath: m_PresetInfoIsWorld
@@ -21033,6 +21034,7 @@ MonoBehaviour:
   QuitWindowPanel: {fileID: 687832027}
   QuitWindowButton: {fileID: 379932775}
   VKeyboard: {fileID: 818467786}
+  VKeyboardButton: {fileID: 1595386294}
 --- !u!114 &1616667187
 MonoBehaviour:
   m_ObjectHideFlags: 0
