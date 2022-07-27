@@ -66,7 +66,7 @@ public partial class GraphManipulation : MonoBehaviour
             float currDist = Math.Abs(currPos.y - originPos.y);
             float prevDist = Math.Abs(originalMousePos.y - originPos.y);
             float diff = currDist - prevDist;
-            float delta = diff * Math.Abs(originPos.z) / 1000.0f; // the further the player is from the graph, the higher the sensitivity
+            float delta = diff * Math.Abs(originPos.z) / 700.0f; // the further the player is from the graph, the higher the sensitivity
             SetYIntervalSpace(yIntervalSpace + Math.Round((double)delta, 1));
             originalMousePos = currPos;
             SetSelectedColor(selectedColor);    // Scales keep changing so need to set color them every update
@@ -75,8 +75,11 @@ public partial class GraphManipulation : MonoBehaviour
         else if (enabledGraphManip && selectedType == SelectedType.XAxisTipPos)
         {
             Vector3 currPos = Input.mousePosition;
-            float diff = currPos.x - originalMousePos.x;
-            float delta = diff / 50.0f;
+            Vector3 originPos = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+            float currDist = Math.Abs(currPos.x - originPos.x);
+            float prevDist = Math.Abs(originalMousePos.x - originPos.x);
+            float diff = currDist - prevDist;
+            float delta = diff * Math.Abs(originPos.z) / 1000.0f; // the further the player is from the graph, the higher the sensitivity
             SetXAxisLength(xAxisLengthPos + Math.Round((double)delta, 1));
             originalMousePos = currPos;
         }
@@ -84,8 +87,11 @@ public partial class GraphManipulation : MonoBehaviour
         else if (enabledGraphManip && selectedType == SelectedType.YAxisTipPos)
         {
             Vector3 currPos = Input.mousePosition;
-            float diff = currPos.y - originalMousePos.y;
-            float delta = diff / 50.0f;
+            Vector3 originPos = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+            float currDist = Math.Abs(currPos.y - originPos.y);
+            float prevDist = Math.Abs(originalMousePos.y - originPos.y);
+            float diff = currDist - prevDist;
+            float delta = diff * Math.Abs(originPos.z) / 500.0f; // the further the player is from the graph, the higher the sensitivity
             SetYAxisLength(yAxisLengthPos + Math.Round((double)delta, 1));
             originalMousePos = currPos;
         }
@@ -93,8 +99,11 @@ public partial class GraphManipulation : MonoBehaviour
         else if (enabledGraphManip && selectedType == SelectedType.XAxisTipNeg)
         {
             Vector3 currPos = Input.mousePosition;
-            float diff = originalMousePos.x - currPos.x;
-            float delta = diff / 50.0f;
+            Vector3 originPos = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+            float currDist = Math.Abs(currPos.x - originPos.x);
+            float prevDist = Math.Abs(originalMousePos.x - originPos.x);
+            float diff = currDist - prevDist;
+            float delta = diff * Math.Abs(originPos.z) / 1000.0f; // the further the player is from the graph, the higher the sensitivity
             SetXAxisLengthNeg(xAxisLengthNeg + Math.Round((double)delta, 1));
             originalMousePos = currPos;
         }
@@ -102,8 +111,11 @@ public partial class GraphManipulation : MonoBehaviour
         else if (enabledGraphManip && selectedType == SelectedType.YAxisTipNeg)
         {
             Vector3 currPos = Input.mousePosition;
-            float diff = originalMousePos.y - currPos.y;
-            float delta = diff / 50.0f;
+            Vector3 originPos = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+            float currDist = Math.Abs(currPos.y - originPos.y);
+            float prevDist = Math.Abs(originalMousePos.y - originPos.y);
+            float diff = currDist - prevDist;
+            float delta = diff * Math.Abs(originPos.z) / 1000.0f; // the further the player is from the graph, the higher the sensitivity
             SetYAxisLengthNeg(yAxisLengthNeg + Math.Round((double)delta, 1));
             originalMousePos = currPos;
         }
@@ -111,16 +123,22 @@ public partial class GraphManipulation : MonoBehaviour
         else if (enabledGraphManip && selectedType == SelectedType.XAxisLine)
         {
             Vector3 currPos = Input.mousePosition;
-            float diff = currPos.x - originalMousePos.x;
-            float delta = diff / 200.0f;
+            Vector3 originPos = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+            float currDist = Math.Abs(currPos.x - originPos.x);
+            float prevDist = Math.Abs(originalMousePos.x - originPos.x);
+            float diff = currDist - prevDist;
+            float delta = diff * Math.Abs(originPos.z) / 2000.0f; // the further the player is from the graph, the higher the sensitivity
             SetXIntervalSize(xIntervalSize - Math.Round((double)delta, 1));
             originalMousePos = currPos;
         }
         else if (enabledGraphManip && selectedType == SelectedType.YAxisLine)
         {
             Vector3 currPos = Input.mousePosition;
-            float diff = currPos.y - originalMousePos.y;
-            float delta = diff / 200.0f;
+            Vector3 originPos = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+            float currDist = Math.Abs(currPos.y - originPos.y);
+            float prevDist = Math.Abs(originalMousePos.y - originPos.y);
+            float diff = currDist - prevDist;
+            float delta = diff * Math.Abs(originPos.z) / 1000.0f; // the further the player is from the graph, the higher the sensitivity
             SetYIntervalSize(yIntervalSize - Math.Round((double)delta, 1));
             originalMousePos = currPos;
         }
