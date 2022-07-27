@@ -136,9 +136,27 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""GraphManipulation"",
+                    ""name"": ""SummonUI"",
                     ""type"": ""Button"",
-                    ""id"": ""d627d73d-90a2-4dc7-b844-fb256a41ec8c"",
+                    ""id"": ""a5ee3444-1d86-4f44-8e61-44f8e1a05512"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RightTrigger"",
+                    ""type"": ""Button"",
+                    ""id"": ""55a3088d-7ca4-42d6-b80d-9200e6c4436a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleUI"",
+                    ""type"": ""Button"",
+                    ""id"": ""8e1a8d25-b411-4308-bd8c-585fac83de7e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -367,6 +385,39 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""7a10c807-cc79-4fa8-9d95-97608bcc1b7b"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ScaleUp"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""f9c0d664-9d2e-4ae1-beeb-09493e3da31a"",
+                    ""path"": ""<XRController>{RightHand}/gripPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""ScaleUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""7d327c39-8321-4342-8c38-dfb5eaa49c32"",
+                    ""path"": ""<XRController>{RightHand}/primaryButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""ScaleUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
                     ""name"": """",
                     ""id"": ""875d734f-50e3-4f2c-84ed-005ed9264c2f"",
                     ""path"": ""<Keyboard>/x"",
@@ -376,6 +427,39 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""ScaleDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""d98a01e9-f02d-4fb2-ac13-b0129101ff69"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ScaleDown"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""0a6d05e8-c90b-4f4c-99a0-a34d7c4a38c7"",
+                    ""path"": ""<XRController>{RightHand}/gripPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""ScaleDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""66f10ebe-aba3-41cb-9b40-43a94e09b660"",
+                    ""path"": ""<XRController>{LeftHand}/primaryButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ScaleDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
@@ -401,14 +485,80 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""196c5527-e410-4b66-a1c4-fb4fce509027"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""id"": ""ea5041fa-e7dc-448a-a760-b7ff60660dd3"",
+                    ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PC"",
-                    ""action"": ""GraphManipulation"",
+                    ""action"": ""SummonUI"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""91c82105-6caa-4a7f-83d7-6aa3bc1b648b"",
+                    ""path"": ""<XRController>{RightHand}/secondaryButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""SummonUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4a4ba0a0-2556-4e78-a487-41355bc3a28b"",
+                    ""path"": ""<XRController>{RightHand}/triggerPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""RightTrigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e6edfae6-af35-4f41-9d6a-ac114f5bf101"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""515cb611-9de5-47f3-971c-224a9a789076"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleUI"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""c667298e-876f-4310-aad6-35a58e4efac5"",
+                    ""path"": ""<XRController>{RightHand}/gripPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""ToggleUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""09f6e33b-21c1-43cb-9f43-382d9e1f7824"",
+                    ""path"": ""<XRController>{RightHand}/secondaryButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -456,7 +606,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_PlayerControls_ScaleUp = m_PlayerControls.FindAction("ScaleUp", throwIfNotFound: true);
         m_PlayerControls_ScaleDown = m_PlayerControls.FindAction("ScaleDown", throwIfNotFound: true);
         m_PlayerControls_ToggleCursorLock = m_PlayerControls.FindAction("ToggleCursorLock", throwIfNotFound: true);
-        m_PlayerControls_GraphManipulation = m_PlayerControls.FindAction("GraphManipulation", throwIfNotFound: true);
+        m_PlayerControls_SummonUI = m_PlayerControls.FindAction("SummonUI", throwIfNotFound: true);
+        m_PlayerControls_RightTrigger = m_PlayerControls.FindAction("RightTrigger", throwIfNotFound: true);
+        m_PlayerControls_ToggleUI = m_PlayerControls.FindAction("ToggleUI", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -528,7 +680,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControls_ScaleUp;
     private readonly InputAction m_PlayerControls_ScaleDown;
     private readonly InputAction m_PlayerControls_ToggleCursorLock;
-    private readonly InputAction m_PlayerControls_GraphManipulation;
+    private readonly InputAction m_PlayerControls_SummonUI;
+    private readonly InputAction m_PlayerControls_RightTrigger;
+    private readonly InputAction m_PlayerControls_ToggleUI;
     public struct PlayerControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -545,7 +699,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @ScaleUp => m_Wrapper.m_PlayerControls_ScaleUp;
         public InputAction @ScaleDown => m_Wrapper.m_PlayerControls_ScaleDown;
         public InputAction @ToggleCursorLock => m_Wrapper.m_PlayerControls_ToggleCursorLock;
-        public InputAction @GraphManipulation => m_Wrapper.m_PlayerControls_GraphManipulation;
+        public InputAction @SummonUI => m_Wrapper.m_PlayerControls_SummonUI;
+        public InputAction @RightTrigger => m_Wrapper.m_PlayerControls_RightTrigger;
+        public InputAction @ToggleUI => m_Wrapper.m_PlayerControls_ToggleUI;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -591,9 +747,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @ToggleCursorLock.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleCursorLock;
                 @ToggleCursorLock.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleCursorLock;
                 @ToggleCursorLock.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleCursorLock;
-                @GraphManipulation.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGraphManipulation;
-                @GraphManipulation.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGraphManipulation;
-                @GraphManipulation.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGraphManipulation;
+                @SummonUI.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnSummonUI;
+                @SummonUI.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnSummonUI;
+                @SummonUI.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnSummonUI;
+                @RightTrigger.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRightTrigger;
+                @RightTrigger.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRightTrigger;
+                @RightTrigger.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRightTrigger;
+                @ToggleUI.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleUI;
+                @ToggleUI.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleUI;
+                @ToggleUI.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleUI;
             }
             m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -634,9 +796,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @ToggleCursorLock.started += instance.OnToggleCursorLock;
                 @ToggleCursorLock.performed += instance.OnToggleCursorLock;
                 @ToggleCursorLock.canceled += instance.OnToggleCursorLock;
-                @GraphManipulation.started += instance.OnGraphManipulation;
-                @GraphManipulation.performed += instance.OnGraphManipulation;
-                @GraphManipulation.canceled += instance.OnGraphManipulation;
+                @SummonUI.started += instance.OnSummonUI;
+                @SummonUI.performed += instance.OnSummonUI;
+                @SummonUI.canceled += instance.OnSummonUI;
+                @RightTrigger.started += instance.OnRightTrigger;
+                @RightTrigger.performed += instance.OnRightTrigger;
+                @RightTrigger.canceled += instance.OnRightTrigger;
+                @ToggleUI.started += instance.OnToggleUI;
+                @ToggleUI.performed += instance.OnToggleUI;
+                @ToggleUI.canceled += instance.OnToggleUI;
             }
         }
     }
@@ -673,6 +841,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnScaleUp(InputAction.CallbackContext context);
         void OnScaleDown(InputAction.CallbackContext context);
         void OnToggleCursorLock(InputAction.CallbackContext context);
-        void OnGraphManipulation(InputAction.CallbackContext context);
+        void OnSummonUI(InputAction.CallbackContext context);
+        void OnRightTrigger(InputAction.CallbackContext context);
+        void OnToggleUI(InputAction.CallbackContext context);
     }
 }

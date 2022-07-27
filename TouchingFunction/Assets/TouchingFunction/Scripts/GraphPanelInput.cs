@@ -2,18 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GraphPanelInput : MonoBehaviour
 {
     public Button submitButton;
-    public InputField xIntSizeInput;
-    public InputField xNumIntInput;
-    public InputField xIntSpaceInput;
-    public InputField xAxisLenInput;
-    public InputField yIntSizeInput;
-    public InputField yNumIntInput;
-    public InputField yIntSpaceInput;
-    public InputField yAxisLenInput;
+    public TMP_InputField xIntSizeInput;
+    public TMP_InputField xNumIntInput;
+    public TMP_InputField xIntSpaceInput;
+    public TMP_InputField xAxisLenInput;
+    public TMP_InputField yIntSizeInput;
+    public TMP_InputField yNumIntInput;
+    public TMP_InputField yIntSpaceInput;
+    public TMP_InputField yAxisLenInput;
     public GameObject graphAxes;
 
     GraphManipulation graphManScript;

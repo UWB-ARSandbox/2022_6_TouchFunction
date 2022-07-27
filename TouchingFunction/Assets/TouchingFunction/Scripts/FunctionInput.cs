@@ -16,7 +16,19 @@ public class FunctionInput : MonoBehaviour
     WolframAlpha wolframAlpha;
     MeshManager meshManager;
     
-    void Start()
+    // void Start()
+    // {
+    //     wolframAlpha = FindObjectOfType<WolframAlpha>();
+    //     meshManager = FindObjectOfType<MeshManager>();
+    // }
+
+    // void OnEnable()
+    // {
+    //     wolframAlpha = FindObjectOfType<WolframAlpha>();
+    //     meshManager = FindObjectOfType<MeshManager>();
+    // }
+
+    void Awake()
     {
         wolframAlpha = FindObjectOfType<WolframAlpha>();
         meshManager = FindObjectOfType<MeshManager>();

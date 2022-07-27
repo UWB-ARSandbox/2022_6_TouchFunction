@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class VR_Keyboard : MonoBehaviour
 {
-    public InputField m_InputField;
+    //public InputField m_InputField;
+    public TMP_InputField m_InputField;
     public GameObject normalButtons;
     public GameObject capsButtons;
     private bool caps;
@@ -26,6 +28,11 @@ public class VR_Keyboard : MonoBehaviour
         {
             m_InputField.text = m_InputField.text.Substring(0, m_InputField.text.Length - 1);
         }
+    }
+
+    public void ClearText()
+    {
+        m_InputField.text = "";
     }
 
     public void InsertSpace()
@@ -54,7 +61,7 @@ public class VR_Keyboard : MonoBehaviour
         gameObject.GetComponent<Canvas>().enabled = toggle;
     }
 
-    public void SetInputField(InputField inputField)
+    public void SetInputField(TMP_InputField inputField)
     {
         m_InputField = inputField;
     }
