@@ -30,6 +30,11 @@ public class VR_Keyboard : MonoBehaviour
         }
     }
 
+    public void ClearText()
+    {
+        m_InputField.text = "";
+    }
+
     public void InsertSpace()
     {
         m_InputField.text += " ";

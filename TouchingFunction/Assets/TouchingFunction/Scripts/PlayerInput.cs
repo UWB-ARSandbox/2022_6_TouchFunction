@@ -152,6 +152,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleUI"",
+                    ""type"": ""Button"",
+                    ""id"": ""8e1a8d25-b411-4308-bd8c-585fac83de7e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -506,6 +515,50 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""RightTrigger"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e6edfae6-af35-4f41-9d6a-ac114f5bf101"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""515cb611-9de5-47f3-971c-224a9a789076"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleUI"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""c667298e-876f-4310-aad6-35a58e4efac5"",
+                    ""path"": ""<XRController>{RightHand}/gripPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""ToggleUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""09f6e33b-21c1-43cb-9f43-382d9e1f7824"",
+                    ""path"": ""<XRController>{RightHand}/secondaryButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -555,6 +608,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_PlayerControls_ToggleCursorLock = m_PlayerControls.FindAction("ToggleCursorLock", throwIfNotFound: true);
         m_PlayerControls_SummonUI = m_PlayerControls.FindAction("SummonUI", throwIfNotFound: true);
         m_PlayerControls_RightTrigger = m_PlayerControls.FindAction("RightTrigger", throwIfNotFound: true);
+        m_PlayerControls_ToggleUI = m_PlayerControls.FindAction("ToggleUI", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -628,6 +682,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControls_ToggleCursorLock;
     private readonly InputAction m_PlayerControls_SummonUI;
     private readonly InputAction m_PlayerControls_RightTrigger;
+    private readonly InputAction m_PlayerControls_ToggleUI;
     public struct PlayerControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -646,6 +701,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @ToggleCursorLock => m_Wrapper.m_PlayerControls_ToggleCursorLock;
         public InputAction @SummonUI => m_Wrapper.m_PlayerControls_SummonUI;
         public InputAction @RightTrigger => m_Wrapper.m_PlayerControls_RightTrigger;
+        public InputAction @ToggleUI => m_Wrapper.m_PlayerControls_ToggleUI;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -697,6 +753,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @RightTrigger.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRightTrigger;
                 @RightTrigger.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRightTrigger;
                 @RightTrigger.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRightTrigger;
+                @ToggleUI.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleUI;
+                @ToggleUI.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleUI;
+                @ToggleUI.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleUI;
             }
             m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -743,6 +802,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @RightTrigger.started += instance.OnRightTrigger;
                 @RightTrigger.performed += instance.OnRightTrigger;
                 @RightTrigger.canceled += instance.OnRightTrigger;
+                @ToggleUI.started += instance.OnToggleUI;
+                @ToggleUI.performed += instance.OnToggleUI;
+                @ToggleUI.canceled += instance.OnToggleUI;
             }
         }
     }
@@ -781,5 +843,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnToggleCursorLock(InputAction.CallbackContext context);
         void OnSummonUI(InputAction.CallbackContext context);
         void OnRightTrigger(InputAction.CallbackContext context);
+        void OnToggleUI(InputAction.CallbackContext context);
     }
 }

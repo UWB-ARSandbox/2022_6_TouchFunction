@@ -49,6 +49,7 @@ public class UIControls : MonoBehaviour
     #region PlayerControls
     private PlayerInput playerInput;
     private InputAction summonUI;
+    private InputAction toggleUI;
     #endregion
 
     //public Canvas canvas;
@@ -70,6 +71,10 @@ public class UIControls : MonoBehaviour
         summonUI = playerInput.PlayerControls.SummonUI;
         summonUI.performed += TeleportUI;
         summonUI.Enable();
+
+        toggleUI = playerInput.PlayerControls.ToggleUI;
+        toggleUI.performed += ToggleUI;
+        toggleUI.Enable();
 
     }
 
@@ -192,7 +197,12 @@ public class UIControls : MonoBehaviour
             Transform tempLoc = gameObject.transform;
             tempLoc.position = new Vector3(tempLoc.position.x, 1, tempLoc.position.z);
         }
+        GetComponent<Canvas>().enabled = true;
     }
 
+    private void ToggleUI(InputAction.CallbackContext obj)
+    {
+        GetComponent<Canvas>().enabled = !GetComponent<Canvas>().enabled;
+    }
 
 }
