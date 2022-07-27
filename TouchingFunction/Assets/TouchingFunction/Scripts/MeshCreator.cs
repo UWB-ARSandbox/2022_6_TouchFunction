@@ -34,6 +34,8 @@ public class MeshCreator : MonoBehaviour
     public float[] yVals;
     #endregion
 
+    float groundHeight;
+
 
     string cachedFunction;
 
@@ -49,7 +51,7 @@ public class MeshCreator : MonoBehaviour
 
         double yUnitSpace = graphManScript.GetYUnitSpace();
         float yScale = (float) yUnitSpace;
-        float yPos = -(yScale / 2 - 0.5f);
+        float yPos = graphAxes.transform.localPosition.y - (yScale / 2);
         Debug.Log("yscale: " + yScale);
         Debug.Log("yPos: " + yPos);
 
@@ -83,6 +85,7 @@ public class MeshCreator : MonoBehaviour
         yVals = values;
         createGraphMesh();
         UpdateMesh();
+        groundHeight = transform.localPosition.y;
         //GetComponent<PointsCreator>().CreatePoints();
         onGraphChanged();
 
@@ -103,6 +106,9 @@ public class MeshCreator : MonoBehaviour
         zVals = new float[2];
         GetComponent<MeshFilter>().mesh = mesh;
         GetComponent<MeshCollider>().sharedMesh = mesh;
+
+        groundHeight = transform.localPosition.y;
+        Debug.Log("groundheight: " + groundHeight);
     }
 
     /*public void ReceivePointsFromNetwork(string _id, float[] values)

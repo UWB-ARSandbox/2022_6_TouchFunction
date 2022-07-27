@@ -17,8 +17,10 @@ public partial class GraphManipulation : MonoBehaviour
         YAxisScale,
         XAxisLine,
         YAxisLine,
-        XAxisTip,
-        YAxisTip,
+        XAxisTipPos,
+        YAxisTipPos,
+        XAxisTipNeg,
+        YAxisTipNeg,
         None
     }
     SelectedType selectedType;
@@ -41,11 +43,17 @@ public partial class GraphManipulation : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("Origin (World): " + gameObject.transform.position);
+        Debug.Log("Origin (Screen): " + Camera.main.WorldToScreenPoint(gameObject.transform.position));
+        Debug.Log("Origin Mouse: " + Input.mousePosition);        
         if (enabledGraphManip && selectedType == SelectedType.XAxisScale)
         {
             Vector3 currPos = Input.mousePosition;
-            float diff = currPos.x - originalMousePos.x;
-            float delta = diff / 500.0f;
+            Vector3 originPos = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+            float currDist = Math.Abs(currPos.x - originPos.x);
+            float prevDist = Math.Abs(originalMousePos.x - originPos.x);
+            float diff = currDist - prevDist;
+            float delta = diff * Math.Abs(originPos.z) / 2000.0f; // the further the player is from the graph, the higher the sensitivity
             SetXIntervalSpace(xIntervalSpace + Math.Round((double)delta, 1));
             originalMousePos = currPos;
             SetSelectedColor(selectedColor);    // Scales keep changing so need to set color them every update
@@ -54,30 +62,52 @@ public partial class GraphManipulation : MonoBehaviour
         else if (enabledGraphManip && selectedType == SelectedType.YAxisScale)
         {
             Vector3 currPos = Input.mousePosition;
-            float diff = currPos.y - originalMousePos.y;
-            float delta = diff / 200.0f;
+            Vector3 originPos = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+            float currDist = Math.Abs(currPos.y - originPos.y);
+            float prevDist = Math.Abs(originalMousePos.y - originPos.y);
+            float diff = currDist - prevDist;
+            float delta = diff * Math.Abs(originPos.z) / 1000.0f; // the further the player is from the graph, the higher the sensitivity
             SetYIntervalSpace(yIntervalSpace + Math.Round((double)delta, 1));
             originalMousePos = currPos;
             SetSelectedColor(selectedColor);    // Scales keep changing so need to set color them every update
         }
 
-        else if (enabledGraphManip && selectedType == SelectedType.XAxisTip)
+        else if (enabledGraphManip && selectedType == SelectedType.XAxisTipPos)
         {
             Vector3 currPos = Input.mousePosition;
             float diff = currPos.x - originalMousePos.x;
             float delta = diff / 50.0f;
-            SetXAxisLength(xAxisLength + Math.Round((double)delta, 1));
+            SetXAxisLength(xAxisLengthPos + Math.Round((double)delta, 1));
             originalMousePos = currPos;
         }
 
-        else if (enabledGraphManip && selectedType == SelectedType.YAxisTip)
+        else if (enabledGraphManip && selectedType == SelectedType.YAxisTipPos)
         {
             Vector3 currPos = Input.mousePosition;
             float diff = currPos.y - originalMousePos.y;
             float delta = diff / 50.0f;
-            SetYAxisLength(yAxisLength + Math.Round((double)delta, 1));
+            SetYAxisLength(yAxisLengthPos + Math.Round((double)delta, 1));
             originalMousePos = currPos;
         }
+
+        else if (enabledGraphManip && selectedType == SelectedType.XAxisTipNeg)
+        {
+            Vector3 currPos = Input.mousePosition;
+            float diff = originalMousePos.x - currPos.x;
+            float delta = diff / 50.0f;
+            SetXAxisLengthNeg(xAxisLengthNeg + Math.Round((double)delta, 1));
+            originalMousePos = currPos;
+        }
+        
+        else if (enabledGraphManip && selectedType == SelectedType.YAxisTipNeg)
+        {
+            Vector3 currPos = Input.mousePosition;
+            float diff = originalMousePos.y - currPos.y;
+            float delta = diff / 50.0f;
+            SetYAxisLengthNeg(yAxisLengthNeg + Math.Round((double)delta, 1));
+            originalMousePos = currPos;
+        }
+
         else if (enabledGraphManip && selectedType == SelectedType.XAxisLine)
         {
             Vector3 currPos = Input.mousePosition;
@@ -121,22 +151,29 @@ public partial class GraphManipulation : MonoBehaviour
             {
                 selectedType = SelectedType.YAxisScale;
             }
-            else if (selected.name.Equals("xAxisLine"))
+            else if (selected.name.Equals("xAxisLinePos") || selected.name.Equals("xAxisLineNeg"))
             {
                 selectedType = SelectedType.XAxisLine;
             }
-            else if (selected.name.Equals("yAxisLine"))
+            else if (selected.name.Equals("yAxisLinePos") || selected.name.Equals("yAxisLineNeg"))
             {
                 selectedType = SelectedType.YAxisLine;
             }
-            else if (selected.name.Equals("xTip"))
+            else if (selected.name.Equals("xTipPos"))
             {
-                selectedType = SelectedType.XAxisTip;
+                selectedType = SelectedType.XAxisTipPos;
             }
-            else if (selected.name.Equals("yTip"))
+            else if (selected.name.Equals("yTipPos"))
             {
-
-                selectedType = SelectedType.YAxisTip;
+                selectedType = SelectedType.YAxisTipPos;
+            }
+            else if (selected.name.Equals("xTipNeg"))
+            {
+                selectedType = SelectedType.XAxisTipNeg;
+            }
+            else if (selected.name.Equals("yTipNeg"))
+            {
+                selectedType = SelectedType.YAxisTipNeg;
             }
             else
             {
@@ -161,7 +198,10 @@ public partial class GraphManipulation : MonoBehaviour
     // When right click ends
     private void EndGraphManipulation(InputAction.CallbackContext obj)
     {
-        SetSelectedColor(defaultColor);
+        if (selected != null)
+        {
+            SetSelectedColor(defaultColor);
+        }
         enabledGraphManip = false;
         selectedType = SelectedType.None;
         selected = null;
@@ -170,35 +210,42 @@ public partial class GraphManipulation : MonoBehaviour
     // Set the color of the selected graph axes object based on specified color
     private void SetSelectedColor(Color color)
     {
-        if (selected == null)
-        {
-            return;
-        }
-
         if (selectedType == SelectedType.XAxisScale)
         {
-            for (int i = 0; i < xAxis.transform.childCount; i++)
-            {   // Set color for every x scale
-                GameObject child = xAxis.transform.GetChild(i).gameObject;
+            for (int i = 0; i < transform.childCount; i++)
+            {   
+                // Set color for every x scale
+                GameObject child = transform.GetChild(i).gameObject;
                 if (child.name.Equals("xScale"))
                 {
                     GameObject scale = child.transform.Find("scale").gameObject;
+                    Debug.Assert(scale != null);
                     scale.GetComponent<Renderer>().material.color = color;
                 }
             }
         }
         else if (selectedType == SelectedType.YAxisScale)
         {
-            for (int i = 0; i < yAxis.transform.childCount; i++)
+            for (int i = 0; i < transform.childCount; i++)
             {
                 // Set color for every y scale
-                GameObject child = yAxis.transform.GetChild(i).gameObject;
+                GameObject child = transform.GetChild(i).gameObject;
                 if (child.name.Equals("yScale"))
                 {
                     GameObject scale = child.transform.Find("scale").gameObject;
                     scale.GetComponent<Renderer>().material.color = color;
                 }
             }
+        }
+        else if (selectedType == SelectedType.XAxisLine)
+        {
+            xAxisPos.GetComponent<Renderer>().material.color = color;
+            xAxisNeg.GetComponent<Renderer>().material.color = color;
+        }
+        else if (selectedType == SelectedType.YAxisLine)
+        {
+            yAxisPos.GetComponent<Renderer>().material.color = color;
+            yAxisNeg.GetComponent<Renderer>().material.color = color;
         }
         else
         {

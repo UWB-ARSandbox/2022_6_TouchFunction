@@ -14690,13 +14690,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36723ad321947e14296bd8120524bac2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xAxis: {fileID: 2079052549}
-  yAxis: {fileID: 2079052548}
-  xAxisEnd: {fileID: 2079052547}
-  yAxisEnd: {fileID: 2079052546}
+  xAxisPos: {fileID: 2079052549}
+  xAxisNeg: {fileID: 2079052554}
+  yAxisPos: {fileID: 2079052548}
+  yAxisNeg: {fileID: 2079052553}
+  xAxisEndPos: {fileID: 2079052547}
+  xAxisEndNeg: {fileID: 2079052552}
+  yAxisEndPos: {fileID: 2079052546}
+  yAxisEndNeg: {fileID: 2079052551}
   xScale: {fileID: 2104790982012564634, guid: ee6904d08465ba34b8247a9179ede01d, type: 3}
   yScale: {fileID: 5488505256145549587, guid: 7a7f67b51b7d57f4285297e416eda30a, type: 3}
   meshManager: {fileID: 1438277363}
+--- !u!1 &2079052551 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5444102953831940607, guid: 49456704cf322ee46b65a4018598d1b7, type: 3}
+  m_PrefabInstance: {fileID: 2079052544}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2079052552 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8433384041098878267, guid: 49456704cf322ee46b65a4018598d1b7, type: 3}
+  m_PrefabInstance: {fileID: 2079052544}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2079052553 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 387634692938525677, guid: 49456704cf322ee46b65a4018598d1b7, type: 3}
+  m_PrefabInstance: {fileID: 2079052544}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2079052554 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5058937940619156711, guid: 49456704cf322ee46b65a4018598d1b7, type: 3}
+  m_PrefabInstance: {fileID: 2079052544}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2079052560
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -36,7 +36,7 @@ public class WolframAlpha : MonoBehaviour
     void Awake()
     {
         //Create the client.
-        client = new WolframAlphaClient("GHE9KT-EP5Y898AAL");
+        client = new WolframAlphaClient("PW452E-9GJ74GUQT6");
     }
 
     public void setAppId(string newAppId){
