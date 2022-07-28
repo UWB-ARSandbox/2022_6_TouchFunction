@@ -139,6 +139,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "GraphManipulation",
+                    "type": "Button",
+                    "id": "6204886e-e151-4aa6-a61c-39f2930a892b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -537,6 +546,17 @@
                     "action": "ToggleUI",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "2eaf794c-c486-4474-bc0b-5ebf16a6837c",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "GraphManipulation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

@@ -161,6 +161,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GraphManipulation"",
+                    ""type"": ""Button"",
+                    ""id"": ""6204886e-e151-4aa6-a61c-39f2930a892b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -559,6 +568,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""ToggleUI"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2eaf794c-c486-4474-bc0b-5ebf16a6837c"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""GraphManipulation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -609,6 +629,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_PlayerControls_SummonUI = m_PlayerControls.FindAction("SummonUI", throwIfNotFound: true);
         m_PlayerControls_RightTrigger = m_PlayerControls.FindAction("RightTrigger", throwIfNotFound: true);
         m_PlayerControls_ToggleUI = m_PlayerControls.FindAction("ToggleUI", throwIfNotFound: true);
+        m_PlayerControls_GraphManipulation = m_PlayerControls.FindAction("GraphManipulation", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -683,6 +704,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControls_SummonUI;
     private readonly InputAction m_PlayerControls_RightTrigger;
     private readonly InputAction m_PlayerControls_ToggleUI;
+    private readonly InputAction m_PlayerControls_GraphManipulation;
     public struct PlayerControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -702,6 +724,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @SummonUI => m_Wrapper.m_PlayerControls_SummonUI;
         public InputAction @RightTrigger => m_Wrapper.m_PlayerControls_RightTrigger;
         public InputAction @ToggleUI => m_Wrapper.m_PlayerControls_ToggleUI;
+        public InputAction @GraphManipulation => m_Wrapper.m_PlayerControls_GraphManipulation;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -756,6 +779,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @ToggleUI.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleUI;
                 @ToggleUI.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleUI;
                 @ToggleUI.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleUI;
+                @GraphManipulation.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGraphManipulation;
+                @GraphManipulation.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGraphManipulation;
+                @GraphManipulation.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGraphManipulation;
             }
             m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -805,6 +831,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @ToggleUI.started += instance.OnToggleUI;
                 @ToggleUI.performed += instance.OnToggleUI;
                 @ToggleUI.canceled += instance.OnToggleUI;
+                @GraphManipulation.started += instance.OnGraphManipulation;
+                @GraphManipulation.performed += instance.OnGraphManipulation;
+                @GraphManipulation.canceled += instance.OnGraphManipulation;
             }
         }
     }
@@ -844,5 +873,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnSummonUI(InputAction.CallbackContext context);
         void OnRightTrigger(InputAction.CallbackContext context);
         void OnToggleUI(InputAction.CallbackContext context);
+        void OnGraphManipulation(InputAction.CallbackContext context);
     }
 }

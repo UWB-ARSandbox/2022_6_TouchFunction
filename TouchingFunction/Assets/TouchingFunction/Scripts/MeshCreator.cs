@@ -49,7 +49,7 @@ public class MeshCreator : MonoBehaviour
 
         double yUnitSpace = graphManScript.GetYUnitSpace();
         float yScale = (float) yUnitSpace;
-        float yPos = -(yScale / 2 - 0.5f);
+        float yPos = graphAxes.transform.localPosition.y - (yScale / 2);
         Debug.Log("yscale: " + yScale);
         Debug.Log("yPos: " + yPos);
 
@@ -196,8 +196,10 @@ public class MeshCreator : MonoBehaviour
 
     public Vector3 FindClosestPoint(Vector3 point)
     {
-        float xDistance = point.x - origin.x;
-        float yDistance = point.y - origin.y;
+        Vector3 graphOrigin = graphAxes.transform.localPosition;
+        
+        float xDistance = point.x - graphOrigin.x;
+        float yDistance = point.y - graphOrigin.y;
 
         float x = xDistance / (float) graphManScript.GetXUnitSpace();
         float y = yDistance / (float) graphManScript.GetYUnitSpace();

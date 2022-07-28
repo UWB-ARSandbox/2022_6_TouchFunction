@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17338738, g: 0.21673909, b: 0.29880828, a: 1}
+  m_IndirectSpecularColor: {r: 0.17338738, g: 0.21673906, b: 0.29880828, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2521,6 +2521,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 216350636}
   m_CullTransparentMesh: 1
+--- !u!1 &230689665 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5444102953831940607, guid: 49456704cf322ee46b65a4018598d1b7, type: 3}
+  m_PrefabInstance: {fileID: 2079052544}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &252363846
 GameObject:
   m_ObjectHideFlags: 0
@@ -2626,6 +2631,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 255214896}
   m_CullTransparentMesh: 1
+--- !u!1 &286788791 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8433384041098878267, guid: 49456704cf322ee46b65a4018598d1b7, type: 3}
+  m_PrefabInstance: {fileID: 2079052544}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &288613427
 GameObject:
   m_ObjectHideFlags: 0
@@ -9876,6 +9886,11 @@ MonoBehaviour:
   playerScale: 0
   keyboardScale: 0
   camera: {fileID: 1038004328}
+--- !u!1 &824294891 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5058937940619156711, guid: 49456704cf322ee46b65a4018598d1b7, type: 3}
+  m_PrefabInstance: {fileID: 2079052544}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &829824555
 GameObject:
   m_ObjectHideFlags: 0
@@ -13962,6 +13977,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1117798316}
   m_CullTransparentMesh: 1
+--- !u!1 &1124411662 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 387634692938525677, guid: 49456704cf322ee46b65a4018598d1b7, type: 3}
+  m_PrefabInstance: {fileID: 2079052544}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1134908646
 GameObject:
   m_ObjectHideFlags: 0
@@ -26864,10 +26884,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36723ad321947e14296bd8120524bac2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xAxis: {fileID: 2079052549}
-  yAxis: {fileID: 2079052548}
-  xAxisEnd: {fileID: 2079052547}
-  yAxisEnd: {fileID: 2079052546}
+  xAxisPos: {fileID: 2079052549}
+  xAxisNeg: {fileID: 824294891}
+  yAxisPos: {fileID: 2079052548}
+  yAxisNeg: {fileID: 1124411662}
+  xAxisEndPos: {fileID: 2079052547}
+  xAxisEndNeg: {fileID: 286788791}
+  yAxisEndPos: {fileID: 2079052546}
+  yAxisEndNeg: {fileID: 230689665}
   xScale: {fileID: 2104790982012564634, guid: ee6904d08465ba34b8247a9179ede01d, type: 3}
   yScale: {fileID: 5488505256145549587, guid: 7a7f67b51b7d57f4285297e416eda30a, type: 3}
   meshManager: {fileID: 1438277363}
