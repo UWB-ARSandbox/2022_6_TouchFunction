@@ -7,6 +7,8 @@ public class QuitScript : MonoBehaviour
 {
     public void Quit() 
     {
+        
+        FindObjectOfType<PlayerSpawn>().onQuit();
         Application.Quit(); 
     }
 }

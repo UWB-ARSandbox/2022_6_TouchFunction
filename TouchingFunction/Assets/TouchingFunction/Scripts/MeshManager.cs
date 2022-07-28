@@ -141,7 +141,7 @@ public class MeshManager : MonoBehaviour
             {
                 ListEntry newEntry = Instantiate(listEntryPrefab);
                 newEntry.transform.parent = graphList.transform;
-                newEntry.GetComponent<RectTransform>().localPosition = new Vector3(0, 35 - 45 * i, 0);
+                newEntry.GetComponent<RectTransform>().localPosition = new Vector3(0, 150 - 45 * i, 0);
 
                 newEntry.MeshC = meshes[i];
                 newEntry.ListIndex = i;

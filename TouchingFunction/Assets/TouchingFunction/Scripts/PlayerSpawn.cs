@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerSpawn : MonoBehaviour
 {
+    private static GameObject player;
     // Instantiates a player for each client
     void Start()
     {
@@ -21,5 +22,12 @@ public class PlayerSpawn : MonoBehaviour
         obj.GetComponentInChildren<Camera>().enabled = true;
 
         obj.AddComponent<PlayerClickGraph>();
+
+        player = obj;
+    }
+
+    public void onQuit()
+    {
+        player.GetComponent<PlayerASL>().Quit();
     }
 }

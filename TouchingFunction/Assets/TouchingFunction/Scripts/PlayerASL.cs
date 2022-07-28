@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,12 +25,25 @@ public class PlayerASL : MonoBehaviour
     public Transform[] SkinParts;
 
     public Material[] HeadMat;
+    public int PeerID;
+    public bool recievedPeerID = false;
 
     public void SetLocal()
     {
         isLocal = true;
     }
 
+    public void Quit()
+    {
+        if(IsLocal())
+        {
+            aslObj.SendAndSetClaim(()  =>
+            {
+                aslObj.DeleteObject();
+            });
+        }
+    }
+    
     public bool IsLocal()
     {
         return isLocal;

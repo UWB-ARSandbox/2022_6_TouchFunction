@@ -57,7 +57,7 @@ public class VKeyboard : MonoBehaviour
         }
         gameObject.transform.position = camera.transform.position;
         gameObject.transform.position = gameObject.transform.position + (camera.transform.forward * (playerScale));
-        gameObject.transform.position = gameObject.transform.position + (camera.transform.up * -.45f );
+        gameObject.transform.position = gameObject.transform.position + (camera.transform.up * -.4f );
         
         gameObject.transform.rotation = Quaternion.LookRotation(gameObject.transform.position - camera.transform.position, Vector3.up);
         }
