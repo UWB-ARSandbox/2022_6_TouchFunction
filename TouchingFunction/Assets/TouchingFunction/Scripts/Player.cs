@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.XR;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.XR;
-using ASL;
 
 public partial class Player : MonoBehaviour
 {

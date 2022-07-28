@@ -194,5 +194,16 @@ public class MeshCreator : MonoBehaviour
         meshIsEmpty = true;
     }
 
+    public Vector3 FindClosestPoint(Vector3 point)
+    {
+        float xDistance = point.x - origin.x;
+        float yDistance = point.y - origin.y;
+
+        float x = xDistance / (float) graphManScript.GetXUnitSpace();
+        float y = yDistance / (float) graphManScript.GetYUnitSpace();
+
+        return new Vector3(x, y, 0);
+    }
+
 
 }

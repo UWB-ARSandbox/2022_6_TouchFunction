@@ -2222,7 +2222,6 @@ GameObject:
   - component: {fileID: 907798142613264899}
   - component: {fileID: 7473864094519733550}
   - component: {fileID: 7453444277320579165}
-  - component: {fileID: 1535697445308652434}
   - component: {fileID: 2960209404111065072}
   m_Layer: 0
   m_Name: PlayerPre
@@ -2338,21 +2337,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: f31d17728c3b37949987babefe0001fc, type: 2}
   - {fileID: 2100000, guid: f44a48d7e5dda2e45885f1a63434e437, type: 2}
   - {fileID: 2100000, guid: 5abae24421aaaf4478698cbd6a0f7ce1, type: 2}
---- !u!114 &1535697445308652434
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8995529674786299754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d2928ccde397bf408e94113a0f9330f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rightCon: {fileID: 5811812724241485670}
-  leftCon: {fileID: 422344594711535624}
-  playerCam: {fileID: 8995529675708157623}
 --- !u!114 &2960209404111065072
 MonoBehaviour:
   m_ObjectHideFlags: 0

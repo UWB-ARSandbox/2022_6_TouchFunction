@@ -10,90 +10,104 @@ public class PlayerClickGraph : MonoBehaviour
     private InputAction clickVRRight;
     private InputAction clickVRLeft;
 
-    private LayerMask layerMask;
+    // public GameObject rightCon;
+    // public GameObject leftCon;
 
-    public GameObject rightCon;
-    public GameObject leftCon;
+    Camera playerCam;
+    GameObject pointPrefab;
+    GameObject hoverPoint;
+    GameObject highlighted;
 
-    public GameObject playerCam;
+    LayerMask layerMask;
+    int graphLayer;
+    int pointLayer;
+
+    RaycastHit hit;
     // Start is called before the first frame update
     void Start()
     {
         playerInput = new PlayerInput();
-        layerMask = LayerMask.GetMask("Point");
+
+        pointLayer = LayerMask.NameToLayer("Point");
+        graphLayer = LayerMask.NameToLayer("GraphMesh");
+        layerMask = LayerMask.GetMask("GraphMesh", "Point");
+
+        playerCam = GetComponentInChildren<Camera>();
+        
+        hoverPoint = GameObject.Find("hoverPoint");
+        hoverPoint.SetActive(false);
     }
 
     void Awake()
     {
+        pointPrefab = Resources.Load<GameObject>("MyPrefabs/point");
         // Unity's new input action system doesn't work for left click. Known bug in the code. Future updates might fix
         // creating action and binding in code is best solution right now. 
         click = new InputAction(binding: "<Mouse>/leftButton");
-        click.performed += TryFindPoint;
+        click.performed += Click;
         click.Enable();
 
         clickVRRight = new InputAction(binding: "<XRController>{RightHand}/triggerPressed");
-        clickVRRight.performed += TryFindPointVRRight;
+        clickVRRight.performed += Click;
         clickVRRight.Enable();
 
         clickVRLeft = new InputAction(binding: "<XRController>{LeftHand}/triggerPressed");
-        clickVRLeft.performed += TryFindPointVRLeft;
+        clickVRLeft.performed += Click;
         clickVRLeft.Enable();
     }
 
-    // For PC users. Currently only targets objects in "Point" layer
-    private void TryFindPoint(InputAction.CallbackContext obj)
+    void Update()
     {
-        RaycastHit hit;
-        // if cursor locked, use center of camera for raycast
-        if(GetComponent<Player>().IsCursorLocked())
+        if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, 25, layerMask) ||
+            Physics.SphereCast(playerCam.transform.position, 1f, playerCam.transform.forward, out hit, 25, layerMask))
         {
-            if(Physics.Raycast(playerCam.transform.position, playerCam.transform.TransformDirection(Vector3.forward), out hit, 25, layerMask)) 
+            if(hit.transform.gameObject.layer == graphLayer)
             {
-                tryHit(hit);
+                if(highlighted != null)
+                {
+                    highlighted.GetComponentInParent<Point>().Deselect();
+                    highlighted = null;
+                }
+                hoverPoint.transform.position = new Vector3(hit.point.x, hit.point.y, hit.transform.position.z);
+                hoverPoint.SetActive(true);
             }
-        }
-        // if cursor not locked, use mouse position for raycast
-        else 
-        {
-            Ray ray = playerCam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
-            if(Physics.Raycast(ray.origin, ray.direction, out hit, 25, layerMask))
+            else if(hit.transform.gameObject.layer == pointLayer)
             {
-                tryHit(hit);
-            }
-        }
-    }
+                hoverPoint.SetActive(false);
 
-    // Checks if gameObject is not null, then executes WasHit method. 
-    private void tryHit(RaycastHit hit)
-    {
-        if(hit.transform.gameObject != null)
-        {
-            Debug.Log("Found Object");
-            hit.transform.gameObject.GetComponent<Point>().WasHit();
+                if(highlighted != null && highlighted != hit.transform.gameObject)
+                {
+                    highlighted.GetComponentInParent<Point>().Deselect();
+                }
+                hit.transform.GetComponentInParent<Point>().Select();
+                highlighted = hit.transform.gameObject;
+            }
+
         }
         else
         {
-            Debug.Log("GameObject not found.");
+            if(highlighted != null)
+            {
+                highlighted.GetComponentInParent<Point>().Deselect();
+                highlighted = null;
+            }
+            hoverPoint.SetActive(false);
         }
     }
 
-    // for VR users. uses right controller position and rotation for raycast. only checks for objects in "Point" layer.
-   private void TryFindPointVRRight(InputAction.CallbackContext obj)
-   {
-        RaycastHit hit;
-        if(Physics.Raycast(rightCon.transform.position, rightCon.transform.TransformDirection(Vector3.forward), out hit, 25, layerMask))
+    void Click(InputAction.CallbackContext obj)
+    {
+        if (hoverPoint.activeInHierarchy)
         {
-            tryHit(hit);
+            ASL.ASLHelper.InstantiateASLObject("point", hit.transform.InverseTransformPoint(hoverPoint.transform.position), Quaternion.identity, hit.transform.name);
         }
-   }
 
-   // for VR users. uses right controller position and rotation for raycast. only checks for objects in "Point" layer.
-   private void TryFindPointVRLeft(InputAction.CallbackContext obj)
-   {
-        RaycastHit hit;
-        if(Physics.Raycast(leftCon.transform.position, leftCon.transform.TransformDirection(Vector3.forward), out hit, 25, layerMask))
+        if (highlighted != null)
         {
-            tryHit(hit);
+            highlighted.GetComponentInParent<ASL.ASLObject>().SendAndSetClaim(() =>
+            {
+                highlighted.GetComponentInParent<ASL.ASLObject>().DeleteObject();
+            });
         }
-   }
+    }
 }
