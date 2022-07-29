@@ -18,8 +18,16 @@ public partial class Player : MonoBehaviour
         Quaternion moveValVR = vrLook.ReadValue<Quaternion>();
         Vector3 vecVR = moveValVR.eulerAngles;
         //head.localRotation = Quaternion.Euler(-vecVR.x, 0, 0);
-        head.localRotation = Quaternion.Euler(vecVR.x, 0, 0);
-        transform.rotation = Quaternion.Euler(0, vecVR.y, 0);
+        //head.localRotation = Quaternion.Euler(vecVR.x, 0, 0);
+        if (!isRiding)
+        {
+            head.localRotation = Quaternion.Euler(vecVR.x, 0, 0);
+            transform.rotation = Quaternion.Euler(0, vecVR.y, 0);
+        }
+        else
+        {
+            head.rotation = Quaternion.Euler(vecVR.x, vecVR.y, 0);
+        }
     }
 
     void RotateCameraMouse()
@@ -32,7 +40,14 @@ public partial class Player : MonoBehaviour
 
         rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
 
-        head.localRotation = Quaternion.Euler(-rotX, 0, 0);
-        transform.rotation = Quaternion.Euler(0, rotY, 0);
+        if (!isRiding)
+        {
+            head.localRotation = Quaternion.Euler(-rotX, 0, 0);
+            transform.rotation = Quaternion.Euler(0, rotY, 0);
+        }
+        else
+        {
+            head.rotation = Quaternion.Euler(-rotX, rotY, 0);
+        }
     }
 }

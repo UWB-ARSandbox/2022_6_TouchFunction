@@ -170,6 +170,33 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ride"",
+                    ""type"": ""Button"",
+                    ""id"": ""8acd6cac-ca66-4998-b087-439d8a4b2225"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DriveForward"",
+                    ""type"": ""Button"",
+                    ""id"": ""8440ee0d-7c88-4781-a39e-eb1578c83fc0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DriveBackward"",
+                    ""type"": ""Button"",
+                    ""id"": ""2f95c30f-682f-4f10-8859-04b12b11999a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -579,6 +606,61 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""GraphManipulation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d8c6778d-7b35-4d95-8ed7-24609920d24f"",
+                    ""path"": ""<Keyboard>/#(R)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Ride"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""37d846c1-ec1d-4d10-ac06-228c9cb60610"",
+                    ""path"": ""<Keyboard>/#(W)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""DriveForward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d12bf408-78eb-4fd3-a4c2-32444ac31fae"",
+                    ""path"": ""<Joystick>/stick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""DriveForward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ec9a1d04-3ad9-4f81-9d8d-82e71243c50e"",
+                    ""path"": ""<Keyboard>/#(S)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""DriveBackward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7aa2ce7d-9c32-4e87-a3e6-90ca911ffcba"",
+                    ""path"": ""<Joystick>/stick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""DriveBackward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -630,6 +712,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_PlayerControls_RightTrigger = m_PlayerControls.FindAction("RightTrigger", throwIfNotFound: true);
         m_PlayerControls_ToggleUI = m_PlayerControls.FindAction("ToggleUI", throwIfNotFound: true);
         m_PlayerControls_GraphManipulation = m_PlayerControls.FindAction("GraphManipulation", throwIfNotFound: true);
+        m_PlayerControls_Ride = m_PlayerControls.FindAction("Ride", throwIfNotFound: true);
+        m_PlayerControls_DriveForward = m_PlayerControls.FindAction("DriveForward", throwIfNotFound: true);
+        m_PlayerControls_DriveBackward = m_PlayerControls.FindAction("DriveBackward", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -705,6 +790,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControls_RightTrigger;
     private readonly InputAction m_PlayerControls_ToggleUI;
     private readonly InputAction m_PlayerControls_GraphManipulation;
+    private readonly InputAction m_PlayerControls_Ride;
+    private readonly InputAction m_PlayerControls_DriveForward;
+    private readonly InputAction m_PlayerControls_DriveBackward;
     public struct PlayerControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -725,6 +813,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @RightTrigger => m_Wrapper.m_PlayerControls_RightTrigger;
         public InputAction @ToggleUI => m_Wrapper.m_PlayerControls_ToggleUI;
         public InputAction @GraphManipulation => m_Wrapper.m_PlayerControls_GraphManipulation;
+        public InputAction @Ride => m_Wrapper.m_PlayerControls_Ride;
+        public InputAction @DriveForward => m_Wrapper.m_PlayerControls_DriveForward;
+        public InputAction @DriveBackward => m_Wrapper.m_PlayerControls_DriveBackward;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -782,6 +873,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @GraphManipulation.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGraphManipulation;
                 @GraphManipulation.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGraphManipulation;
                 @GraphManipulation.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGraphManipulation;
+                @Ride.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRide;
+                @Ride.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRide;
+                @Ride.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRide;
+                @DriveForward.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDriveForward;
+                @DriveForward.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDriveForward;
+                @DriveForward.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDriveForward;
+                @DriveBackward.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDriveBackward;
+                @DriveBackward.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDriveBackward;
+                @DriveBackward.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDriveBackward;
             }
             m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -834,6 +934,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @GraphManipulation.started += instance.OnGraphManipulation;
                 @GraphManipulation.performed += instance.OnGraphManipulation;
                 @GraphManipulation.canceled += instance.OnGraphManipulation;
+                @Ride.started += instance.OnRide;
+                @Ride.performed += instance.OnRide;
+                @Ride.canceled += instance.OnRide;
+                @DriveForward.started += instance.OnDriveForward;
+                @DriveForward.performed += instance.OnDriveForward;
+                @DriveForward.canceled += instance.OnDriveForward;
+                @DriveBackward.started += instance.OnDriveBackward;
+                @DriveBackward.performed += instance.OnDriveBackward;
+                @DriveBackward.canceled += instance.OnDriveBackward;
             }
         }
     }
@@ -874,5 +983,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnRightTrigger(InputAction.CallbackContext context);
         void OnToggleUI(InputAction.CallbackContext context);
         void OnGraphManipulation(InputAction.CallbackContext context);
+        void OnRide(InputAction.CallbackContext context);
+        void OnDriveForward(InputAction.CallbackContext context);
+        void OnDriveBackward(InputAction.CallbackContext context);
     }
 }

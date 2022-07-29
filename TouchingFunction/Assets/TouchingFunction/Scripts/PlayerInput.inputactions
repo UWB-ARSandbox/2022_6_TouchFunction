@@ -148,6 +148,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Ride",
+                    "type": "Button",
+                    "id": "8acd6cac-ca66-4998-b087-439d8a4b2225",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DriveForward",
+                    "type": "Button",
+                    "id": "8440ee0d-7c88-4781-a39e-eb1578c83fc0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DriveBackward",
+                    "type": "Button",
+                    "id": "2f95c30f-682f-4f10-8859-04b12b11999a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -555,6 +582,61 @@
                     "processors": "",
                     "groups": "PC",
                     "action": "GraphManipulation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d8c6778d-7b35-4d95-8ed7-24609920d24f",
+                    "path": "<Keyboard>/#(R)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Ride",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "37d846c1-ec1d-4d10-ac06-228c9cb60610",
+                    "path": "<Keyboard>/#(W)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "DriveForward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d12bf408-78eb-4fd3-a4c2-32444ac31fae",
+                    "path": "<Joystick>/stick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "DriveForward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ec9a1d04-3ad9-4f81-9d8d-82e71243c50e",
+                    "path": "<Keyboard>/#(S)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "DriveBackward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7aa2ce7d-9c32-4e87-a3e6-90ca911ffcba",
+                    "path": "<Joystick>/stick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "DriveBackward",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

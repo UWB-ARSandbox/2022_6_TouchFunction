@@ -16,9 +16,11 @@ public partial class Player : MonoBehaviour
     public float gravity = 10.0f;
     public int onPlatform = -1;
     public float verticalSpeed = 0f;
-    public float SlideLimit = 45f;
+    public float SlideLimit;
     public Vector3 SlidingVector;
-    
+    public Vector3 newSlidingVec;
+    public Vector3 inheritedSliding;
+    public float friction = 1f;
     public Vector3 CollidePosition;
 
     private float scalingFactor = 0.2f;
@@ -49,6 +51,11 @@ public partial class Player : MonoBehaviour
     private InputAction vrLookCon;
     private InputAction scaleUp;
     private InputAction scaleDown;
+    
+    private InputAction ride;
+    private InputAction driveFwd;
+    private InputAction driveBkwd;
+
     public Vector3 velocity;
 
     private bool gravityFall;
@@ -59,20 +66,33 @@ public partial class Player : MonoBehaviour
     public PlayerASL playerASL;
 
     #region Animator Booleans
+    public Animator PlayerAnimator;
     public bool isSliding = false;
     public bool isMoving = false;
     public bool isFalling = false;
     public bool isFlying = false;
     public bool isThinking = false;
+    public bool isRiding = false;
+    public bool isGrounded;
     #endregion
-    Animator PlayerAnimator;
     
+
+    #region Vehicle
+    public GameObject EnterVehicleGUI;
+    public RollerCoasterControl RCControlToRide;
+    public RollerCoasterControl RCControlRiding;
+    bool isForward;
+    bool isBackward;
+    public Canvas canvas;
+    #endregion
+
 
     // Start is called before the first frame update
     void Start()
     {
         LockCursor();
         velocity = Vector3.zero;
+        SlideLimit = 15f;
         gravityFall = false;
         gravityRise = false;
     }
@@ -83,7 +103,6 @@ public partial class Player : MonoBehaviour
         controller = gameObject.GetComponent<CharacterController>();
         Debug.Assert(controller != null);
         PlayerAnimator = GetComponentInChildren<Animator>();
-
         //playerAnimation = GetComponent<PlayerAnimation>();
 
     }
@@ -135,6 +154,21 @@ public partial class Player : MonoBehaviour
         scaleDown.canceled += EndScalingDown;
         scaleDown.Enable();
 
+        // enter roller coaster
+        ride = playerInput.PlayerControls.Ride;
+        ride.performed += EnterExitVehicle;
+        ride.Enable();
+
+        driveFwd = playerInput.PlayerControls.DriveForward;
+        driveFwd.started += carForward;
+        driveFwd.canceled += carStop;
+        driveFwd.Disable();
+
+        driveBkwd = playerInput.PlayerControls.DriveBackward;
+        driveBkwd.started += carBackward;
+        driveBkwd.canceled += carStop;
+        driveBkwd.Disable();
+
         // script to check for VR input to activate VR hands
         gameObject.GetComponent<PlayerActivateVRHands>().enabled = true;
 
@@ -169,23 +203,51 @@ public partial class Player : MonoBehaviour
                 RotateCameraMouse();
             }
         }
+
+        if (isRiding)
+        {
+            controller.Move(RCControlRiding.FinalMoveVector);
+            transform.forward = RCControlRiding.transform.forward;
+        }
+
+        setAnimatorBool();
     }
 
     // Update is called once per frame
     void Update()
     {
+        isGrounded = controller.isGrounded;
 
-        setAnimatorBool();
-
-        /*if (controller.isGrounded)
+        if (isRiding)
         {
-            Debug.Log("IS GROUNDED");
+            /*if (RCControlRiding.IsDriver(this))
+            {
+                //Debug.LogError("!!!!!!!");
+                if (Input.GetKey(KeyCode.W))
+                {
+                    
+                    RCControlRiding.DriverMoveVector = RCControlRiding.transform.forward * 0.1f;
+                }
+                else if (Input.GetKey(KeyCode.S))
+                {
+                    RCControlRiding.DriverMoveVector = RCControlRiding.transform.forward * -0.1f;
+                }
+            }*/
+            if (RCControlRiding.IsDriver(this))
+            {
+                if (isForward)
+                {
+                    RCControlRiding.DriverMoveVector = RCControlRiding.transform.forward * 0.1f;
+                }
+                else if (isBackward)
+                {
+                    RCControlRiding.DriverMoveVector = RCControlRiding.transform.forward * -0.1f;
+                } 
+            }
+
+
+            return;
         }
-        else
-        {
-            Debug.Log("IS FLYING");
-        }*/
-
 
         if (gravityFall)
         {
@@ -225,17 +287,23 @@ public partial class Player : MonoBehaviour
         } else
         {
             isSliding = false;
+            //clearSliding();
+            //newSlidingVec = Vector3.zero;
         }
 
         //if gravity enabled, drag player to platform
         if (gravityEnabled)//&& !controller.isGrounded)
         {
             velocity.y -= (gravity * Time.deltaTime) * .75f;
-            if (velocity.y < 0 && !controller.isGrounded)
+            if (!isSliding)
             {
-                //PlayerAnimator.SetBool("IsFalling", true);
-                isFalling = true;
+                if (velocity.y < 0 && !controller.isGrounded)
+                {
+                    //PlayerAnimator.SetBool("IsFalling", true);
+                    isFalling = true;
+                }
             }
+
         }
         else
         {
@@ -300,16 +368,6 @@ public partial class Player : MonoBehaviour
         {
             isMoving = false;
         }
-        /*if (isMoving)
-        {
-            isMoving = true;
-            PlayerAnimator.SetBool("IsWalking", true);
-        }
-        else
-        {
-            isMoving = false;
-            PlayerAnimator.SetBool("IsWalking", false);
-        }*/
     }
 
     void MovePlayer()
@@ -414,6 +472,7 @@ public partial class Player : MonoBehaviour
     // jump. if player gravity = false, moves 
     private void StartJump(InputAction.CallbackContext obj)
     {
+        Debug.LogError("START JUMP");
         if (IsCursorLocked())
         {
             Debug.Log("Jump!");
@@ -496,27 +555,28 @@ public partial class Player : MonoBehaviour
     // When standing on a slope, calculate the sliding Vector3 and store into the global variables
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        //CollidePosition = hit.transform.position;
-        //Debug.Log("Controller hit Normal: " + hit.normal);
-        //Debug.Log("Controller hit position: " + hit.transform.position);
+        //Debug.LogError("HIT!!");
         if (controller.isGrounded)
         {
             Vector3 norm = hit.normal;
 
             //Debug.Log(slopeHit.normal);
-            if (Vector3.Angle(norm, Vector3.up) > SlideLimit)   // if on a slope steeper than limit
+            if (hit.gameObject.layer == 11)//Vector3.Angle(norm, Vector3.up) > SlideLimit)   // if on a slope steeper than limit
             {
                 isSliding = true;
                 //PlayerAnimator.SetBool("IsSliding", true);
-                SlidingVector = norm + Mathf.Sqrt(1 + (norm.x / norm.y) * (norm.x / norm.y)) * Vector3.down * Mathf.Abs(norm.x/norm.y);
+                newSlidingVec = (norm + Mathf.Sqrt(1 + (norm.x / norm.y) * (norm.x / norm.y)) * Vector3.down) * 0.005f;
+                //Debug.Log("DOT PRODUCT : " + Vector3.Dot(newSlidingVec, SlidingVector));
+                inheritedSliding = newSlidingVec.normalized * SlidingVector.magnitude * Vector3.Dot(newSlidingVec.normalized, SlidingVector.normalized);
+                SlidingVector = newSlidingVec + inheritedSliding;
             }
             else
             {
+
                 isSliding = false;
-                //PlayerAnimator.SetBool("IsSliding", false);
-                SlidingVector = Vector3.zero;
+                clearSliding();
             }
-        } // if grounded but no RaycastHit, it means the slope is too steep for ray to detect
+        }
     }
 
     public void setAnimatorBool()
@@ -526,10 +586,101 @@ public partial class Player : MonoBehaviour
         PlayerAnimator.SetBool("IsFalling", isFalling);
         PlayerAnimator.SetBool("IsFlapping", isFlying);
         PlayerAnimator.SetBool("IsThinking", isThinking);
+        PlayerAnimator.SetBool("IsRiding", isRiding);
+    }
+
+    public void EnterExitVehicle(InputAction.CallbackContext obj)
+    {
+        if (!isRiding)
+        {
+            if (RCControlToRide != null)
+            {
+                int seatNumber = RCControlToRide.AddRider(this);
+                if (seatNumber >= 0)
+                {
+                    //controller.enabled = false;
+                    gameObject.transform.parent = RCControlToRide.transform;
+                    RCControlRiding = RCControlToRide;
+                    SetEnterVehicleGUI(false);
+
+                    controller.Move((RCControlRiding.transform.position - transform.position) + RCControlRiding.SeatPositions[seatNumber]);
+
+                    //RCControlRiding.AddRider(this);
+                    isRiding = true;
+
+                    movement.Disable();
+                    jump.Disable();
+                    disableGravity.Disable();
+                    enableGravity.Disable();
+                    scaleUp.Disable();
+                    scaleDown.Disable();
+
+                    driveFwd.Enable();
+                    driveBkwd.Enable();
+
+                    canvas.gameObject.SetActive(false);
+                }
+            }
+        }
+        else
+        {
+            RCControlRiding.KickPlayer(this);
+            isRiding = false;
+            //controller.enabled = true;
+            gameObject.transform.parent = null;
+            RCControlRiding = null;
+
+            movement.Enable();
+            jump.Enable();
+            disableGravity.Enable();
+            enableGravity.Enable();
+            scaleUp.Enable();
+            scaleDown.Enable();
+
+            driveFwd.Disable();
+            driveBkwd.Disable();
+            canvas.gameObject.SetActive(true);
+        }
     }
 
 
+    public void SetEnterVehicleGUI(bool op)
+    {
+        EnterVehicleGUI.SetActive(op);
+    }
 
+    void carForward(InputAction.CallbackContext obj)
+    {
+        if (RCControlRiding.IsDriver(this))
+        {
+            isForward = true;
+        }
+            
+    }
+
+    void carBackward(InputAction.CallbackContext obj)
+    {
+        if (RCControlRiding.IsDriver(this))
+        {
+            isBackward = true;
+        }
+    }
+
+    void carStop(InputAction.CallbackContext obj)
+    {
+        if (RCControlRiding.IsDriver(this))
+        {
+            isForward = false;
+            isBackward = false;
+        }
+    }
+
+    void clearSliding()
+    {
+        SlidingVector = Vector3.zero;
+        newSlidingVec = Vector3.zero;
+        inheritedSliding = Vector3.zero;
+    }
 }
 
 
