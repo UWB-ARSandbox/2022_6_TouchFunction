@@ -193,7 +193,11 @@ public class MeshCreator : MonoBehaviour
         mesh.Clear();
         functionText = "";
         meshIsEmpty = true;
-        GetComponent<MeshCollider>().sharedMesh = mesh;
+        
+        // Reset mesh collider
+        GetComponent<MeshCollider>().sharedMesh = mesh; 
+        
+        // Delete all the points associate with the mesh
         foreach (Transform child in transform) {
             Destroy(child.gameObject);
         }
