@@ -193,6 +193,10 @@ public class MeshCreator : MonoBehaviour
         mesh.Clear();
         functionText = "";
         meshIsEmpty = true;
+        GetComponent<MeshCollider>().sharedMesh = mesh;
+        foreach (Transform child in transform) {
+            Destroy(child.gameObject);
+        }
     }
 
     public Vector3 FindClosestPoint(Vector3 point)
