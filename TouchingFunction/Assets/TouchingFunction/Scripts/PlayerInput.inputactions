@@ -130,6 +130,30 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+<<<<<<< HEAD
+                    "name": "Ride",
+                    "type": "Button",
+                    "id": "edd800d4-9921-4cd8-ade2-4fc2ca18e7ee",
+=======
+                    "name": "ToggleUI",
+                    "type": "Button",
+                    "id": "8e1a8d25-b411-4308-bd8c-585fac83de7e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "GraphManipulation",
+                    "type": "Button",
+                    "id": "6204886e-e151-4aa6-a61c-39f2930a892b",
+>>>>>>> main
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -354,6 +378,39 @@
                     "isPartOfComposite": false
                 },
                 {
+                    "name": "One Modifier",
+                    "id": "7a10c807-cc79-4fa8-9d95-97608bcc1b7b",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ScaleUp",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "f9c0d664-9d2e-4ae1-beeb-09493e3da31a",
+                    "path": "<XRController>{RightHand}/gripPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "ScaleUp",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "7d327c39-8321-4342-8c38-dfb5eaa49c32",
+                    "path": "<XRController>{RightHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "ScaleUp",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "875d734f-50e3-4f2c-84ed-005ed9264c2f",
                     "path": "<Keyboard>/x",
@@ -363,6 +420,39 @@
                     "action": "ScaleDown",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "d98a01e9-f02d-4fb2-ac13-b0129101ff69",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ScaleDown",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "0a6d05e8-c90b-4f4c-99a0-a34d7c4a38c7",
+                    "path": "<XRController>{RightHand}/gripPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "ScaleDown",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "66f10ebe-aba3-41cb-9b40-43a94e09b660",
+                    "path": "<XRController>{LeftHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ScaleDown",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
@@ -400,7 +490,11 @@
                 {
                     "name": "",
                     "id": "91c82105-6caa-4a7f-83d7-6aa3bc1b648b",
+<<<<<<< HEAD
                     "path": "<XRController>{RightHand}/secondaryButton",
+=======
+                    "path": "<XRController>{LeftHand}/menu",
+>>>>>>> main
                     "interactions": "",
                     "processors": "",
                     "groups": "VR",
@@ -416,6 +510,98 @@
                     "processors": "",
                     "groups": "VR",
                     "action": "RightTrigger",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+<<<<<<< HEAD
+                    "id": "5b58312b-c843-4a16-8e54-8c8a01d798cd",
+                    "path": "<Keyboard>/#(R)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ride",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "InVehicleControls",
+            "id": "b4342c45-2e60-4eef-99ad-66c8c46d34b6",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "750f8bd8-7760-4295-b3ad-73b88b0828a5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a47a3725-5414-43af-b7dc-6c08a2161404",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+=======
+                    "id": "e6edfae6-af35-4f41-9d6a-ac114f5bf101",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleUI",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "515cb611-9de5-47f3-971c-224a9a789076",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleUI",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "c667298e-876f-4310-aad6-35a58e4efac5",
+                    "path": "<XRController>{RightHand}/gripPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR",
+                    "action": "ToggleUI",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "09f6e33b-21c1-43cb-9f43-382d9e1f7824",
+                    "path": "<XRController>{LeftHand}/menu",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleUI",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "2eaf794c-c486-4474-bc0b-5ebf16a6837c",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "GraphManipulation",
+>>>>>>> main
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

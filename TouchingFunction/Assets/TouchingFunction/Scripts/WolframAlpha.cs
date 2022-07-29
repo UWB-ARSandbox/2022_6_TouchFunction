@@ -29,14 +29,14 @@ public class WolframAlpha : MonoBehaviour
 
 
     //Original WA APPID:
-    string originalWAAppId = "GHE9KT-EP5Y898AAL";
+    string originalWAAppId = "PW452E-9GJ74GUQT6";
     string userWAAppId = "";
     WolframAlphaClient client;
     // Start is called before the first frame update
     void Awake()
     {
         //Create the client.
-        client = new WolframAlphaClient("GHE9KT-EP5Y898AAL");
+        client = new WolframAlphaClient("PW452E-9GJ74GUQT6");
     }
 
     public void setAppId(string newAppId){
@@ -52,6 +52,13 @@ public class WolframAlpha : MonoBehaviour
     // @param: inc      -- float increment amount 
     // @returns: list of y coordinate floats
     public async void Solve(string equation, float start, float end, float width, float inc){
+        if((Mathf.Abs((end - start)/inc) < 20))
+        {   //number of increments is less than 20
+            //      --> WolframAlpha will output a table instead of normal format
+            // Need to make it atleast 20 increments
+            inc = Mathf.Abs((end - start)/20);
+        } 
+
         string input = "Table[" + equation + "], {x, " + start + ", " + end + ", " + inc + "}]";
 
         Debug.Log(input);

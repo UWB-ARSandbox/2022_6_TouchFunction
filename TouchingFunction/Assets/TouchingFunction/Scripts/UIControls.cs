@@ -24,6 +24,10 @@ public class UIControls : MonoBehaviour
     public GameObject TargetSelector;
     public ChangeColor CColor;
     public GameObject FaceChange;
+<<<<<<< HEAD
+    public MirrorCamera MirrorCam;
+=======
+>>>>>>> main
     #endregion
 
     #region GraphList
@@ -43,11 +47,19 @@ public class UIControls : MonoBehaviour
 
     #region Virtual Keyboard
     public GameObject VKeyboard;
+<<<<<<< HEAD
+=======
+    public GameObject VKeyboardButton;
+>>>>>>> main
     #endregion
 
     #region PlayerControls
     private PlayerInput playerInput;
     private InputAction summonUI;
+<<<<<<< HEAD
+=======
+    private InputAction toggleUI;
+>>>>>>> main
     #endregion
 
     //public Canvas canvas;
@@ -70,6 +82,13 @@ public class UIControls : MonoBehaviour
         summonUI.performed += TeleportUI;
         summonUI.Enable();
 
+<<<<<<< HEAD
+=======
+        toggleUI = playerInput.PlayerControls.ToggleUI;
+        toggleUI.performed += ToggleUI;
+        toggleUI.Enable();
+
+>>>>>>> main
     }
 
 
@@ -105,6 +124,10 @@ public class UIControls : MonoBehaviour
         FaceChange.SetActive(false);
         CColor.player.isThinking = false;
         FlexibleColorPickerButton.SetActive(true);
+<<<<<<< HEAD
+        MirrorCam.StopMirrorCamera();
+=======
+>>>>>>> main
 
         // User controls
         ControlsPanel.SetActive(false);
@@ -113,12 +136,21 @@ public class UIControls : MonoBehaviour
         // Quit Window
         QuitWindowPanel.SetActive(false);
         QuitWindowButton.SetActive(true);
+<<<<<<< HEAD
+=======
+
+        VKeyboardButton.SetActive(false);
+>>>>>>> main
     }
 
     public void SetFunctionInputActive()
     {
         DisableBaseUI();
         FunctionInputPanel.SetActive(true);
+<<<<<<< HEAD
+=======
+        VKeyboardButton.SetActive(true);
+>>>>>>> main
         
     }
 
@@ -126,6 +158,10 @@ public class UIControls : MonoBehaviour
     {
         DisableBaseUI();
         GraphControlPanel.SetActive(true);
+<<<<<<< HEAD
+=======
+        VKeyboardButton.SetActive(true);
+>>>>>>> main
     }
 
     public void SetFlexibleColorPickerActive()
@@ -135,6 +171,11 @@ public class UIControls : MonoBehaviour
         FaceChange.SetActive(true);
         CColor.player.isThinking = true;
         TargetSelector.SetActive(true);
+<<<<<<< HEAD
+        MirrorCam.StartMirrorCamera();
+=======
+        VKeyboardButton.SetActive(true);
+>>>>>>> main
     }
     public void SetControlsActive()
     {
@@ -150,6 +191,7 @@ public class UIControls : MonoBehaviour
 
     public void ToggleVirtualKeyboard()
     {
+<<<<<<< HEAD
         if(VKeyboard.active)
         {
             VKeyboard.SetActive(false);
@@ -157,19 +199,60 @@ public class UIControls : MonoBehaviour
         else{
             VKeyboard.SetActive(true);
         }
+=======
+        VKeyboard.GetComponent<VKeyboard>().TrackPlayer = !VKeyboard.GetComponent<VKeyboard>().TrackPlayer;
+>>>>>>> main
  
     }
 
     private void TeleportUI(InputAction.CallbackContext obj)
     {
+<<<<<<< HEAD
         Debug.Log("UI Summoned");
         gameObject.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 4.5f;
+=======
+        GameObject player = GameObject.Find("PlayerPre(Clone)");
+        float playerScale = 1;
+        Debug.Log(player.transform.localScale.x);
+        if(player.transform.localScale.x == 1)
+        {
+            playerScale = 1f;
+        }
+        else if (player.transform.localScale.x <= 2.5f)
+        {
+            playerScale = 1.1f;
+        }
+        else if (player.transform.localScale.x <= 4.5)
+        {
+            playerScale = 1.3f;
+        }
+        else if (player.transform.localScale.x <= 6.5f)
+        {
+            playerScale = 1.5f;
+        }
+        else 
+        {
+            playerScale = 2;
+        }
+        Debug.Log("UI Summoned");
+        gameObject.transform.position = Camera.main.transform.position + Camera.main.transform.forward * (7f * playerScale);
+>>>>>>> main
         if(gameObject.transform.position.y < 1)
         {
             Transform tempLoc = gameObject.transform;
             tempLoc.position = new Vector3(tempLoc.position.x, 1, tempLoc.position.z);
         }
+<<<<<<< HEAD
     }
 
+=======
+        GetComponent<Canvas>().enabled = true;
+    }
+
+    private void ToggleUI(InputAction.CallbackContext obj)
+    {
+        GetComponent<Canvas>().enabled = !GetComponent<Canvas>().enabled;
+    }
+>>>>>>> main
 
 }

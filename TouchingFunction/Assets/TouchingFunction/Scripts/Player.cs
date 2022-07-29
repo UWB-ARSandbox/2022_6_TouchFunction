@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.XR;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.XR;
-using ASL;
 
 public partial class Player : MonoBehaviour
 {
@@ -17,15 +16,18 @@ public partial class Player : MonoBehaviour
     public float gravity = 10.0f;
     public int onPlatform = -1;
     public float verticalSpeed = 0f;
-    public float SlideLimit = 45f;
+    public float SlideLimit = 30f;
     public Vector3 SlidingVector;
-    
+    public Vector3 newSlidingVec;
+    public Vector3 inheritedSliding;
     public Vector3 CollidePosition;
 
     private float scalingFactor = 0.2f;
     private float positionChangeFactor = 0.3f;
     public bool scalingUp = false;
     public bool scalingDown = false;
+
+    public float friction = 1f;
 
     #endregion
 
@@ -50,6 +52,9 @@ public partial class Player : MonoBehaviour
     private InputAction vrLookCon;
     private InputAction scaleUp;
     private InputAction scaleDown;
+
+    private InputAction ride;
+
     public Vector3 velocity;
 
     private bool gravityFall;
@@ -65,9 +70,23 @@ public partial class Player : MonoBehaviour
     public bool isFalling = false;
     public bool isFlying = false;
     public bool isThinking = false;
+<<<<<<< HEAD
+    public bool isRiding = false;
+
     #endregion
     public Animator PlayerAnimator;
+
+    #region Vehicle
+    public GameObject EnterVehicleGUI;
+    public RollerCoasterControl RCControlToRide;
+    public RollerCoasterControl RCControlRiding;
+    #endregion
+
+=======
+    #endregion
+    Animator PlayerAnimator;
     
+>>>>>>> main
 
     // Start is called before the first frame update
     void Start()
@@ -83,7 +102,13 @@ public partial class Player : MonoBehaviour
         playerInput = new PlayerInput();
         controller = gameObject.GetComponent<CharacterController>();
         Debug.Assert(controller != null);
+<<<<<<< HEAD
+        SlidingVector = Vector3.zero;
         //PlayerAnimator = GetComponent<Animator>();
+=======
+        PlayerAnimator = GetComponentInChildren<Animator>();
+
+>>>>>>> main
         //playerAnimation = GetComponent<PlayerAnimation>();
 
     }
@@ -135,6 +160,11 @@ public partial class Player : MonoBehaviour
         scaleDown.canceled += EndScalingDown;
         scaleDown.Enable();
 
+        // enter roller coaster
+        ride = playerInput.PlayerControls.Ride;
+        ride.performed += EnterExitVehicle;
+        ride.Enable();
+
         // script to check for VR input to activate VR hands
         gameObject.GetComponent<PlayerActivateVRHands>().enabled = true;
 
@@ -142,6 +172,11 @@ public partial class Player : MonoBehaviour
         GameObject tmpCam = GameObject.Find("PlayerCamera");
         tmpCam.transform.parent = head;
         tmpCam.transform.position = head.position;//new Vector3(0,2f,0);
+<<<<<<< HEAD
+
+        
+=======
+>>>>>>> main
     }
 
     private void togMouseLook(InputAction.CallbackContext obj)
@@ -169,22 +204,55 @@ public partial class Player : MonoBehaviour
                 RotateCameraMouse();
             }
         }
+
+        if(isRiding)
+        {
+            controller.Move(RCControlRiding.FinalMoveVector);
+            transform.forward = RCControlRiding.transform.forward;
+        }
+
+        setAnimatorBool();
     }
 
     // Update is called once per frame
     void Update()
     {
 
+<<<<<<< HEAD
+        // skip all Player controls if player is in vehicle
+        if (isRiding)
+        {
+            if (RCControlRiding.IsDriver(this))
+            {
+                if (Input.GetKey(KeyCode.W))
+                {
+                    RCControlRiding.DriverMoveVector = RCControlRiding.transform.forward * 0.1f;
+                } else if (Input.GetKey(KeyCode.S))
+                {
+                    RCControlRiding.DriverMoveVector = RCControlRiding.transform.forward * -0.1f;
+                } 
+            }
 
 
-        if (controller.isGrounded)
+            return;
+        }
+=======
+        setAnimatorBool();
+>>>>>>> main
+
+        /*if (controller.isGrounded)
         {
             Debug.Log("IS GROUNDED");
         }
         else
         {
+<<<<<<< HEAD
             //Debug.Log("IS FLYING");
         }
+=======
+            Debug.Log("IS FLYING");
+        }*/
+>>>>>>> main
 
 
         if (gravityFall)
@@ -276,8 +344,11 @@ public partial class Player : MonoBehaviour
             ScalePlayerDown();
         }
 
-        setAnimatorBool();
+<<<<<<< HEAD
+        //setAnimatorBool();
 
+=======
+>>>>>>> main
         /*else if (isSliding)
         {
             PlayerAnimator.Play("Sliding");
@@ -285,7 +356,6 @@ public partial class Player : MonoBehaviour
         {
             PlayerAnimator.Play("Flapping");
         }*/
-
 
     }
 
@@ -302,16 +372,19 @@ public partial class Player : MonoBehaviour
         {
             isMoving = false;
         }
-        if (isMoving)
+<<<<<<< HEAD
+=======
+        /*if (isMoving)
         {
             isMoving = true;
-            //PlayerAnimator.SetBool("IsWalking", true);
+            PlayerAnimator.SetBool("IsWalking", true);
         }
         else
         {
             isMoving = false;
-            //PlayerAnimator.SetBool("IsWalking", false);
-        }
+            PlayerAnimator.SetBool("IsWalking", false);
+        }*/
+>>>>>>> main
     }
 
     void MovePlayer()
@@ -510,25 +583,83 @@ public partial class Player : MonoBehaviour
             {
                 isSliding = true;
                 //PlayerAnimator.SetBool("IsSliding", true);
-                SlidingVector = norm + Mathf.Sqrt(1 + (norm.x / norm.y) * (norm.x / norm.y)) * Vector3.down * Mathf.Abs(norm.x/norm.y);
+                newSlidingVec =(norm + Mathf.Sqrt(1 + (norm.x / norm.y) * (norm.x / norm.y)) * Vector3.down) * 0.005f;
+                Debug.Log("DOT PRODUCT : " + Vector3.Dot(newSlidingVec, SlidingVector));
+                inheritedSliding = newSlidingVec.normalized * SlidingVector.magnitude * Vector3.Dot(newSlidingVec.normalized, SlidingVector.normalized);
+                SlidingVector = newSlidingVec + inheritedSliding;
             }
             else
             {
-                isSliding = false;
+
+                    isSliding = false;
+                    newSlidingVec = Vector3.zero;
+                    inheritedSliding = Vector3.zero;
+
+    
+                
                 //PlayerAnimator.SetBool("IsSliding", false);
                 SlidingVector = Vector3.zero;
             }
-        } // if grounded but no RaycastHit, it means the slope is too steep for ray to detect
+        } 
     }
 
-    void setAnimatorBool()
+<<<<<<< HEAD
+
+=======
+>>>>>>> main
+    public void setAnimatorBool()
     {
         PlayerAnimator.SetBool("IsSliding", isSliding);
         PlayerAnimator.SetBool("IsWalking", isMoving);
         PlayerAnimator.SetBool("IsFalling", isFalling);
         PlayerAnimator.SetBool("IsFlapping", isFlying);
         PlayerAnimator.SetBool("IsThinking", isThinking);
+<<<<<<< HEAD
+        PlayerAnimator.SetBool("IsRiding", isRiding);
     }
+
+    public void EnterExitVehicle(InputAction.CallbackContext obj)
+    {
+        if (!isRiding)
+        {
+            if (RCControlToRide != null)
+            {
+                int seatNumber = RCControlToRide.AddRider(this);
+                if (seatNumber >= 0)
+                {
+                    //controller.enabled = false;
+                    gameObject.transform.parent = RCControlToRide.transform;
+                    RCControlRiding = RCControlToRide;
+                    SetEnterVehicleGUI(false);
+
+                    controller.Move((RCControlRiding.transform.position - transform.position) + RCControlRiding.SeatPositions[seatNumber]);
+
+                    //RCControlRiding.AddRider(this);
+                    isRiding = true;
+                }
+            }
+        } else
+        {
+            RCControlRiding.KickPlayer(this);
+             isRiding = false;
+             //controller.enabled = true;
+             gameObject.transform.parent = null;
+             RCControlRiding = null;
+            
+
+        }
+    }
+
+    public void SetEnterVehicleGUI(bool op)
+    {
+        EnterVehicleGUI.SetActive(op);
+    }
+
+=======
+    }
+
+>>>>>>> main
+
 
 }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,11 +13,11 @@ public class PlayerASL : MonoBehaviour
     public Player player;
 
     public Transform playerHead;
-    public Transform playerBody;
+    /*public Transform playerBody;
     public Transform playerLeftArm;
     public Transform playerRightArm;
     public Transform playerLeftShoulder;
-    public Transform playerRightShoulder;
+    public Transform playerRightShoulder;*/
 
     public Transform[] HairParts;
     public Transform[] ShirtParts;
@@ -24,12 +25,28 @@ public class PlayerASL : MonoBehaviour
     public Transform[] SkinParts;
 
     public Material[] HeadMat;
+<<<<<<< HEAD
+=======
+    public int PeerID;
+    public bool recievedPeerID = false;
+>>>>>>> main
 
     public void SetLocal()
     {
         isLocal = true;
     }
 
+    public void Quit()
+    {
+        if(IsLocal())
+        {
+            aslObj.SendAndSetClaim(()  =>
+            {
+                aslObj.DeleteObject();
+            });
+        }
+    }
+    
     public bool IsLocal()
     {
         return isLocal;
@@ -95,6 +112,11 @@ public class PlayerASL : MonoBehaviour
                 player.isSliding = _f[3] > 0;
                 player.isFalling = _f[4] > 0;
                 player.isThinking = _f[5] > 0;
+                player.setAnimatorBool();
+<<<<<<< HEAD
+=======
+                
+>>>>>>> main
                 playerHead.transform.localRotation = Quaternion.Euler(_f[6], 0, 0);
                 transform.localRotation = Quaternion.Euler(0, _f[7], 0);
                 transform.localScale = new Vector3(_f[8], _f[8], _f[8]);
@@ -150,7 +172,11 @@ public class PlayerASL : MonoBehaviour
         StartCoroutine(NetworkedUpdate());
         FindObjectOfType<ChangeColor>().SetPlayer(this);
         FindObjectOfType<ChangeColor>().SetCamera(GetComponentInChildren<Camera>(), GetComponentInChildren<Player>());
+<<<<<<< HEAD
+        FindObjectOfType<MirrorCamera>().player = player.transform;
+=======
 
+>>>>>>> main
     }
 
     IEnumerator NetworkedUpdate()

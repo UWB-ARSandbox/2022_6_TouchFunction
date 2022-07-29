@@ -152,6 +152,30 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+<<<<<<< HEAD
+                    ""name"": ""Ride"",
+                    ""type"": ""Button"",
+                    ""id"": ""edd800d4-9921-4cd8-ade2-4fc2ca18e7ee"",
+=======
+                    ""name"": ""ToggleUI"",
+                    ""type"": ""Button"",
+                    ""id"": ""8e1a8d25-b411-4308-bd8c-585fac83de7e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GraphManipulation"",
+                    ""type"": ""Button"",
+                    ""id"": ""6204886e-e151-4aa6-a61c-39f2930a892b"",
+>>>>>>> main
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -376,6 +400,39 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""7a10c807-cc79-4fa8-9d95-97608bcc1b7b"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ScaleUp"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""f9c0d664-9d2e-4ae1-beeb-09493e3da31a"",
+                    ""path"": ""<XRController>{RightHand}/gripPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""ScaleUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""7d327c39-8321-4342-8c38-dfb5eaa49c32"",
+                    ""path"": ""<XRController>{RightHand}/primaryButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""ScaleUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
                     ""name"": """",
                     ""id"": ""875d734f-50e3-4f2c-84ed-005ed9264c2f"",
                     ""path"": ""<Keyboard>/x"",
@@ -385,6 +442,39 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""ScaleDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""d98a01e9-f02d-4fb2-ac13-b0129101ff69"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ScaleDown"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""0a6d05e8-c90b-4f4c-99a0-a34d7c4a38c7"",
+                    ""path"": ""<XRController>{RightHand}/gripPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""ScaleDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""66f10ebe-aba3-41cb-9b40-43a94e09b660"",
+                    ""path"": ""<XRController>{LeftHand}/primaryButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ScaleDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
@@ -422,7 +512,11 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""91c82105-6caa-4a7f-83d7-6aa3bc1b648b"",
+<<<<<<< HEAD
                     ""path"": ""<XRController>{RightHand}/secondaryButton"",
+=======
+                    ""path"": ""<XRController>{LeftHand}/menu"",
+>>>>>>> main
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""VR"",
@@ -438,6 +532,98 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""VR"",
                     ""action"": ""RightTrigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+<<<<<<< HEAD
+                    ""id"": ""5b58312b-c843-4a16-8e54-8c8a01d798cd"",
+                    ""path"": ""<Keyboard>/#(R)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ride"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""InVehicleControls"",
+            ""id"": ""b4342c45-2e60-4eef-99ad-66c8c46d34b6"",
+            ""actions"": [
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""750f8bd8-7760-4295-b3ad-73b88b0828a5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a47a3725-5414-43af-b7dc-6c08a2161404"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+=======
+                    ""id"": ""e6edfae6-af35-4f41-9d6a-ac114f5bf101"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""515cb611-9de5-47f3-971c-224a9a789076"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleUI"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""c667298e-876f-4310-aad6-35a58e4efac5"",
+                    ""path"": ""<XRController>{RightHand}/gripPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR"",
+                    ""action"": ""ToggleUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""09f6e33b-21c1-43cb-9f43-382d9e1f7824"",
+                    ""path"": ""<XRController>{LeftHand}/menu"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2eaf794c-c486-4474-bc0b-5ebf16a6837c"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""GraphManipulation"",
+>>>>>>> main
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -489,6 +675,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_PlayerControls_ToggleCursorLock = m_PlayerControls.FindAction("ToggleCursorLock", throwIfNotFound: true);
         m_PlayerControls_SummonUI = m_PlayerControls.FindAction("SummonUI", throwIfNotFound: true);
         m_PlayerControls_RightTrigger = m_PlayerControls.FindAction("RightTrigger", throwIfNotFound: true);
+<<<<<<< HEAD
+        m_PlayerControls_Ride = m_PlayerControls.FindAction("Ride", throwIfNotFound: true);
+        // InVehicleControls
+        m_InVehicleControls = asset.FindActionMap("InVehicleControls", throwIfNotFound: true);
+        m_InVehicleControls_Newaction = m_InVehicleControls.FindAction("New action", throwIfNotFound: true);
+=======
+        m_PlayerControls_ToggleUI = m_PlayerControls.FindAction("ToggleUI", throwIfNotFound: true);
+        m_PlayerControls_GraphManipulation = m_PlayerControls.FindAction("GraphManipulation", throwIfNotFound: true);
+>>>>>>> main
     }
 
     public void Dispose()
@@ -562,6 +757,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControls_ToggleCursorLock;
     private readonly InputAction m_PlayerControls_SummonUI;
     private readonly InputAction m_PlayerControls_RightTrigger;
+<<<<<<< HEAD
+    private readonly InputAction m_PlayerControls_Ride;
+=======
+    private readonly InputAction m_PlayerControls_ToggleUI;
+    private readonly InputAction m_PlayerControls_GraphManipulation;
+>>>>>>> main
     public struct PlayerControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -580,6 +781,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @ToggleCursorLock => m_Wrapper.m_PlayerControls_ToggleCursorLock;
         public InputAction @SummonUI => m_Wrapper.m_PlayerControls_SummonUI;
         public InputAction @RightTrigger => m_Wrapper.m_PlayerControls_RightTrigger;
+<<<<<<< HEAD
+        public InputAction @Ride => m_Wrapper.m_PlayerControls_Ride;
+=======
+        public InputAction @ToggleUI => m_Wrapper.m_PlayerControls_ToggleUI;
+        public InputAction @GraphManipulation => m_Wrapper.m_PlayerControls_GraphManipulation;
+>>>>>>> main
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -631,6 +838,18 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @RightTrigger.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRightTrigger;
                 @RightTrigger.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRightTrigger;
                 @RightTrigger.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRightTrigger;
+<<<<<<< HEAD
+                @Ride.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRide;
+                @Ride.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRide;
+                @Ride.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRide;
+=======
+                @ToggleUI.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleUI;
+                @ToggleUI.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleUI;
+                @ToggleUI.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleUI;
+                @GraphManipulation.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGraphManipulation;
+                @GraphManipulation.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGraphManipulation;
+                @GraphManipulation.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGraphManipulation;
+>>>>>>> main
             }
             m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -677,10 +896,55 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @RightTrigger.started += instance.OnRightTrigger;
                 @RightTrigger.performed += instance.OnRightTrigger;
                 @RightTrigger.canceled += instance.OnRightTrigger;
+<<<<<<< HEAD
+                @Ride.started += instance.OnRide;
+                @Ride.performed += instance.OnRide;
+                @Ride.canceled += instance.OnRide;
+=======
+                @ToggleUI.started += instance.OnToggleUI;
+                @ToggleUI.performed += instance.OnToggleUI;
+                @ToggleUI.canceled += instance.OnToggleUI;
+                @GraphManipulation.started += instance.OnGraphManipulation;
+                @GraphManipulation.performed += instance.OnGraphManipulation;
+                @GraphManipulation.canceled += instance.OnGraphManipulation;
+>>>>>>> main
             }
         }
     }
     public PlayerControlsActions @PlayerControls => new PlayerControlsActions(this);
+
+    // InVehicleControls
+    private readonly InputActionMap m_InVehicleControls;
+    private IInVehicleControlsActions m_InVehicleControlsActionsCallbackInterface;
+    private readonly InputAction m_InVehicleControls_Newaction;
+    public struct InVehicleControlsActions
+    {
+        private @PlayerInput m_Wrapper;
+        public InVehicleControlsActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Newaction => m_Wrapper.m_InVehicleControls_Newaction;
+        public InputActionMap Get() { return m_Wrapper.m_InVehicleControls; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InVehicleControlsActions set) { return set.Get(); }
+        public void SetCallbacks(IInVehicleControlsActions instance)
+        {
+            if (m_Wrapper.m_InVehicleControlsActionsCallbackInterface != null)
+            {
+                @Newaction.started -= m_Wrapper.m_InVehicleControlsActionsCallbackInterface.OnNewaction;
+                @Newaction.performed -= m_Wrapper.m_InVehicleControlsActionsCallbackInterface.OnNewaction;
+                @Newaction.canceled -= m_Wrapper.m_InVehicleControlsActionsCallbackInterface.OnNewaction;
+            }
+            m_Wrapper.m_InVehicleControlsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Newaction.started += instance.OnNewaction;
+                @Newaction.performed += instance.OnNewaction;
+                @Newaction.canceled += instance.OnNewaction;
+            }
+        }
+    }
+    public InVehicleControlsActions @InVehicleControls => new InVehicleControlsActions(this);
     private int m_PCSchemeIndex = -1;
     public InputControlScheme PCScheme
     {
@@ -715,5 +979,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnToggleCursorLock(InputAction.CallbackContext context);
         void OnSummonUI(InputAction.CallbackContext context);
         void OnRightTrigger(InputAction.CallbackContext context);
+<<<<<<< HEAD
+        void OnRide(InputAction.CallbackContext context);
+    }
+    public interface IInVehicleControlsActions
+    {
+        void OnNewaction(InputAction.CallbackContext context);
+=======
+        void OnToggleUI(InputAction.CallbackContext context);
+        void OnGraphManipulation(InputAction.CallbackContext context);
+>>>>>>> main
     }
 }
