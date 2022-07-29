@@ -52,6 +52,13 @@ public class WolframAlpha : MonoBehaviour
     // @param: inc      -- float increment amount 
     // @returns: list of y coordinate floats
     public async void Solve(string equation, float start, float end, float width, float inc){
+        if((Mathf.Abs((end - start)/inc) < 20))
+        {   //number of increments is less than 20
+            //      --> WolframAlpha will output a table instead of normal format
+            // Need to make it atleast 20 increments
+            inc = Mathf.Abs((end - start)/20);
+        } 
+
         string input = "Table[" + equation + "], {x, " + start + ", " + end + ", " + inc + "}]";
 
         Debug.Log(input);

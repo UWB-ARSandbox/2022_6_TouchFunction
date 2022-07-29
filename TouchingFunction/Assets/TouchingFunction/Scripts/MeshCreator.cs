@@ -12,7 +12,7 @@ public class MeshCreator : MonoBehaviour
     GraphManipulation graphManScript;
 
     #region Graph Attributes
-    public Vector3 origin;
+    // public Vector3 origin;
     public int GraphIndex;
     public Color c;              // Render color of the graph
     public string functionText;  // function expression string
@@ -22,8 +22,8 @@ public class MeshCreator : MonoBehaviour
     #region Mesh Settings
     float[] zVals; // z index of vertices
     bool meshIsEmpty = true;
-    public int minVal = 0;       // minimum of X to render
-    public int maxVal = 20;      // maximum of X to render
+    private int minVal = 0;       // minimum of X to render
+    private int maxVal = 20;      // maximum of X to render
     public int MeshPerX;     // number of vertices per increment of X;
     #endregion
 
@@ -54,7 +54,7 @@ public class MeshCreator : MonoBehaviour
         Debug.Log("yPos: " + yPos);
 
         transform.localScale = new Vector3(xScale, yScale, meshScale.z);
-        transform.position = new Vector3(xPos, yPos, meshPos.z);
+        transform.position = graphAxes.transform.localPosition;
     }
 
     public void InitGraphParameters(int min, int max, int width, float increment)
@@ -103,6 +103,7 @@ public class MeshCreator : MonoBehaviour
         zVals = new float[2];
         GetComponent<MeshFilter>().mesh = mesh;
         GetComponent<MeshCollider>().sharedMesh = mesh;
+        transform.localPosition = graphAxes.transform.localPosition;
     }
 
     /*public void ReceivePointsFromNetwork(string _id, float[] values)
@@ -128,8 +129,8 @@ public class MeshCreator : MonoBehaviour
 
         //float[] zArr = {-1f, -0.9f, -0.8f, -0.7f, -0.6f, -0.5f, -0.4f, -0.3f, -0.2f, -0.1f, 0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f};
         float xIncrement = 1f / MeshPerX;
-        float xOrigin = origin.x;
-        float yOrigin = origin.y;
+        float xOrigin = 0f;
+        float yOrigin = 0f;
         float xVal, yVal;
         
         for (int i = 0; i < MeshPerX * (maxVal - minVal); i++)
@@ -192,6 +193,14 @@ public class MeshCreator : MonoBehaviour
         mesh.Clear();
         functionText = "";
         meshIsEmpty = true;
+        
+        // Reset mesh collider
+        GetComponent<MeshCollider>().sharedMesh = mesh; 
+        
+        // Delete all the points associate with the mesh
+        foreach (Transform child in transform) {
+            Destroy(child.gameObject);
+        }
     }
 
     public Vector3 FindClosestPoint(Vector3 point)
