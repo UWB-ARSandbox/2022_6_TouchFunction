@@ -5,10 +5,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerClickGraph : MonoBehaviour
 {
+    Transform graphPlane;
     private PlayerInput playerInput;
     private InputAction click;
+    private InputAction rightClick;
     private InputAction clickVRRight;
     private InputAction clickVRLeft;
+    private InputAction manipulatePoint;
 
     // public GameObject rightCon;
     // public GameObject leftCon;
@@ -16,16 +19,23 @@ public class PlayerClickGraph : MonoBehaviour
     Camera playerCam;
     GameObject pointPrefab;
     GameObject hoverPoint;
-    GameObject highlighted;
+
+    GameObject currHoveringPoint;
+    GameObject currDraggingPoint;
+
+    bool enableDragPoint = false;
 
     LayerMask layerMask;
     int graphLayer;
     int pointLayer;
 
     RaycastHit hit;
+
     // Start is called before the first frame update
     void Start()
     {
+        graphPlane = GameObject.Find("GraphAxes").transform;
+
         playerInput = new PlayerInput();
 
         pointLayer = LayerMask.NameToLayer("Point");
@@ -45,7 +55,12 @@ public class PlayerClickGraph : MonoBehaviour
         // creating action and binding in code is best solution right now. 
         click = new InputAction(binding: "<Mouse>/leftButton");
         click.performed += Click;
+        click.canceled += Release;
         click.Enable();
+
+        rightClick = new InputAction(binding: "<Mouse>/rightButton");
+        rightClick.performed += RightClick;
+        rightClick.Enable();
 
         clickVRRight = new InputAction(binding: "<XRController>{RightHand}/triggerPressed");
         clickVRRight.performed += Click;
@@ -56,18 +71,65 @@ public class PlayerClickGraph : MonoBehaviour
         clickVRLeft.Enable();
     }
 
+    Vector3 IntersectPlane()
+    {
+        //A plane can be defined as:
+        //a point representing how far the plane is from the world origin
+        Vector3 p_0 = graphPlane.position;
+        //a normal (defining the orientation of the plane), should be negative if we are firing the ray from above
+        Vector3 n = -graphPlane.forward;
+        //We are intrerested in calculating a point in this plane called p
+        //The vector between p and p0 and the normal is always perpendicular: (p - p_0) . n = 0
+
+        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //A ray to point p can be defined as: l_0 + l * t = p, where:
+        //the origin of the ray
+        Vector3 l_0 = ray.origin;
+        //l is the direction of the ray
+        Vector3 l = ray.direction;
+        //t is the length of the ray, which we can get by combining the above equations:
+        //t = ((p_0 - l_0) . n) / (l . n)
+
+        //But there's a chance that the line doesn't intersect with the plane, and we can check this by first
+        //calculating the denominator and see if it's not small. 
+        //We are also checking that the denominator is positive or we are looking in the opposite direction
+        float denominator = Vector3.Dot(l, n);
+
+        if (denominator > 0.00001f)
+        {
+            //The distance to the plane
+            float t = Vector3.Dot(p_0 - l_0, n) / denominator;
+
+            //Where the ray intersects with a plane
+            Vector3 p = l_0 + l * t;
+
+            return p;
+        }
+
+        return Vector3.negativeInfinity;
+}
+
     void Update()
     {
-        if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, 25, layerMask) ||
-            Physics.SphereCast(playerCam.transform.position, 1f, playerCam.transform.forward, out hit, 25, layerMask))
+        var p = IntersectPlane();
+
+        if(enableDragPoint)
         {
-            if(hit.transform.gameObject.layer == graphLayer)
+            if(p != Vector3.negativeInfinity)
+                currDraggingPoint.GetComponent<Point>().UpdatePosition(p.x);
+        }
+
+        // Hovering on the graph
+        if (Physics.Raycast(p + new Vector3(0f, 1f, 0f), Vector3.down, out hit, 2f, layerMask))
+        {
+            if(hit.transform.gameObject.layer == graphLayer && !enableDragPoint)
             {
-                if(highlighted != null)
+                if(currHoveringPoint != null)
                 {
-                    highlighted.GetComponentInParent<Point>().Deselect();
-                    highlighted = null;
+                    currHoveringPoint.GetComponentInParent<Point>().UnHover();
+                    currHoveringPoint = null;
                 }
+
                 hoverPoint.transform.position = new Vector3(hit.point.x, hit.point.y, hit.transform.position.z);
                 hoverPoint.SetActive(true);
             }
@@ -75,22 +137,24 @@ public class PlayerClickGraph : MonoBehaviour
             {
                 hoverPoint.SetActive(false);
 
-                if(highlighted != null && highlighted != hit.transform.gameObject)
+                if(currHoveringPoint != null)
                 {
-                    highlighted.GetComponentInParent<Point>().Deselect();
+                    currHoveringPoint.GetComponentInParent<Point>().UnHover();
                 }
-                hit.transform.GetComponentInParent<Point>().Select();
-                highlighted = hit.transform.gameObject;
-            }
 
+                hit.transform.GetComponentInParent<Point>().Hover();
+                currHoveringPoint = hit.transform.gameObject;
+            }
         }
         else
         {
-            if(highlighted != null)
+            if(currHoveringPoint != null)
             {
-                highlighted.GetComponentInParent<Point>().Deselect();
-                highlighted = null;
+                currHoveringPoint.GetComponentInParent<Point>().UnHover();
+                currHoveringPoint = null;
             }
+
+
             hoverPoint.SetActive(false);
         }
     }
@@ -101,13 +165,28 @@ public class PlayerClickGraph : MonoBehaviour
         {
             ASL.ASLHelper.InstantiateASLObject("point", hit.transform.InverseTransformPoint(hoverPoint.transform.position), Quaternion.identity, hit.transform.name);
         }
-
-        if (highlighted != null)
+        else if (currHoveringPoint != null)
         {
-            highlighted.GetComponentInParent<ASL.ASLObject>().SendAndSetClaim(() =>
+            currHoveringPoint.GetComponentInParent<Point>().Select();
+            currDraggingPoint = currHoveringPoint.transform.parent.gameObject;
+            enableDragPoint = true;
+        }
+    }
+
+    void RightClick(InputAction.CallbackContext obj)
+    {
+        if(currHoveringPoint != null)
+        {
+            currHoveringPoint.GetComponentInParent<ASL.ASLObject>().SendAndSetClaim(() =>
             {
-                highlighted.GetComponentInParent<ASL.ASLObject>().DeleteObject();
+                currHoveringPoint.GetComponentInParent<ASL.ASLObject>().DeleteObject();
             });
         }
+    }
+
+    void Release(InputAction.CallbackContext obj)
+    {
+        currDraggingPoint = null;
+        enableDragPoint = false;
     }
 }

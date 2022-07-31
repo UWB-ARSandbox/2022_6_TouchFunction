@@ -43,9 +43,9 @@ public partial class GraphManipulation : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("Origin (World): " + gameObject.transform.position);
-        Debug.Log("Origin (Screen): " + Camera.main.WorldToScreenPoint(gameObject.transform.position));
-        Debug.Log("Origin Mouse: " + Input.mousePosition);        
+        // Debug.Log("Origin (World): " + gameObject.transform.position);
+        // Debug.Log("Origin (Screen): " + Camera.main.WorldToScreenPoint(gameObject.transform.position));
+        // Debug.Log("Origin Mouse: " + Input.mousePosition);        
         if (enabledGraphManip && selectedType == SelectedType.XAxisScale)
         {
             Vector3 currPos = Input.mousePosition;

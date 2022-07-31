@@ -216,5 +216,15 @@ public class MeshCreator : MonoBehaviour
         return new Vector3(x, y, 0);
     }
 
+    // public float FindY(float worldX)
+    // {
+    //     Vector3 graphOrigin = graphAxes.transform.localPosition;
+    //     float xDistance = worldX - graphOrigin.x;
+    //     float x = xDistance / (float) graphManScript.GetXUnitSpace();
+    //     float y = getY(Mathf.RoundToInt((x - minVal) * MeshPerX));
+    //     float yDistance = y * (float) graphManScript.GetYUnitSpace();
+    //     return yDistance + graphOrigin.y;
+    // }
+
 
 }
