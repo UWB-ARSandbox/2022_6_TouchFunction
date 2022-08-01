@@ -152,7 +152,7 @@ public class PlayerASL : MonoBehaviour
         StartCoroutine(NetworkedUpdate());
         FindObjectOfType<ChangeColor>().SetPlayer(this);
         FindObjectOfType<ChangeColor>().SetCamera(GetComponentInChildren<Camera>(), GetComponentInChildren<Player>());
-
+        FindObjectOfType<GraphManipulation>().SetPlayer(this);
     }
 
     IEnumerator NetworkedUpdate()

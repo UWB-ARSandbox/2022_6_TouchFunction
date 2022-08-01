@@ -43,9 +43,9 @@ public partial class GraphManipulation : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("Origin (World): " + gameObject.transform.position);
-        Debug.Log("Origin (Screen): " + Camera.main.WorldToScreenPoint(gameObject.transform.position));
-        Debug.Log("Origin Mouse: " + Input.mousePosition);        
+        ClearGridlines();
+        SetupGridlines();
+
         if (enabledGraphManip && selectedType == SelectedType.XAxisScale)
         {
             Vector3 currPos = Input.mousePosition;
@@ -151,11 +151,7 @@ public partial class GraphManipulation : MonoBehaviour
     // Select an object on graph axes based on cursor position
     private void SelectObject()
     {
-        if (selected != null)
-        {
-            SetSelectedColor(defaultColor);
-        }
-
+        SetSelectedColor(defaultColor);
         RaycastHit hitInfo = new RaycastHit();
         bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
         if (hit)
@@ -216,10 +212,8 @@ public partial class GraphManipulation : MonoBehaviour
     // When right click ends
     private void EndGraphManipulation(InputAction.CallbackContext obj)
     {
-        if (selected != null)
-        {
-            SetSelectedColor(defaultColor);
-        }
+        SetSelectedColor(defaultColor);
+
         enabledGraphManip = false;
         selectedType = SelectedType.None;
         selected = null;
@@ -264,6 +258,11 @@ public partial class GraphManipulation : MonoBehaviour
         {
             yAxisPos.GetComponent<Renderer>().material.color = color;
             yAxisNeg.GetComponent<Renderer>().material.color = color;
+        }
+        else if (selected == null)
+        {   
+            // Catch case for any thing that null
+            return;
         }
         else
         {
