@@ -506,7 +506,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""91c82105-6caa-4a7f-83d7-6aa3bc1b648b"",
-                    ""path"": ""<XRController>{LeftHand}/menu"",
+                    ""path"": ""<XRController>{LeftHand}/start"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""VR"",
@@ -561,7 +561,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""binding"",
                     ""id"": ""09f6e33b-21c1-43cb-9f43-382d9e1f7824"",
-                    ""path"": ""<XRController>{LeftHand}/menu"",
+                    ""path"": ""<XRController>{LeftHand}/start"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
