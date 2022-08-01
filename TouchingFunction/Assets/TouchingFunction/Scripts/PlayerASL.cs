@@ -6,7 +6,7 @@ using ASL;
 
 public class PlayerASL : MonoBehaviour
 {
-    private static readonly float UPDATES_PER_SECOND = 30.0f;
+    private static readonly float UPDATES_PER_SECOND = 60.0f;
     bool isLocal = false; // Whether this player is controlled by this client
     public TextMesh nameText;
     ASLObject aslObj;
@@ -167,6 +167,7 @@ public class PlayerASL : MonoBehaviour
         FindObjectOfType<ChangeColor>().SetPlayer(this);
         FindObjectOfType<ChangeColor>().SetCamera(GetComponentInChildren<Camera>(), GetComponentInChildren<Player>());
         FindObjectOfType<MirrorCamera>().player = player.transform;
+        player.canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
     }
 
     IEnumerator NetworkedUpdate()
@@ -182,7 +183,8 @@ public class PlayerASL : MonoBehaviour
         });
 
         while (true)
-        {
+        { 
+
             SendTransform();
 
             aslObj.SendAndSetClaim(() =>

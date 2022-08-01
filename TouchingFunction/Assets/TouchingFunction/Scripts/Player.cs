@@ -237,11 +237,11 @@ public partial class Player : MonoBehaviour
             {
                 if (isForward)
                 {
-                    RCControlRiding.DriverMoveVector = RCControlRiding.transform.forward * 0.1f;
+                    RCControlRiding.DriverSpeedVector = RCControlRiding.transform.forward * 0.1f;
                 }
                 else if (isBackward)
                 {
-                    RCControlRiding.DriverMoveVector = RCControlRiding.transform.forward * -0.1f;
+                    RCControlRiding.DriverSpeedVector = RCControlRiding.transform.forward * -0.1f;
                 } 
             }
 
@@ -472,10 +472,10 @@ public partial class Player : MonoBehaviour
     // jump. if player gravity = false, moves 
     private void StartJump(InputAction.CallbackContext obj)
     {
-        Debug.LogError("START JUMP");
+        //Debug.LogError("START JUMP");
         if (IsCursorLocked())
         {
-            Debug.Log("Jump!");
+            //Debug.Log("Jump!");
             // if not in air and gravity enabled, normal jump
             if (controller.isGrounded && gravityEnabled)
             {
@@ -595,9 +595,18 @@ public partial class Player : MonoBehaviour
         {
             if (RCControlToRide != null)
             {
+                //controller.enabled = false;
+                //controller.height = 0;
+                //controller.radius = 0;
                 int seatNumber = RCControlToRide.AddRider(this);
                 if (seatNumber >= 0)
                 {
+                    if (seatNumber == 0)    // if is driver, the transform of the car will be controlled by this player
+                    {
+/*                        RCControlToRide.GetComponent<RollerCoasterASL>().isLocal = true;
+                        RCControlToRide.GetComponent<RollerCoasterASL>().StartASL();*/
+                    }
+
                     //controller.enabled = false;
                     gameObject.transform.parent = RCControlToRide.transform;
                     RCControlRiding = RCControlToRide;
@@ -625,8 +634,13 @@ public partial class Player : MonoBehaviour
         else
         {
             RCControlRiding.KickPlayer(this);
+            //if (RCControlRiding)
             isRiding = false;
+            ////////////////
             //controller.enabled = true;
+            //controller.height = 2.1f;
+            //controller.radius = 0.5f;
+
             gameObject.transform.parent = null;
             RCControlRiding = null;
 

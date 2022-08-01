@@ -208,4 +208,8 @@ public class UIControls : MonoBehaviour
         GetComponent<Canvas>().enabled = !GetComponent<Canvas>().enabled;
     }
 
+    public void onSetRCToggle(bool rcBool)
+    {
+        CColor.player.GetComponent<PlayerClickGraph>().IsSettingRC = rcBool;
+    }
 }

@@ -6,17 +6,32 @@ public class RollerCoasterControl : MonoBehaviour
 {
 
     public Player[] players;
-    
+    public bool isActivated;
     public int maxRider;
-    //public MeshCreator mesh;
+    public MeshCreator mesh;
 
-    public Vector3 DriverMoveVector;
+    public Vector3 speed;
+
+    public Vector3 DriverSpeedVector;
     public Vector3 FinalMoveVector;
 
     public Vector3[] SeatPositions;
     public GameObject[] SafetyBars;
 
+    public Vector3 SlidingVector;
+    public Vector3 inheritedVec;
+    public Vector3 newSlidingVec;
 
+    LayerMask meshMask;
+    public Vector3 norm;
+    RaycastHit hit;
+
+    Vector3 lastPos;
+
+    float frictionLoss = 0.005f;
+
+
+   
     private void Awake()
     {
 
@@ -25,10 +40,12 @@ public class RollerCoasterControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        isActivated = false;
         maxRider = 4;
         players = new Player[maxRider];
         SeatPositions = new Vector3[4] { new Vector3(-1.2f, 0.7f, 0.95f), new Vector3(0.8f, 0.7f, 0.95f), 
                                         new Vector3(-1.2f, 0.7f, -3.25f), new Vector3(0.8f, 0.7f, -3.25f) };
+        meshMask = LayerMask.GetMask("GraphMesh");
     }
 
 
@@ -36,18 +53,24 @@ public class RollerCoasterControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //MoveVector = transform.forward * 0.01f;
-        FinalMoveVector = DriverMoveVector;
-        transform.position += FinalMoveVector;
-        DriverMoveVector = Vector3.zero;
-        //FinalMoveVector = Vector3.zero;
-    }
-/*
-    private void FixedUpdate()
-    {
-
+        if (isActivated)
+        {
+            if (mesh != null)
+            {
+                setRotation();
+                getSlidingVec();
+            }
+            //MoveVector = transform.forward * 0.01f;
+            
+            FinalMoveVector = DriverSpeedVector;
+            FinalMoveVector += SlidingVector;
+            transform.position += FinalMoveVector;
+            DriverSpeedVector = Vector3.zero;
+        }
+        //Debug.DrawRay(transform.position, -transform.up, Color.green, 10f);
         
-    }*/
+        
+    }
 
     private void OnTriggerStay(Collider other)
     {
@@ -85,6 +108,10 @@ public class RollerCoasterControl : MonoBehaviour
 
     public int AddRider(Player p)
     {
+        if (!isActivated)
+        {
+            isActivated = true;
+        }
         for (int i = 0; i < maxRider; i++)
         {
             if (players[i] == null)
@@ -109,8 +136,43 @@ public class RollerCoasterControl : MonoBehaviour
         }
     }
 
-    void getMoveOnMesh()
+
+    void setRotation()
     {
+        if (Physics.Raycast(transform.position + 0.5f * transform.up, -transform.up, out hit, 5, meshMask))
+        {
+            if (hit.transform.GetComponent<MeshCreator>() == mesh)
+            {
+                
+                norm = hit.normal;
+                transform.position = hit.point + 0.3f * norm;
+                float angle = Vector3.Angle(norm, Vector3.up);
+                //Debug.LogError(angle);
+                if (norm.x < 0)
+                {
+                    angle *= -1;
+                }
+                transform.eulerAngles = new Vector3(angle, 90, 0);
+                //transform.position(transform.position.x, mesh.yVals);
+            }
+        } else
+        {
+            FinalMoveVector = Vector3.zero;
+            
+        }
+    }
+
+    void getSlidingVec()
+    {
+        
+        newSlidingVec = (norm + Mathf.Sqrt(1 + (norm.x / norm.y) * (norm.x / norm.y)) * Vector3.down) * frictionLoss;
+        inheritedVec = newSlidingVec.normalized * FinalMoveVector.magnitude * Vector3.Dot(newSlidingVec.normalized, FinalMoveVector.normalized);
+        SlidingVector = newSlidingVec + inheritedVec;
+
+        //if (transform.position)
 
     }
+
+
+
 }

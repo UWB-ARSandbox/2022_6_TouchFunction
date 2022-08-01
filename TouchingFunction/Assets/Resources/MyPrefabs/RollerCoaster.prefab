@@ -3343,6 +3343,7 @@ GameObject:
   - component: {fileID: 3705728486409389010}
   - component: {fileID: 629875939}
   - component: {fileID: 629875938}
+  - component: {fileID: 2358074857533723848}
   m_Layer: 0
   m_Name: RollerCoaster
   m_TagString: Untagged
@@ -3391,8 +3392,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   players: []
+  isActivated: 0
   maxRider: 4
-  DriverMoveVector: {x: 0, y: 0, z: 0}
+  mesh: {fileID: 0}
+  speed: {x: 0, y: 0, z: 0}
+  DriverSpeedVector: {x: 0, y: 0, z: 0}
   FinalMoveVector: {x: 0, y: 0, z: 0}
   SeatPositions: []
   SafetyBars:
@@ -3400,6 +3404,26 @@ MonoBehaviour:
   - {fileID: 9021834516333851963}
   - {fileID: 783262374792670348}
   - {fileID: 7488640878904896971}
+  SlidingVector: {x: 0, y: 0, z: 0}
+  inheritedVec: {x: 0, y: 0, z: 0}
+  newSlidingVec: {x: 0, y: 0, z: 0}
+  norm: {x: 0, y: 0, z: 0}
+--- !u!114 &2358074857533723848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7222994526723824376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bed3ea53a7424a24599d985de45dca7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RCControl: {fileID: 0}
+  aslObj: {fileID: 0}
+  isLocal: 0
+  isDriving: 0
 --- !u!1 &7464523356987113682
 GameObject:
   m_ObjectHideFlags: 0

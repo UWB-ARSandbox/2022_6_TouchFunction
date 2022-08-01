@@ -32,6 +32,7 @@ public class MeshCreator : MonoBehaviour
     Vector3[] vertices;
     int[] triangles;
     public float[] yVals;
+    public Vector3[] normals;
     #endregion
 
 
@@ -70,6 +71,7 @@ public class MeshCreator : MonoBehaviour
             zVals[i] = -(width / 2f) + i * 0.5f;
         }*/
         MeshPerX = Mathf.RoundToInt(1f / increment);
+        //Debug.LogError(increment);
         minVal = min;
         maxVal = max;
         //MeshPerX = (int)(1 / increment);
@@ -126,6 +128,7 @@ public class MeshCreator : MonoBehaviour
         meshIsEmpty = false;
         vertices = new Vector3[2 * MeshPerX * (maxVal - minVal)];
         triangles = new int[(MeshPerX * (maxVal - minVal) - 1) * 6];
+        normals = new Vector3[vertices.Length];
 
         //float[] zArr = {-1f, -0.9f, -0.8f, -0.7f, -0.6f, -0.5f, -0.4f, -0.3f, -0.2f, -0.1f, 0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f};
         float xIncrement = 1f / MeshPerX;
@@ -155,6 +158,20 @@ public class MeshCreator : MonoBehaviour
              triangles[6 * i + 5] = 2 * (i + 1);
             
         }
+
+        int vlength = vertices.Length;
+        // edge cases
+        for (int i = 2; i < vlength - 3; i+=2)
+        {
+            Vector3 norm = (Vector3.Cross((vertices[i] - vertices[i-1]), (vertices[i+1] - vertices[i])) + 
+                                Vector3.Cross((vertices[i+2] - vertices[i]), (vertices[i + 1] - vertices[i]))).normalized;
+            normals[i] = -norm;
+            normals[i + 1] = -norm;
+        }
+        normals[0] = -Vector3.Cross((vertices[2] - vertices[0]), (vertices[1] - vertices[0])).normalized;
+        normals[1] = normals[0];
+        normals[vlength - 2] = -Vector3.Cross((vertices[vlength-3] - vertices[vlength-1]), (vertices[vlength-2] - vertices[vlength-1])).normalized;
+        normals[vlength - 1] = normals[vlength - 2];
     }
 
     public bool isEmpty()
@@ -167,6 +184,7 @@ public class MeshCreator : MonoBehaviour
         mesh.Clear();
         mesh.vertices = vertices;
         mesh.triangles = triangles;
+        mesh.normals = normals;
         GetComponent<MeshCollider>().sharedMesh = mesh;
         //GetComponent<Renderer>().material.color = c;
 
@@ -216,5 +234,8 @@ public class MeshCreator : MonoBehaviour
         return new Vector3(x, y, 0);
     }
 
+/*    public float GetYofX(float x)
+    {
 
+    }*/
 }

@@ -12,7 +12,7 @@ public class FunctionInput : MonoBehaviour
     public TMP_InputField max;
     public TMP_InputField width;
 
-    public int MeshResolution = 4;
+    public int MeshResolution = 20;
     WolframAlpha wolframAlpha;
     MeshManager meshManager;
     

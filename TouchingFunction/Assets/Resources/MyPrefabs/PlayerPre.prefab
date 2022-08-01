@@ -2461,9 +2461,11 @@ MonoBehaviour:
   isFlying: 0
   isThinking: 0
   isRiding: 0
+  isGrounded: 0
   EnterVehicleGUI: {fileID: 6718170259924274904}
   RCControlToRide: {fileID: 0}
   RCControlRiding: {fileID: 0}
+  canvas: {fileID: 0}
 --- !u!114 &7453444277320579165
 MonoBehaviour:
   m_ObjectHideFlags: 0
