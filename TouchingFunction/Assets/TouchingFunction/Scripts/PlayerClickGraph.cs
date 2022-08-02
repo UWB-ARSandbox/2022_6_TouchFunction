@@ -107,7 +107,7 @@ public class PlayerClickGraph : MonoBehaviour
         }
 
         return Vector3.negativeInfinity;
-}
+    }
 
     void Update()
     {

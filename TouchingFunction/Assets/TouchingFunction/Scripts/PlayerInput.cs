@@ -170,6 +170,24 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ModRightTrigger"",
+                    ""type"": ""Button"",
+                    ""id"": ""0eead7b8-1e10-41f0-80a4-a60f52ef8892"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ModLeftTrigger"",
+                    ""type"": ""Button"",
+                    ""id"": ""f27c0fcb-4f4a-48d1-975a-3d5e6e7fafc7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -528,7 +546,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""e6edfae6-af35-4f41-9d6a-ac114f5bf101"",
-                    ""path"": ""<Keyboard>/backquote"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -561,7 +579,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""binding"",
                     ""id"": ""09f6e33b-21c1-43cb-9f43-382d9e1f7824"",
-                    ""path"": ""<XRController>{LeftHand}/start"",
+                    ""path"": ""<XRController>/menu"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -579,6 +597,138 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""GraphManipulation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""cfc6aa35-2926-4dd6-85f2-97a2e3ffb656"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ModRightTrigger"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""18e2165e-5287-4e97-80e1-6b5559d4251c"",
+                    ""path"": ""<XRController>{RightHand}/gripPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ModRightTrigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""d2f0dcb9-8524-4185-95a7-f90489f70c34"",
+                    ""path"": ""<XRController>{RightHand}/triggerPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ModRightTrigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""67893436-bd24-41c5-b8a5-aad9b6d2a4e4"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ModRightTrigger"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""92889db9-c409-4250-894d-c778e888425b"",
+                    ""path"": ""<XRController>{LeftHand}/gripPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ModRightTrigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""44e8e3f5-7b6a-485f-a756-5549b7132c7d"",
+                    ""path"": ""<XRController>{RightHand}/triggerPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ModRightTrigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""722dc0c7-515c-4666-8fac-ae8e1e583642"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ModLeftTrigger"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""e011b8b6-46cf-4edc-94d3-26ca90acc9dd"",
+                    ""path"": ""<XRController>{RightHand}/gripPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ModLeftTrigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""502717b3-30b0-4641-b776-4c03cb59e311"",
+                    ""path"": ""<XRController>{LeftHand}/triggerPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ModLeftTrigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""579b8ed9-2fbb-4cce-86e3-9b53fd5cf369"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ModLeftTrigger"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""15e38dca-44e6-4104-9a4b-1d740b409491"",
+                    ""path"": ""<XRController>{LeftHand}/gripPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ModLeftTrigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""b897071a-b302-41e2-8017-7b2965e3d2ff"",
+                    ""path"": ""<XRController>{LeftHand}/triggerPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ModLeftTrigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -630,6 +780,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_PlayerControls_RightTrigger = m_PlayerControls.FindAction("RightTrigger", throwIfNotFound: true);
         m_PlayerControls_ToggleUI = m_PlayerControls.FindAction("ToggleUI", throwIfNotFound: true);
         m_PlayerControls_GraphManipulation = m_PlayerControls.FindAction("GraphManipulation", throwIfNotFound: true);
+        m_PlayerControls_ModRightTrigger = m_PlayerControls.FindAction("ModRightTrigger", throwIfNotFound: true);
+        m_PlayerControls_ModLeftTrigger = m_PlayerControls.FindAction("ModLeftTrigger", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -705,6 +857,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControls_RightTrigger;
     private readonly InputAction m_PlayerControls_ToggleUI;
     private readonly InputAction m_PlayerControls_GraphManipulation;
+    private readonly InputAction m_PlayerControls_ModRightTrigger;
+    private readonly InputAction m_PlayerControls_ModLeftTrigger;
     public struct PlayerControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -725,6 +879,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @RightTrigger => m_Wrapper.m_PlayerControls_RightTrigger;
         public InputAction @ToggleUI => m_Wrapper.m_PlayerControls_ToggleUI;
         public InputAction @GraphManipulation => m_Wrapper.m_PlayerControls_GraphManipulation;
+        public InputAction @ModRightTrigger => m_Wrapper.m_PlayerControls_ModRightTrigger;
+        public InputAction @ModLeftTrigger => m_Wrapper.m_PlayerControls_ModLeftTrigger;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -782,6 +938,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @GraphManipulation.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGraphManipulation;
                 @GraphManipulation.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGraphManipulation;
                 @GraphManipulation.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGraphManipulation;
+                @ModRightTrigger.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnModRightTrigger;
+                @ModRightTrigger.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnModRightTrigger;
+                @ModRightTrigger.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnModRightTrigger;
+                @ModLeftTrigger.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnModLeftTrigger;
+                @ModLeftTrigger.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnModLeftTrigger;
+                @ModLeftTrigger.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnModLeftTrigger;
             }
             m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -834,6 +996,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @GraphManipulation.started += instance.OnGraphManipulation;
                 @GraphManipulation.performed += instance.OnGraphManipulation;
                 @GraphManipulation.canceled += instance.OnGraphManipulation;
+                @ModRightTrigger.started += instance.OnModRightTrigger;
+                @ModRightTrigger.performed += instance.OnModRightTrigger;
+                @ModRightTrigger.canceled += instance.OnModRightTrigger;
+                @ModLeftTrigger.started += instance.OnModLeftTrigger;
+                @ModLeftTrigger.performed += instance.OnModLeftTrigger;
+                @ModLeftTrigger.canceled += instance.OnModLeftTrigger;
             }
         }
     }
@@ -874,5 +1042,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnRightTrigger(InputAction.CallbackContext context);
         void OnToggleUI(InputAction.CallbackContext context);
         void OnGraphManipulation(InputAction.CallbackContext context);
+        void OnModRightTrigger(InputAction.CallbackContext context);
+        void OnModLeftTrigger(InputAction.CallbackContext context);
     }
 }

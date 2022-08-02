@@ -30,12 +30,17 @@ public class PlayerActivateVRHands : MonoBehaviour
         vrLook = playerInput.PlayerControls.VRLook;
         vrLook.performed += togVRHands;
         vrLook.Enable();
+
+        
     }
 
     private void togVRHands(InputAction.CallbackContext obj)
     {
         LeftHand.SetActive(true);
         RightHand.SetActive(true);
+
+        GameObject.Find("GraphAxes").GetComponent<GraphManipulation>().RightCon = RightHand;
+        GameObject.Find("GraphAxes").GetComponent<GraphManipulation>().LeftCon = LeftHand;
     }
 
 
