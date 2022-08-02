@@ -29701,7 +29701,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8477704363810029642
 RectTransform:
   m_ObjectHideFlags: 0
@@ -29783,7 +29783,7 @@ MonoBehaviour:
   yIntSizeInput: {fileID: 366468905}
   yNumIntInput: {fileID: 470541388}
   yIntSpaceInput: {fileID: 848203613}
-  yAxisLenInput: {fileID: 0}
+  yAxisLenInput: {fileID: 1949662181}
   graphAxes: {fileID: 2079052545}
 --- !u!1 &8477704363910801224
 GameObject:
