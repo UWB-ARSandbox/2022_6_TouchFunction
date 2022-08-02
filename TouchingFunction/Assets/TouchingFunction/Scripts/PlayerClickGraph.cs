@@ -9,9 +9,9 @@ public class PlayerClickGraph : MonoBehaviour
     private PlayerInput playerInput;
     private InputAction click;
     private InputAction rightClick;
-    private InputAction clickVRRight;
-    private InputAction clickVRLeft;
+    private InputAction clickVR;
     private InputAction manipulatePoint;
+    private InputAction gripClickVR;
 
     // public GameObject rightCon;
     // public GameObject leftCon;
@@ -23,6 +23,9 @@ public class PlayerClickGraph : MonoBehaviour
     GameObject currHoveringPoint;
     GameObject currDraggingPoint;
 
+    Transform RightCon;
+    Transform LeftCon;
+
     bool enableDragPoint = false;
 
     LayerMask layerMask;
@@ -31,12 +34,16 @@ public class PlayerClickGraph : MonoBehaviour
 
     RaycastHit hit;
 
+    Vector3 p;
+    Vector3 pLeft;
+    Vector3 pRight;
+
     // Start is called before the first frame update
     void Start()
     {
         graphPlane = GameObject.Find("GraphAxes").transform;
 
-        playerInput = new PlayerInput();
+        
 
         pointLayer = LayerMask.NameToLayer("Point");
         graphLayer = LayerMask.NameToLayer("GraphMesh");
@@ -46,15 +53,20 @@ public class PlayerClickGraph : MonoBehaviour
         
         hoverPoint = GameObject.Find("hoverPoint");
         hoverPoint.SetActive(false);
+
+        LeftCon = GetComponent<PlayerActivateVRHands>().LeftHand.transform;
+        RightCon = GetComponent<PlayerActivateVRHands>().RightHand.transform;
     }
 
     void Awake()
     {
+        playerInput = new PlayerInput();
+
         pointPrefab = Resources.Load<GameObject>("MyPrefabs/point");
         // Unity's new input action system doesn't work for left click. Known bug in the code. Future updates might fix
         // creating action and binding in code is best solution right now. 
         click = new InputAction(binding: "<Mouse>/leftButton");
-        click.performed += Click;
+        click.started += Click;
         click.canceled += Release;
         click.Enable();
 
@@ -62,16 +74,18 @@ public class PlayerClickGraph : MonoBehaviour
         rightClick.performed += RightClick;
         rightClick.Enable();
 
-        clickVRRight = new InputAction(binding: "<XRController>{RightHand}/triggerPressed");
-        clickVRRight.performed += Click;
-        clickVRRight.Enable();
+        clickVR = playerInput.PlayerControls.Trigger;
+        clickVR.started += Click;
+        clickVR.canceled += Release;
+        clickVR.Enable();
 
-        clickVRLeft = new InputAction(binding: "<XRController>{LeftHand}/triggerPressed");
-        clickVRLeft.performed += Click;
-        clickVRLeft.Enable();
+        gripClickVR = playerInput.PlayerControls.Grip;
+        gripClickVR.performed += RightClick;
+        gripClickVR.Enable();
+
     }
 
-    Vector3 IntersectPlane()
+    Vector3 IntersectPlane(Ray ray)
     {
         //A plane can be defined as:
         //a point representing how far the plane is from the world origin
@@ -81,7 +95,8 @@ public class PlayerClickGraph : MonoBehaviour
         //We are intrerested in calculating a point in this plane called p
         //The vector between p and p0 and the normal is always perpendicular: (p - p_0) . n = 0
 
-        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        
         //A ray to point p can be defined as: l_0 + l * t = p, where:
         //the origin of the ray
         Vector3 l_0 = ray.origin;
@@ -111,7 +126,33 @@ public class PlayerClickGraph : MonoBehaviour
 
     void Update()
     {
-        var p = IntersectPlane();
+        // if VR enabled
+        if( GetComponent<PlayerActivateVRHands>().VRActive)
+        {
+
+            pRight = IntersectPlane(new Ray(RightCon.position, RightCon.forward));
+            pLeft = IntersectPlane(new Ray(LeftCon.position, LeftCon.forward));
+
+            if(pLeft != Vector3.negativeInfinity)
+            {
+                if(Physics.Raycast(pLeft + new Vector3(0f, 1f, 0f), Vector3.down, out hit, 2f, layerMask))
+                {
+                    p = pLeft;
+                }
+            }
+            if(pRight != Vector3.negativeInfinity)
+            {
+                if(Physics.Raycast(pRight + new Vector3(0f, 1f, 0f), Vector3.down, out hit, 2f, layerMask))
+                {
+                    p = pRight;
+                }
+            }
+        }
+        else
+        {
+            p = IntersectPlane(Camera.main.ScreenPointToRay(Input.mousePosition));
+        }
+        
 
         if(enableDragPoint)
         {
@@ -175,6 +216,7 @@ public class PlayerClickGraph : MonoBehaviour
 
     void RightClick(InputAction.CallbackContext obj)
     {
+        
         if(currHoveringPoint != null)
         {
             currHoveringPoint.GetComponentInParent<ASL.ASLObject>().SendAndSetClaim(() =>

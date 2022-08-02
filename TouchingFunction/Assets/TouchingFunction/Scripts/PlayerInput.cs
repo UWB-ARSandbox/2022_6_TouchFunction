@@ -145,7 +145,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""RightTrigger"",
+                    ""name"": ""Trigger"",
                     ""type"": ""Button"",
                     ""id"": ""55a3088d-7ca4-42d6-b80d-9200e6c4436a"",
                     ""expectedControlType"": ""Button"",
@@ -184,6 +184,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""name"": ""ModLeftTrigger"",
                     ""type"": ""Button"",
                     ""id"": ""f27c0fcb-4f4a-48d1-975a-3d5e6e7fafc7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Grip"",
+                    ""type"": ""Button"",
+                    ""id"": ""055a32c5-e1fa-419d-b665-9472cb8efe6b"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -539,7 +548,18 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""VR"",
-                    ""action"": ""RightTrigger"",
+                    ""action"": ""Trigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fd516745-577e-43a8-a805-bdc857c9be09"",
+                    ""path"": ""<XRController>{LeftHand}/triggerPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Trigger"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -729,6 +749,28 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""ModLeftTrigger"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""593c938a-1dad-4f4a-9592-80ff1cd7bb0f"",
+                    ""path"": ""<XRController>{LeftHand}/gripPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Grip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e3d026e4-77f8-4290-9a1a-7dcb14af16d0"",
+                    ""path"": ""<XRController>{RightHand}/gripPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Grip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -777,11 +819,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_PlayerControls_ScaleDown = m_PlayerControls.FindAction("ScaleDown", throwIfNotFound: true);
         m_PlayerControls_ToggleCursorLock = m_PlayerControls.FindAction("ToggleCursorLock", throwIfNotFound: true);
         m_PlayerControls_SummonUI = m_PlayerControls.FindAction("SummonUI", throwIfNotFound: true);
-        m_PlayerControls_RightTrigger = m_PlayerControls.FindAction("RightTrigger", throwIfNotFound: true);
+        m_PlayerControls_Trigger = m_PlayerControls.FindAction("Trigger", throwIfNotFound: true);
         m_PlayerControls_ToggleUI = m_PlayerControls.FindAction("ToggleUI", throwIfNotFound: true);
         m_PlayerControls_GraphManipulation = m_PlayerControls.FindAction("GraphManipulation", throwIfNotFound: true);
         m_PlayerControls_ModRightTrigger = m_PlayerControls.FindAction("ModRightTrigger", throwIfNotFound: true);
         m_PlayerControls_ModLeftTrigger = m_PlayerControls.FindAction("ModLeftTrigger", throwIfNotFound: true);
+        m_PlayerControls_Grip = m_PlayerControls.FindAction("Grip", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -854,11 +897,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControls_ScaleDown;
     private readonly InputAction m_PlayerControls_ToggleCursorLock;
     private readonly InputAction m_PlayerControls_SummonUI;
-    private readonly InputAction m_PlayerControls_RightTrigger;
+    private readonly InputAction m_PlayerControls_Trigger;
     private readonly InputAction m_PlayerControls_ToggleUI;
     private readonly InputAction m_PlayerControls_GraphManipulation;
     private readonly InputAction m_PlayerControls_ModRightTrigger;
     private readonly InputAction m_PlayerControls_ModLeftTrigger;
+    private readonly InputAction m_PlayerControls_Grip;
     public struct PlayerControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -876,11 +920,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @ScaleDown => m_Wrapper.m_PlayerControls_ScaleDown;
         public InputAction @ToggleCursorLock => m_Wrapper.m_PlayerControls_ToggleCursorLock;
         public InputAction @SummonUI => m_Wrapper.m_PlayerControls_SummonUI;
-        public InputAction @RightTrigger => m_Wrapper.m_PlayerControls_RightTrigger;
+        public InputAction @Trigger => m_Wrapper.m_PlayerControls_Trigger;
         public InputAction @ToggleUI => m_Wrapper.m_PlayerControls_ToggleUI;
         public InputAction @GraphManipulation => m_Wrapper.m_PlayerControls_GraphManipulation;
         public InputAction @ModRightTrigger => m_Wrapper.m_PlayerControls_ModRightTrigger;
         public InputAction @ModLeftTrigger => m_Wrapper.m_PlayerControls_ModLeftTrigger;
+        public InputAction @Grip => m_Wrapper.m_PlayerControls_Grip;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -929,9 +974,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @SummonUI.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnSummonUI;
                 @SummonUI.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnSummonUI;
                 @SummonUI.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnSummonUI;
-                @RightTrigger.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRightTrigger;
-                @RightTrigger.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRightTrigger;
-                @RightTrigger.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRightTrigger;
+                @Trigger.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnTrigger;
+                @Trigger.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnTrigger;
+                @Trigger.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnTrigger;
                 @ToggleUI.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleUI;
                 @ToggleUI.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleUI;
                 @ToggleUI.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnToggleUI;
@@ -944,6 +989,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @ModLeftTrigger.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnModLeftTrigger;
                 @ModLeftTrigger.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnModLeftTrigger;
                 @ModLeftTrigger.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnModLeftTrigger;
+                @Grip.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGrip;
+                @Grip.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGrip;
+                @Grip.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGrip;
             }
             m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -987,9 +1035,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @SummonUI.started += instance.OnSummonUI;
                 @SummonUI.performed += instance.OnSummonUI;
                 @SummonUI.canceled += instance.OnSummonUI;
-                @RightTrigger.started += instance.OnRightTrigger;
-                @RightTrigger.performed += instance.OnRightTrigger;
-                @RightTrigger.canceled += instance.OnRightTrigger;
+                @Trigger.started += instance.OnTrigger;
+                @Trigger.performed += instance.OnTrigger;
+                @Trigger.canceled += instance.OnTrigger;
                 @ToggleUI.started += instance.OnToggleUI;
                 @ToggleUI.performed += instance.OnToggleUI;
                 @ToggleUI.canceled += instance.OnToggleUI;
@@ -1002,6 +1050,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @ModLeftTrigger.started += instance.OnModLeftTrigger;
                 @ModLeftTrigger.performed += instance.OnModLeftTrigger;
                 @ModLeftTrigger.canceled += instance.OnModLeftTrigger;
+                @Grip.started += instance.OnGrip;
+                @Grip.performed += instance.OnGrip;
+                @Grip.canceled += instance.OnGrip;
             }
         }
     }
@@ -1039,10 +1090,11 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnScaleDown(InputAction.CallbackContext context);
         void OnToggleCursorLock(InputAction.CallbackContext context);
         void OnSummonUI(InputAction.CallbackContext context);
-        void OnRightTrigger(InputAction.CallbackContext context);
+        void OnTrigger(InputAction.CallbackContext context);
         void OnToggleUI(InputAction.CallbackContext context);
         void OnGraphManipulation(InputAction.CallbackContext context);
         void OnModRightTrigger(InputAction.CallbackContext context);
         void OnModLeftTrigger(InputAction.CallbackContext context);
+        void OnGrip(InputAction.CallbackContext context);
     }
 }
