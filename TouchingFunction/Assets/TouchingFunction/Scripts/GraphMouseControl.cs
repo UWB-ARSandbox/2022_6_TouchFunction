@@ -74,9 +74,9 @@ public partial class GraphManipulation : MonoBehaviour
 
     void Update()
     {
-        // Debug.Log("Origin (World): " + gameObject.transform.position);
-        // Debug.Log("Origin (Screen): " + Camera.main.WorldToScreenPoint(gameObject.transform.position));
-        // Debug.Log("Origin Mouse: " + Input.mousePosition);  
+        ClearGridlines();
+        SetupGridlines();
+
         if(enabledGraphManip)      
         {
             Vector3 currPos;
@@ -136,7 +136,7 @@ public partial class GraphManipulation : MonoBehaviour
                 float prevDist = Math.Abs(originalMousePos.x - originPos.x);
                 float diff = currDist - prevDist;
                 float delta = diff * Math.Abs(originPos.z) / scalingFactor[inputType]; // the further the player is from the graph, the higher the sensitivity
-                SetXAxisLength(xAxisLengthPos + Math.Round((double)delta, 1));
+                SetXAxisLengthPos(xAxisLengthPos + Math.Round((double)delta, 1));
                 originalMousePos = currPos;
             }
 
@@ -148,7 +148,7 @@ public partial class GraphManipulation : MonoBehaviour
                 float prevDist = Math.Abs(originalMousePos.y - originPos.y);
                 float diff = currDist - prevDist;
                 float delta = diff * Math.Abs(originPos.z) / scalingFactor[inputType]; // the further the player is from the graph, the higher the sensitivity
-                SetYAxisLength(yAxisLengthPos + Math.Round((double)delta, 1));
+                SetYAxisLengthPos(yAxisLengthPos + Math.Round((double)delta, 1));
                 originalMousePos = currPos;
             }
 
@@ -208,16 +208,12 @@ public partial class GraphManipulation : MonoBehaviour
     // Select an object on graph axes based on cursor position
     private void SelectObject()
     {
-        if (selected != null)
-        {
-            SetSelectedColor(defaultColor);
-        }
+        SetSelectedColor(defaultColor);
 
         RaycastHit hitInfo = new RaycastHit();
         // If controllers are connected, check both controllers. Operation holds a right dominance for selecting objects. 
         if(RightCon != null)
         {
-            
             if(Physics.Raycast((RightCon.transform.position), RightCon.transform.forward, out hitInfo, Mathf.Infinity, mask))
             {
                 selectedType = TypeSelected(hitInfo);
@@ -288,10 +284,7 @@ public partial class GraphManipulation : MonoBehaviour
         {
             selected = null;
             return SelectedType.None;
-            
         }
-
-        
     }
 
     // When right click starts
@@ -304,10 +297,7 @@ public partial class GraphManipulation : MonoBehaviour
     // When right click ends
     private void EndGraphManipulation(InputAction.CallbackContext obj)
     {
-        if (selected != null)
-        {
-            SetSelectedColor(defaultColor);
-        }
+        SetSelectedColor(defaultColor);
         enabledGraphManip = false;
         selectedType = SelectedType.None;
         selected = null;
@@ -322,10 +312,7 @@ public partial class GraphManipulation : MonoBehaviour
 
     private void rightTriggerManipEnd(InputAction.CallbackContext obj)
     {
-        if (selected != null)
-        {
-            SetSelectedColor(defaultColor);
-        }
+        SetSelectedColor(defaultColor);
         enabledGraphManip = false;
         selectedType = SelectedType.None;
         selected = null;
@@ -340,10 +327,7 @@ public partial class GraphManipulation : MonoBehaviour
     }
     private void leftTriggerManipEnd(InputAction.CallbackContext obj)
     {
-        if (selected != null)
-        {
-            SetSelectedColor(defaultColor);
-        }
+        SetSelectedColor(defaultColor);
         enabledGraphManip = false;
         selectedType = SelectedType.None;
         selected = null;
@@ -390,6 +374,11 @@ public partial class GraphManipulation : MonoBehaviour
         {
             yAxisPos.GetComponent<Renderer>().material.color = color;
             yAxisNeg.GetComponent<Renderer>().material.color = color;
+        }
+        else if (selected == null)
+        {   
+            // Catch case for any thing that null
+            return;
         }
         else
         {
