@@ -33,10 +33,14 @@ public partial class Player : MonoBehaviour
     void RotateCameraMouse()
     {
         //mouseLook = false;
-        Vector2 moveValue = look.ReadValue<Vector2>();
+        if (IsCursorLocked())
+        {
+            Vector2 moveValue = look.ReadValue<Vector2>();
 
-        rotY += moveValue.x * (mouseSensitivity) * Time.deltaTime;
-        rotX += moveValue.y * (mouseSensitivity) * Time.deltaTime;
+            rotY += moveValue.x * (mouseSensitivity) * Time.deltaTime;
+            rotX += moveValue.y * (mouseSensitivity) * Time.deltaTime;
+        }
+
 
         rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
 
@@ -47,7 +51,8 @@ public partial class Player : MonoBehaviour
         }
         else
         {
-            head.rotation = Quaternion.Euler(-rotX, rotY, 0);
+            head.localRotation = Quaternion.Euler(-rotX, rotY, 0);
         }
     }
+
 }
