@@ -259,21 +259,6 @@ public class RollerCoasterControl : MonoBehaviour
         return false;
     }
 
-    void updatePlayerList()
-    {
-        var pList = FindObjectsOfType<PlayerASL>();
-        for (int i = 0; i < 4; i++)
-        { 
-            foreach (var p in pList)
-            {
-                if (p.PeerID == playerPIDs[i])
-                {
-                    players[i] = p.GetComponent<Player>();
-                }
-            }
-        }
-    }
-
     public int AddRider(Player p)
     {
 /*        if (!isActivated)

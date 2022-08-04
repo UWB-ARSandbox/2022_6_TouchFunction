@@ -54,8 +54,6 @@ public partial class Player : MonoBehaviour
     private InputAction scaleDown;
     
     private InputAction ride;
-    private InputAction driveFwd;
-    private InputAction driveBkwd;
 
     public Vector3 velocity;
 
