@@ -325,7 +325,7 @@ public partial class Player : MonoBehaviour
                 velocity.y += gravity * Time.deltaTime * .75f;
             }
             // if y velocity is very small, cancel it. Done to prevent velocity from bouncing positive and negative when player stationary. 
-            if (velocity.y < .05f && velocity.y > -.05f)
+            if (velocity.y < .06f && velocity.y > -.06f)
             {
                 velocity.y = 0;
             }
