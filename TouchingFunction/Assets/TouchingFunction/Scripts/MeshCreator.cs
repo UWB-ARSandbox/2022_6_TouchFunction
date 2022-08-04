@@ -9,7 +9,7 @@ using System;
 public class MeshCreator : MonoBehaviour
 {
     public GameObject graphAxes;
-    GraphManipulation graphManScript;
+    public GraphManipulation graphManScript;
 
     #region Graph Attributes
     // public Vector3 origin;
@@ -22,8 +22,8 @@ public class MeshCreator : MonoBehaviour
     #region Mesh Settings
     float[] zVals; // z index of vertices
     bool meshIsEmpty = true;
-    private int minVal = 0;       // minimum of X to render
-    private int maxVal = 20;      // maximum of X to render
+    public int minVal = 0;       // minimum of X to render
+    public int maxVal = 20;      // maximum of X to render
     public int MeshPerX;     // number of vertices per increment of X;
     #endregion
 
@@ -32,6 +32,7 @@ public class MeshCreator : MonoBehaviour
     Vector3[] vertices;
     int[] triangles;
     public float[] yVals;
+    public Vector3[] normals;
     #endregion
 
 
@@ -56,6 +57,7 @@ public class MeshCreator : MonoBehaviour
             zVals[i] = -(width / 2f) + i * 0.5f;
         }*/
         MeshPerX = Mathf.RoundToInt(1f / increment);
+        //Debug.LogError(increment);
         minVal = min;
         maxVal = max;
         //MeshPerX = (int)(1 / increment);
@@ -112,6 +114,7 @@ public class MeshCreator : MonoBehaviour
         meshIsEmpty = false;
         vertices = new Vector3[2 * MeshPerX * (maxVal - minVal)];
         triangles = new int[(MeshPerX * (maxVal - minVal) - 1) * 6];
+        normals = new Vector3[vertices.Length];
 
         //float[] zArr = {-1f, -0.9f, -0.8f, -0.7f, -0.6f, -0.5f, -0.4f, -0.3f, -0.2f, -0.1f, 0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f};
         float xIncrement = 1f / MeshPerX;
@@ -145,6 +148,20 @@ public class MeshCreator : MonoBehaviour
              triangles[6 * i + 5] = 2 * (i + 1);
             
         }
+
+        int vlength = vertices.Length;
+        // edge cases
+        for (int i = 2; i < vlength - 3; i+=2)
+        {
+            Vector3 norm = (Vector3.Cross((vertices[i] - vertices[i-1]), (vertices[i+1] - vertices[i])) + 
+                                Vector3.Cross((vertices[i+2] - vertices[i]), (vertices[i + 1] - vertices[i]))).normalized;
+            normals[i] = -norm;
+            normals[i + 1] = -norm;
+        }
+        normals[0] = -Vector3.Cross((vertices[2] - vertices[0]), (vertices[1] - vertices[0])).normalized;
+        normals[1] = normals[0];
+        normals[vlength - 2] = -Vector3.Cross((vertices[vlength-3] - vertices[vlength-1]), (vertices[vlength-2] - vertices[vlength-1])).normalized;
+        normals[vlength - 1] = normals[vlength - 2];
         transform.localPosition = graphAxes.transform.localPosition;
     }
 
@@ -158,6 +175,7 @@ public class MeshCreator : MonoBehaviour
         mesh.Clear();
         mesh.vertices = vertices;
         mesh.triangles = triangles;
+        mesh.normals = normals;
         GetComponent<MeshCollider>().sharedMesh = mesh;
         //GetComponent<Renderer>().material.color = c;
 
@@ -207,15 +225,31 @@ public class MeshCreator : MonoBehaviour
         return new Vector3(x, y, 0);
     }
 
-    // public float FindY(float worldX)
-    // {
-    //     Vector3 graphOrigin = graphAxes.transform.localPosition;
-    //     float xDistance = worldX - graphOrigin.x;
-    //     float x = xDistance / (float) graphManScript.GetXUnitSpace();
-    //     float y = getY(Mathf.RoundToInt((x - minVal) * MeshPerX));
-    //     float yDistance = y * (float) graphManScript.GetYUnitSpace();
-    //     return yDistance + graphOrigin.y;
-    // }
+/*    public float EstimateY(Vector3 p) 
+    {
+        Vector3 cp = FindClosestPoint(p);
+
+        int x1i = Mathf.FloorToInt(cp.x*MeshPerX);
+        int x2i = x1i + 1;
+        float y1 = yVals[x1i];
+        float y2 = yVals[x2i];
+        return (y2 - y1) / (x2i / MeshPerX - x1i / MeshPerX) * (cp.x - ( x1i / MeshPerX )) + y1 ;
+    }
+
+    public bool IsAboveGraph(Vector3 p)
+    {
+
+        *//*Vector3 p1 = FindClosestPoint(p);
+        Vector3 p2 = FindClosestPoint(new Vector3(p.x + (float)graphManScript.GetXUnitSpace(), p.y, p.z));
+        //Debug.Log(Vector3.SignedAngle(p - p1, p2 - p1, Vector3.up));
+        Debug.DrawRay(p1,p2,Color.blue,0.01f);
+        Debug.DrawRay(p1, p, Color.black,0.01f) ;
+        return Vector3.SignedAngle(p - p1, p2 - p1, Vector3.up) > 0;
 
 
+        //return FindClosestPoint(p).y < p.y;*//*
+        Debug.DrawRay(p, new Vector3(p.x, EstimateY(p), p.z), Color.blue, 0.01f);
+        return EstimateY(p) < p.y;
+    }
+*/
 }

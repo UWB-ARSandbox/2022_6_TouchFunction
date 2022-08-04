@@ -6,10 +6,10 @@ using ASL;
 
 public class PlayerASL : MonoBehaviour
 {
-    private static readonly float UPDATES_PER_SECOND = 30.0f;
+    private static readonly float UPDATES_PER_SECOND = 60.0f;
     bool isLocal = false; // Whether this player is controlled by this client
     public TextMesh nameText;
-    ASLObject aslObj;
+    public ASLObject aslObj;
     public Player player;
 
     public Transform playerHead;
@@ -25,12 +25,14 @@ public class PlayerASL : MonoBehaviour
     public Transform[] SkinParts;
 
     public Material[] HeadMat;
-    public int PeerID;
+    public int PeerID = -1;
     public bool recievedPeerID = false;
 
     public void SetLocal()
     {
         isLocal = true;
+        //PeerID = GameLiftManager.GetInstance().m_PeerId;
+        //SendPeerID(PeerID);
     }
 
     public void Quit()
@@ -55,6 +57,7 @@ public class PlayerASL : MonoBehaviour
         aslObj = GetComponent<ASLObject>();
         aslObj._LocallySetFloatCallback(Receive);
         //aslObj._LocallySetPostDownloadFunction(DownloadAvatar);
+
     }
 
     //static public void DownloadAvatar(GameObject g, Texture2D texture)
@@ -64,7 +67,7 @@ public class PlayerASL : MonoBehaviour
 
     public void SendTransform()
     {
-        var f = new float[9];
+        var f = new float[10];
         f[0] = 1; // Identifier
         f[1] = player.isFlying ? 1 : -1;
         f[2] = player.isMoving ? 1 : -1;
@@ -74,7 +77,7 @@ public class PlayerASL : MonoBehaviour
         f[6] = playerHead.transform.localRotation.eulerAngles.x;
         f[7] = transform.localRotation.eulerAngles.y;
         f[8] = transform.localScale.x;
-
+        f[9] = player.isRiding ? 1 : -1;
         aslObj.SendAndSetClaim(() =>
         {
             aslObj.SendFloatArray(f);
@@ -90,6 +93,7 @@ public class PlayerASL : MonoBehaviour
 
     }
 
+
     public void Receive(string _id, float[] _f)
     {
         if (!string.Equals(aslObj.m_Id, _id)) return; // Not for this player, disregard
@@ -97,6 +101,7 @@ public class PlayerASL : MonoBehaviour
         switch (_f[0])
         {
             case 0: // Set ASL id / name
+                
                 if (!nameText.gameObject.activeInHierarchy) break;
 
                 int ASL_id = (int)_f[1];
@@ -109,6 +114,7 @@ public class PlayerASL : MonoBehaviour
                 player.isSliding = _f[3] > 0;
                 player.isFalling = _f[4] > 0;
                 player.isThinking = _f[5] > 0;
+                player.isRiding = _f[9] > 0;
                 player.setAnimatorBool();
                 
                 playerHead.transform.localRotation = Quaternion.Euler(_f[6], 0, 0);
@@ -152,6 +158,10 @@ public class PlayerASL : MonoBehaviour
                     HairParts[1].gameObject.SetActive(false);
                 }
                 break;
+
+            case 4:     //set PeerID
+                PeerID = (int)_f[1];
+                break;
         }
     }
 
@@ -163,9 +173,12 @@ public class PlayerASL : MonoBehaviour
 
     public void InitLocalPlayer()
     {
+        
         StartCoroutine(NetworkedUpdate());
         FindObjectOfType<ChangeColor>().SetPlayer(this);
         FindObjectOfType<ChangeColor>().SetCamera(GetComponentInChildren<Camera>(), GetComponentInChildren<Player>());
+        FindObjectOfType<MirrorCamera>().player = player.transform;
+        player.canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         FindObjectOfType<GraphManipulation>().SetPlayer(this);
     }
 
@@ -181,14 +194,23 @@ public class PlayerASL : MonoBehaviour
             aslObj.SendFloatArray(new float[] { 0, GameLiftManager.GetInstance().m_PeerId });
         });
 
-        while (true)
+        aslObj.SendAndSetClaim(() =>
         {
-            SendTransform();
+            aslObj.SendFloatArray(new float[] { 4, GameLiftManager.GetInstance().m_PeerId });
+        });
 
-            aslObj.SendAndSetClaim(() =>
+        while (true)
+        { 
+
+            if (!player.isRiding)
             {
-                aslObj.SendAndSetWorldPosition(transform.position);
-            });
+                SendTransform();
+                aslObj.SendAndSetClaim(() =>
+                {
+                    aslObj.SendAndSetWorldPosition(transform.position);
+                });
+            }
+
 
             yield return new WaitForSeconds(1 / UPDATES_PER_SECOND);
         }
