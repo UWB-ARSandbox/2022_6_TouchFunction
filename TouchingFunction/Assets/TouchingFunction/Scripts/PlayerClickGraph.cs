@@ -40,7 +40,7 @@ public class PlayerClickGraph : MonoBehaviour
     Vector3 pLeft;
     Vector3 pRight;
 
-    PlayerActivateVRHands vRHands;
+    public PlayerActivateVRHands vRHands;
 
     // Start is called before the first frame update
     void Start()
@@ -134,6 +134,7 @@ public class PlayerClickGraph : MonoBehaviour
 
     void Update()
     {
+        //vRHands = GetComponent<PlayerActivateVRHands>();
         // if VR enabled
         if( vRHands.VRActive)
         {
