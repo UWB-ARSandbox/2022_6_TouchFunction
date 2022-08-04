@@ -9,6 +9,7 @@ using UnityEngine.InputSystem.XR;
 
 public partial class Player : MonoBehaviour
 {
+
     #region Player movement variables
     public float speed = 5.0f;
     public float jumpSpeed = 10.0f;
@@ -95,6 +96,7 @@ public partial class Player : MonoBehaviour
         SlideLimit = 15f;
         gravityFall = false;
         gravityRise = false;
+
     }
 
     void Awake()
@@ -159,7 +161,7 @@ public partial class Player : MonoBehaviour
         ride.performed += EnterExitVehicle;
         ride.Enable();
 
-        driveFwd = playerInput.PlayerControls.DriveForward;
+/*        driveFwd = playerInput.PlayerControls.DriveForward;
         driveFwd.started += carForward;
         driveFwd.canceled += carStop;
         driveFwd.Disable();
@@ -167,7 +169,7 @@ public partial class Player : MonoBehaviour
         driveBkwd = playerInput.PlayerControls.DriveBackward;
         driveBkwd.started += carBackward;
         driveBkwd.canceled += carStop;
-        driveBkwd.Disable();
+        driveBkwd.Disable();*/
 
         // script to check for VR input to activate VR hands
         gameObject.GetComponent<PlayerActivateVRHands>().enabled = true;
@@ -204,11 +206,12 @@ public partial class Player : MonoBehaviour
             }
         }
 
+        /*// setting the transform of player to align with roller coaster
         if (isRiding)
         {
             controller.Move(RCControlRiding.FinalMoveVector);
             transform.forward = RCControlRiding.transform.forward;
-        }
+        }*/
 
         setAnimatorBool();
     }
@@ -235,14 +238,18 @@ public partial class Player : MonoBehaviour
             }*/
             if (RCControlRiding.IsDriver(this))
             {
-                if (isForward)
+                Vector2 driverMove = movement.ReadValue<Vector2>();
+                RCControlRiding.DriverSpeedVector = RCControlRiding.transform.forward * driverMove.y * 0.1f;
+                RCControlRiding.transform.RotateAround(RCControlRiding.transform.position, Vector3.up, 3*driverMove.x);
+
+                /*if (isForward)
                 {
                     RCControlRiding.DriverSpeedVector = RCControlRiding.transform.forward * 0.1f;
                 }
                 else if (isBackward)
                 {
                     RCControlRiding.DriverSpeedVector = RCControlRiding.transform.forward * -0.1f;
-                } 
+                } */
             }
 
 
@@ -603,29 +610,32 @@ public partial class Player : MonoBehaviour
                 {
                     if (seatNumber == 0)    // if is driver, the transform of the car will be controlled by this player
                     {
-/*                        RCControlToRide.GetComponent<RollerCoasterASL>().isLocal = true;
-                        RCControlToRide.GetComponent<RollerCoasterASL>().StartASL();*/
+                        /*                        RCControlToRide.GetComponent<RollerCoasterASL>().isLocal = true;
+                                                RCControlToRide.GetComponent<RollerCoasterASL>().StartASL();*/
+                        RCControlToRide.GetComponent<RollerCoasterASL>().StartASL();
+
+                    } else
+                    {
+                        movement.Disable();
                     }
 
                     //controller.enabled = false;
-                    gameObject.transform.parent = RCControlToRide.transform;
+                    //gameObject.transform.parent = RCControlToRide.transform;
                     RCControlRiding = RCControlToRide;
+
                     SetEnterVehicleGUI(false);
 
-                    controller.Move((RCControlRiding.transform.position - transform.position) + RCControlRiding.SeatPositions[seatNumber]);
+                    //controller.Move((RCControlRiding.transform.position - transform.position) + RCControlRiding.SeatPositions[seatNumber]);
 
                     //RCControlRiding.AddRider(this);
                     isRiding = true;
 
-                    movement.Disable();
+                    //movement.Disable();
                     jump.Disable();
                     disableGravity.Disable();
                     enableGravity.Disable();
                     scaleUp.Disable();
                     scaleDown.Disable();
-
-                    driveFwd.Enable();
-                    driveBkwd.Enable();
 
                     canvas.gameObject.SetActive(false);
                 }
@@ -633,15 +643,21 @@ public partial class Player : MonoBehaviour
         }
         else
         {
+
+            if (RCControlRiding.IsDriver(this))
+            {
+                RCControlRiding.GetComponent<RollerCoasterASL>().StopASL();
+            }
+
             RCControlRiding.KickPlayer(this);
             //if (RCControlRiding)
-            isRiding = false;
+            //isRiding = false;
             ////////////////
             //controller.enabled = true;
             //controller.height = 2.1f;
             //controller.radius = 0.5f;
 
-            gameObject.transform.parent = null;
+            //gameObject.transform.parent = null;
             RCControlRiding = null;
 
             movement.Enable();
@@ -651,8 +667,6 @@ public partial class Player : MonoBehaviour
             scaleUp.Enable();
             scaleDown.Enable();
 
-            driveFwd.Disable();
-            driveBkwd.Disable();
             canvas.gameObject.SetActive(true);
         }
     }
@@ -663,7 +677,7 @@ public partial class Player : MonoBehaviour
         EnterVehicleGUI.SetActive(op);
     }
 
-    void carForward(InputAction.CallbackContext obj)
+/*    void carForward(InputAction.CallbackContext obj)
     {
         if (RCControlRiding.IsDriver(this))
         {
@@ -687,7 +701,7 @@ public partial class Player : MonoBehaviour
             isForward = false;
             isBackward = false;
         }
-    }
+    }*/
 
     void clearSliding()
     {

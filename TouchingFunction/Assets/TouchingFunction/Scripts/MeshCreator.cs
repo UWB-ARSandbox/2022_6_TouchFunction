@@ -9,7 +9,7 @@ using System;
 public class MeshCreator : MonoBehaviour
 {
     public GameObject graphAxes;
-    GraphManipulation graphManScript;
+    public GraphManipulation graphManScript;
 
     #region Graph Attributes
     // public Vector3 origin;
@@ -22,8 +22,8 @@ public class MeshCreator : MonoBehaviour
     #region Mesh Settings
     float[] zVals; // z index of vertices
     bool meshIsEmpty = true;
-    private int minVal = 0;       // minimum of X to render
-    private int maxVal = 20;      // maximum of X to render
+    public int minVal = 0;       // minimum of X to render
+    public int maxVal = 20;      // maximum of X to render
     public int MeshPerX;     // number of vertices per increment of X;
     #endregion
 
@@ -234,8 +234,31 @@ public class MeshCreator : MonoBehaviour
         return new Vector3(x, y, 0);
     }
 
-/*    public float GetYofX(float x)
+/*    public float EstimateY(Vector3 p) 
+    {
+        Vector3 cp = FindClosestPoint(p);
+
+        int x1i = Mathf.FloorToInt(cp.x*MeshPerX);
+        int x2i = x1i + 1;
+        float y1 = yVals[x1i];
+        float y2 = yVals[x2i];
+        return (y2 - y1) / (x2i / MeshPerX - x1i / MeshPerX) * (cp.x - ( x1i / MeshPerX )) + y1 ;
+    }
+
+    public bool IsAboveGraph(Vector3 p)
     {
 
-    }*/
+        *//*Vector3 p1 = FindClosestPoint(p);
+        Vector3 p2 = FindClosestPoint(new Vector3(p.x + (float)graphManScript.GetXUnitSpace(), p.y, p.z));
+        //Debug.Log(Vector3.SignedAngle(p - p1, p2 - p1, Vector3.up));
+        Debug.DrawRay(p1,p2,Color.blue,0.01f);
+        Debug.DrawRay(p1, p, Color.black,0.01f) ;
+        return Vector3.SignedAngle(p - p1, p2 - p1, Vector3.up) > 0;
+
+
+        //return FindClosestPoint(p).y < p.y;*//*
+        Debug.DrawRay(p, new Vector3(p.x, EstimateY(p), p.z), Color.blue, 0.01f);
+        return EstimateY(p) < p.y;
+    }
+*/
 }

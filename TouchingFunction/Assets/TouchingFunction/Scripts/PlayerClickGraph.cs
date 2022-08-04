@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using ASL;
+using UnityEngine.UI;
 
 public class PlayerClickGraph : MonoBehaviour
 {
     public bool IsSettingRC;
+    public bool IsDeletingRC = false;
+
+    public Toggle SettingRCToggle;
+    public Toggle DeleteRCToggle;
     public GameObject RCPrefab;
     public GameObject DMV;
 
@@ -24,29 +29,41 @@ public class PlayerClickGraph : MonoBehaviour
     GameObject highlighted;
 
     GameObject hoverRC;
-
+    GameObject deleteHoverRC;
+    public GameObject toDelete;
+    
     LayerMask layerMask;
+    LayerMask rcLayer;
     int graphLayer;
     int pointLayer;
+
+
 
     static RaycastHit hit;
     // Start is called before the first frame update
     void Start()
     {
+
+        SettingRCToggle = GameObject.Find("SetRCToggle").GetComponent<Toggle>();
+        DeleteRCToggle = GameObject.Find("DeleteRCToggle").GetComponent<Toggle>();
         playerInput = new PlayerInput();
 
         pointLayer = LayerMask.NameToLayer("Point");
         graphLayer = LayerMask.NameToLayer("GraphMesh");
         layerMask = LayerMask.GetMask("GraphMesh", "Point");
+        rcLayer = LayerMask.GetMask("RollerCoaster");
 
         playerCam = GetComponentInChildren<Camera>();
         
         hoverPoint = GameObject.Find("hoverPoint");
         hoverPoint.SetActive(false);
 
-        IsSettingRC = true;
+        //IsSettingRC = true;
         hoverRC = GameObject.Find("hoverRC");
         hoverRC.SetActive(false);
+
+        deleteHoverRC = GameObject.Find("deleteHoverRC");
+        deleteHoverRC.SetActive(false);
     }
 
     void Awake()
@@ -72,14 +89,14 @@ public class PlayerClickGraph : MonoBehaviour
     void Update()
     {
 
-        if (IsSettingRC)
+        if (IsSettingRC)    // creating roller coaster
         {
             if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, 25, layerMask))
             {
                 if (hit.transform.gameObject.layer == graphLayer)
                 {
 
-                    hoverRC.transform.position = new Vector3(hit.point.x, hit.point.y, hit.transform.position.z);
+                    hoverRC.transform.position = new Vector3(hit.point.x, hit.point.y, hit.transform.position.z) + 0.3f * hit.normal;
                     hoverRC.SetActive(true);
                     float angle = Vector3.Angle(hit.normal, Vector3.up);
                     if (hit.normal.x < 0)
@@ -93,7 +110,21 @@ public class PlayerClickGraph : MonoBehaviour
             {
                 hoverRC.SetActive(false);
             }
-        } else
+        } else if (IsDeletingRC)    // deleting roller coaster
+        {
+            if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, 25, rcLayer))
+            {
+                deleteHoverRC.transform.position = hit.transform.position;
+                deleteHoverRC.transform.rotation = hit.transform.rotation;
+                deleteHoverRC.SetActive(true);
+                toDelete = hit.transform.gameObject;
+            } else
+            {
+                toDelete = null; 
+                deleteHoverRC.SetActive(false);
+            }
+        }
+        else             // is creating points
         {
             if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, 25, layerMask) ||
             Physics.SphereCast(playerCam.transform.position, 1f, playerCam.transform.forward, out hit, 25, layerMask))
@@ -142,15 +173,28 @@ public class PlayerClickGraph : MonoBehaviour
             if (hoverRC.activeInHierarchy)
             {
                 //Debug.LogError("inSETTING");
-                //ASL_AutonomousObjectHandler.Instance.InstantiateAutonomousObject(RCPrefab, hoverRC.transform.position, hoverRC.transform.rotation, OnRCCreated, null, OnRCFloatReceived);
+                ASLHelper.InstantiateASLObject("RollerCoaster", hoverRC.transform.position, hoverRC.transform.rotation, null, null, OnRCCreated);
                 //GameObject.Find("RollerCoaster").GetComponent<RollerCoasterControl>().mesh = hit.transform.GetComponent<MeshCreator>();
-                GameObject rc = Instantiate(RCPrefab, hoverRC.transform.position, hoverRC.transform.rotation);
-                rc.GetComponent<RollerCoasterControl>().mesh = hit.transform.GetComponent<MeshCreator>();
+                //GameObject rc = Instantiate(RCPrefab, hoverRC.transform.position, hoverRC.transform.rotation);
+                //rc.GetComponent<RollerCoasterControl>().mesh = hit.transform.GetComponent<MeshCreator>();
                 IsSettingRC = false;
+                SettingRCToggle.isOn = false;
                 hoverRC.SetActive(false);
             }
 
-
+        } else if (IsDeletingRC)
+        {
+            if (deleteHoverRC.activeInHierarchy)
+            {
+                toDelete.GetComponent<ASLObject>().SendAndSetClaim(() => {
+                    toDelete.GetComponent<ASLObject>().DeleteObject();
+                    toDelete = null;
+                    IsDeletingRC = false;
+                    DeleteRCToggle.isOn = false;
+                    deleteHoverRC.SetActive(false);
+                });
+                
+            }
         } else
         {
             if (hoverPoint.activeInHierarchy)
@@ -168,36 +212,12 @@ public class PlayerClickGraph : MonoBehaviour
         }
     }
 
-    public void OnRCCreated(GameObject _obj)
+    private static void OnRCCreated(GameObject _obj)
     {
         _obj.GetComponent<RollerCoasterControl>().mesh = hit.transform.GetComponent<MeshCreator>();
-        _obj.transform.parent = DMV.transform;
-        //_obj.GetComponent<RollerCoasterASL>().enabled = true;
-        //_obj.GetComponent<RollerCoasterASL>().AttachASLObject();
-        //_obj.GetComponent<RollerCoasterASL>().StartASL();
+        _obj.GetComponent<RollerCoasterASL>().InitVehicle();
+        _obj.GetComponent<RollerCoasterASL>().SendMeshInfo();
     }
 
-    /*
-      index      attribute
-        0           
-        1
-        2
-        3
-        4
-        5
-        6
-        7
-        8
-        9
-        10
-        11
-        12
-        13
-     */
-
-    public static void OnRCFloatReceived(string id, float[] f)
-    {
-        return;
-    }
 
 }
