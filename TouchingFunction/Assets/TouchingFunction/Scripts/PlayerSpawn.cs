@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ASL;
 
 public class PlayerSpawn : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class PlayerSpawn : MonoBehaviour
     // Instantiates a player for each client
     void Start()
     {
-        ASL.ASLHelper.InstantiateASLObject("PlayerPre", Vector3.zero, Quaternion.identity, null, null, OnPlayerCreated);
+        ASL.ASLHelper.InstantiateASLObject("PlayerPre", -GameLiftManager.GetInstance().m_PeerId * Vector3.left, Quaternion.identity, null, null, OnPlayerCreated);
     }
 
     private static void OnPlayerCreated(GameObject obj)
@@ -22,7 +23,7 @@ public class PlayerSpawn : MonoBehaviour
         obj.GetComponentInChildren<Camera>().enabled = true;
 
         obj.AddComponent<PlayerClickGraph>();
-
+        obj.AddComponent<RCPlayerManager>();
         player = obj;
     }
 

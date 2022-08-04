@@ -197,6 +197,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ride"",
+                    ""type"": ""Button"",
+                    ""id"": ""4a75d4c5-8cc2-4774-b349-2488d809b9ba"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -771,6 +780,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""Grip"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8f611b58-cbf1-4db1-bbc9-c6efdfb4f89b"",
+                    ""path"": ""<Keyboard>/#(R)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC;VR"",
+                    ""action"": ""Ride"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -825,6 +845,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_PlayerControls_ModRightTrigger = m_PlayerControls.FindAction("ModRightTrigger", throwIfNotFound: true);
         m_PlayerControls_ModLeftTrigger = m_PlayerControls.FindAction("ModLeftTrigger", throwIfNotFound: true);
         m_PlayerControls_Grip = m_PlayerControls.FindAction("Grip", throwIfNotFound: true);
+        m_PlayerControls_Ride = m_PlayerControls.FindAction("Ride", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -903,6 +924,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControls_ModRightTrigger;
     private readonly InputAction m_PlayerControls_ModLeftTrigger;
     private readonly InputAction m_PlayerControls_Grip;
+    private readonly InputAction m_PlayerControls_Ride;
     public struct PlayerControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -926,6 +948,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @ModRightTrigger => m_Wrapper.m_PlayerControls_ModRightTrigger;
         public InputAction @ModLeftTrigger => m_Wrapper.m_PlayerControls_ModLeftTrigger;
         public InputAction @Grip => m_Wrapper.m_PlayerControls_Grip;
+        public InputAction @Ride => m_Wrapper.m_PlayerControls_Ride;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -992,6 +1015,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Grip.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGrip;
                 @Grip.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGrip;
                 @Grip.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnGrip;
+                @Ride.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRide;
+                @Ride.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRide;
+                @Ride.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnRide;
             }
             m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -1053,6 +1079,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Grip.started += instance.OnGrip;
                 @Grip.performed += instance.OnGrip;
                 @Grip.canceled += instance.OnGrip;
+                @Ride.started += instance.OnRide;
+                @Ride.performed += instance.OnRide;
+                @Ride.canceled += instance.OnRide;
             }
         }
     }
@@ -1096,5 +1125,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnModRightTrigger(InputAction.CallbackContext context);
         void OnModLeftTrigger(InputAction.CallbackContext context);
         void OnGrip(InputAction.CallbackContext context);
+        void OnRide(InputAction.CallbackContext context);
     }
 }

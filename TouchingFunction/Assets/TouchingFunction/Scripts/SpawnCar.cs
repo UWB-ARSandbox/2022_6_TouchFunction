@@ -13,7 +13,7 @@ public class SpawnCar : MonoBehaviour
         
         if (GameLiftManager.GetInstance().m_PeerId == 1)
         {
-            ASLHelper.InstantiateASLObject("GroundCar", Vector3.zero - 2*Vector3.up, Quaternion.identity, null, null, onGroundCarCreated);
+            ASLHelper.InstantiateASLObject("GroundCar", new Vector3(-10, -2, 0), Quaternion.identity, null, null, onGroundCarCreated);
         }
         //ASL_AutonomousObjectHandler.Instance.InstantiateAutonomousObject(GroundCarPrefab, onGroundCarCreated);
         

@@ -1817,7 +1817,7 @@ Transform:
   m_LocalScale: {x: 1.04, y: 1.05, z: 1.01}
   m_Children: []
   m_Father: {fileID: 8995529675970596643}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3542388169336569875
 MeshFilter:
@@ -2479,6 +2479,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameText: {fileID: 5324479024114406258}
+  aslObj: {fileID: 0}
   player: {fileID: 7473864094519733550}
   playerHead: {fileID: 8995529675970596643}
   HairParts:
@@ -2684,7 +2685,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8995529675708157623}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!1 &8995529675970596655
 GameObject:
   m_ObjectHideFlags: 0
@@ -2714,8 +2715,9 @@ Transform:
   m_LocalPosition: {x: 0.04523641, y: 1.026148, z: -0.486}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2418823273632728419}
+  - {fileID: 8995529675708157642}
   - {fileID: 4386464899208848550}
+  - {fileID: 2418823273632728419}
   m_Father: {fileID: 5778486578691742602}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

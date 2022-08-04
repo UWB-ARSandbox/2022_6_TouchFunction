@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18386836, g: 0.22901559, b: 0.3031127, a: 1}
+  m_IndirectSpecularColor: {r: 0.18251066, g: 0.22822355, b: 0.30722997, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1490,6 +1490,8 @@ MonoBehaviour:
   c: {r: 0, g: 0, b: 0, a: 0}
   functionText: 
   functionProp: 
+  minVal: 0
+  maxVal: 20
   MeshPerX: 4
   yVals: []
   normals: []
@@ -2974,8 +2976,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 10, y: -10}
-  m_SizeDelta: {x: 20, y: 20}
+  m_AnchoredPosition: {x: 157.3, y: -10}
+  m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &261576895
 MonoBehaviour:
@@ -10098,8 +10100,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 9, y: -0.5}
-  m_SizeDelta: {x: -28, y: -3}
+  m_AnchoredPosition: {x: 21.2, y: 2.8749974}
+  m_SizeDelta: {x: -52.4, y: 3.7500055}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &787959200
 MonoBehaviour:
@@ -10114,7 +10116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10123,18 +10125,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 23
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_MinSize: 2
+    m_MaxSize: 50
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Spawn Roller Coaster
+  m_Text: Spawn RC
 --- !u!222 &787959201
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10174,12 +10176,12 @@ RectTransform:
   - {fileID: 261576894}
   - {fileID: 1840264775}
   m_Father: {fileID: 1616667185}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 323.4, y: -33.99}
-  m_SizeDelta: {x: 206.5, y: 20}
+  m_AnchoredPosition: {x: 323.4, y: -221.88}
+  m_SizeDelta: {x: 219.07, y: 30.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &788077816
 MonoBehaviour:
@@ -14149,7 +14151,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1038004328}
-  m_Enabled: 0
+  m_Enabled: 1
 --- !u!20 &1038004330
 Camera:
   m_ObjectHideFlags: 0
@@ -15145,7 +15147,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1098753274}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &1098753277
 Camera:
   m_ObjectHideFlags: 0
@@ -16891,7 +16893,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &1204700623
 Light:
   m_ObjectHideFlags: 0
@@ -16904,13 +16906,13 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0
+  m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -19304,7 +19306,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1374069393}
   m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
-  m_LocalPosition: {x: 0, y: 115.2, z: -71.5}
+  m_LocalPosition: {x: 0, y: 26.4, z: -71.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -21933,6 +21935,8 @@ MonoBehaviour:
   c: {r: 0, g: 0, b: 0, a: 0}
   functionText: 
   functionProp: 
+  minVal: 0
+  maxVal: 20
   MeshPerX: 4
   yVals: []
   normals: []
@@ -22060,8 +22064,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 10, y: -10}
-  m_SizeDelta: {x: 20, y: 20}
+  m_AnchoredPosition: {x: 179.1, y: -10}
+  m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1550107830
 MonoBehaviour:
@@ -26800,6 +26804,8 @@ MonoBehaviour:
   c: {r: 0, g: 0, b: 0, a: 0}
   functionText: 
   functionProp: 
+  minVal: 0
+  maxVal: 20
   MeshPerX: 4
   yVals: []
   normals: []
@@ -27064,6 +27070,8 @@ MonoBehaviour:
   c: {r: 0, g: 0, b: 0, a: 0}
   functionText: 
   functionProp: 
+  minVal: 0
+  maxVal: 20
   MeshPerX: 4
   yVals: []
   normals: []
@@ -28169,8 +28177,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 9, y: -0.5}
-  m_SizeDelta: {x: -28, y: -3}
+  m_AnchoredPosition: {x: 11.350001, y: 1.3100003}
+  m_SizeDelta: {x: -32.7, y: 4.1199994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1840264776
 MonoBehaviour:
@@ -28185,7 +28193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -28194,10 +28202,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 23
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 2
     m_MaxSize: 40
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -28873,12 +28881,12 @@ RectTransform:
   - {fileID: 1550107829}
   - {fileID: 787959199}
   m_Father: {fileID: 1616667185}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 323.4, y: -7.32}
-  m_SizeDelta: {x: 206.5, y: 20}
+  m_AnchoredPosition: {x: 320.6, y: -185.6}
+  m_SizeDelta: {x: 259.68, y: 35.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1915824046
 MonoBehaviour:
@@ -30940,8 +30948,8 @@ MonoBehaviour:
   yAxisEndNeg: {fileID: 230689665}
   xScale: {fileID: 2104790982012564634, guid: ee6904d08465ba34b8247a9179ede01d, type: 3}
   yScale: {fileID: 5488505256145549587, guid: 7a7f67b51b7d57f4285297e416eda30a, type: 3}
-  VerticalGridline: {fileID: 6086810452477668483, guid: 87a17f6e7c0bf0d4787036a7ad04346e, type: 3}
-  HorizontalGridline: {fileID: 2065776738184731383, guid: 7547a880189840c4ea75ea4973c3746e, type: 3}
+  VerticalGridline: {fileID: 0}
+  HorizontalGridline: {fileID: 0}
   meshManager: {fileID: 1438277363}
   RightCon: {fileID: 0}
   LeftCon: {fileID: 0}
@@ -33944,12 +33952,12 @@ MonoBehaviour:
   submitButton: {fileID: 8477704364761976582}
   xIntSizeInput: {fileID: 1627447709}
   xIntSpaceInput: {fileID: 725628949}
-  xAxisLenPosInput: {fileID: 1836520188}
-  xAxisLenNegInput: {fileID: 90798408}
+  xAxisLenPosInput: {fileID: 0}
+  xAxisLenNegInput: {fileID: 0}
   yIntSizeInput: {fileID: 366468905}
   yIntSpaceInput: {fileID: 470541388}
-  yAxisLenPosInput: {fileID: 848203613}
-  yAxisLenNegInput: {fileID: 1949662181}
+  yAxisLenPosInput: {fileID: 0}
+  yAxisLenNegInput: {fileID: 0}
   graphAxes: {fileID: 2079052545}
 --- !u!1 &8477704363910801224
 GameObject:

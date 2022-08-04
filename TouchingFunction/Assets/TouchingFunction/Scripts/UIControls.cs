@@ -210,11 +210,11 @@ public class UIControls : MonoBehaviour
 
     public void onSetRCToggle(bool rcBool)
     {
-        CColor.player.GetComponent<PlayerClickGraph>().IsSettingRC = rcBool;
+        CColor.player.GetComponent<RCPlayerManager>().IsSettingRC = rcBool;
     }
 
     public void onDeleteRCToggle(bool rcBool)
     {
-        CColor.player.GetComponent<PlayerClickGraph>().IsDeletingRC = rcBool;
+        CColor.player.GetComponent<RCPlayerManager>().IsDeletingRC = rcBool;
     }
 }

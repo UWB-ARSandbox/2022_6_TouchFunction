@@ -76,13 +76,13 @@ public class RollerCoasterControl : MonoBehaviour
     void Update()
     {
 
-        alignPlayers();
+        //alignPlayers();
         if (mesh == null) // if it's a ground car
         {
             FinalMoveVector = 10 * DriverSpeedVector;
             limitSpeed();
             transform.position += FinalMoveVector;
-            //alignPlayers();
+            alignPlayers();
             DriverSpeedVector = Vector3.zero;
             return;
         }
@@ -90,6 +90,7 @@ public class RollerCoasterControl : MonoBehaviour
 
         if (!isActivated)
         {
+            alignPlayers();
             isActivated = (DriverSpeedVector != Vector3.zero);
         }
 
@@ -126,7 +127,7 @@ public class RollerCoasterControl : MonoBehaviour
             checkForGoingOver();
             //Debug.DrawRay(transform.position, FinalMoveVector, Color.green, 0.01f);
             transform.position += FinalMoveVector;
-            //alignPlayers();
+            alignPlayers();
             DriverSpeedVector = Vector3.zero;
         }
         
@@ -271,7 +272,11 @@ public class RollerCoasterControl : MonoBehaviour
             {
                 players[i] = p;               
                 RCASL.SendSeatsData();
-                SafetyBars[i].transform.localEulerAngles = new Vector3(165, 0, 0);
+                if (mesh != null)
+                {
+                    SafetyBars[i].transform.localEulerAngles = new Vector3(165, 0, 0);
+                }
+               
                 //Debug.LogError(i);
                 alignPlayers();
                 return i;
@@ -286,7 +291,11 @@ public class RollerCoasterControl : MonoBehaviour
         {
             if (p == players[i])
             {
-                SafetyBars[i].transform.localEulerAngles = new Vector3(80, 0, 0);
+                if (mesh != null)
+                {
+                    SafetyBars[i].transform.localEulerAngles = new Vector3(80, 0, 0);
+                }
+                
                 p.isRiding = false;
                 players[i] = null;
                 RCASL.SendSeatsData();
