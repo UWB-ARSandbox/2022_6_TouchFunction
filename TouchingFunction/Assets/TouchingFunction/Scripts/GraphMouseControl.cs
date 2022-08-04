@@ -19,6 +19,7 @@ public partial class GraphManipulation : MonoBehaviour
 
     enum SelectedType
     {
+        None,
         XAxisScale,
         YAxisScale,
         XAxisLine,
@@ -26,8 +27,7 @@ public partial class GraphManipulation : MonoBehaviour
         XAxisTipPos,
         YAxisTipPos,
         XAxisTipNeg,
-        YAxisTipNeg,
-        None
+        YAxisTipNeg
     }
     SelectedType selectedType;
 

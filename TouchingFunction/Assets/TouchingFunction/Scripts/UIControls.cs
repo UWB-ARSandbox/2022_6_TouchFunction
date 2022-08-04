@@ -53,6 +53,12 @@ public class UIControls : MonoBehaviour
     private InputAction toggleUI;
     #endregion
 
+    #region Toggles
+    public GameObject Gridline;
+    public GameObject SpawnRC;
+    public GameObject DeleteRC;
+    #endregion
+
     //public Canvas canvas;
     //public Camera camera;
 
@@ -94,6 +100,9 @@ public class UIControls : MonoBehaviour
         FlexibleColorPickerButton.SetActive(false);
         Controlbutton.SetActive(false);
         QuitWindowButton.SetActive(false);
+        Gridline.SetActive(false);
+        SpawnRC.SetActive(false);
+        DeleteRC.SetActive(false);
     }
 
     public void ResetUI()
@@ -123,6 +132,12 @@ public class UIControls : MonoBehaviour
         QuitWindowButton.SetActive(true);
 
         VKeyboardButton.SetActive(false);
+        VKeyboard.GetComponent<VKeyboard>().TrackPlayer = false;
+
+        Gridline.SetActive(true);
+        SpawnRC.SetActive(true);
+        DeleteRC.SetActive(true);
+
     }
 
     public void SetFunctionInputActive()

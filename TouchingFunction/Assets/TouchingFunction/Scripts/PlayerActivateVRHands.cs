@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.XR;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.XR.Interaction.Toolkit;
 using ASL;
 
 public class PlayerActivateVRHands : MonoBehaviour
@@ -45,6 +46,17 @@ public class PlayerActivateVRHands : MonoBehaviour
         GameObject.Find("GraphAxes").GetComponent<GraphManipulation>().RightCon = RightHand;
         GameObject.Find("GraphAxes").GetComponent<GraphManipulation>().LeftCon = LeftHand;
     }
+
+    public bool IsLeftHandOverUI()
+    {
+        return LeftHand.GetComponent<XRRayInteractor>().TryGetCurrentUIRaycastResult(out _);
+    }
+
+    public bool IsRightHandOverUI()
+    {
+        return RightHand.GetComponent<XRRayInteractor>().TryGetCurrentUIRaycastResult(out _);
+    }
+
 
 
 }
