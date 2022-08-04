@@ -20,6 +20,7 @@ public class RCPlayerManager : MonoBehaviour
     private InputAction clickVRRight;
     private InputAction clickVRLeft;
 
+
     // public GameObject rightCon;
     // public GameObject leftCon;
 
@@ -32,14 +33,16 @@ public class RCPlayerManager : MonoBehaviour
     LayerMask layerMask;
     LayerMask rcLayer;
     int graphLayer;
-
+    static GameObject latestSignal;
 
 
     static RaycastHit hit;
+
+    public GameObject SignalLight;
     // Start is called before the first frame update
     void Start()
     {
-
+        SignalLight = Resources.Load("MyPrefabs/SignalLight") as GameObject;
         SettingRCToggle = GameObject.Find("SetRCToggle").GetComponent<Toggle>();
         DeleteRCToggle = GameObject.Find("DeleteRCToggle").GetComponent<Toggle>();
         playerInput = new PlayerInput();
@@ -133,6 +136,8 @@ public class RCPlayerManager : MonoBehaviour
                 IsSettingRC = false;
                 SettingRCToggle.isOn = false;
                 hoverRC.SetActive(false);
+                latestSignal = Instantiate(SignalLight, hoverRC.transform.position, hoverRC.transform.rotation);
+                            
             }
 
         }
@@ -140,12 +145,14 @@ public class RCPlayerManager : MonoBehaviour
         {
             if (deleteHoverRC.activeInHierarchy)
             {
+                Destroy(toDelete.GetComponent<RollerCoasterControl>().SignalLight);
                 toDelete.GetComponent<ASLObject>().SendAndSetClaim(() => {
                     toDelete.GetComponent<ASLObject>().DeleteObject();
                     toDelete = null;
                     IsDeletingRC = false;
                     DeleteRCToggle.isOn = false;
                     deleteHoverRC.SetActive(false);
+
                 });
 
             }
@@ -155,9 +162,11 @@ public class RCPlayerManager : MonoBehaviour
     private static void OnRCCreated(GameObject _obj)
     {
         _obj.GetComponent<RollerCoasterControl>().mesh = hit.transform.GetComponent<MeshCreator>();
+        _obj.GetComponent<RollerCoasterControl>().SignalLight = latestSignal;
         _obj.GetComponent<RollerCoasterASL>().InitVehicle();
         _obj.GetComponent<RollerCoasterASL>().SendMeshInfo();
     }
-
+  
+    
 
 }

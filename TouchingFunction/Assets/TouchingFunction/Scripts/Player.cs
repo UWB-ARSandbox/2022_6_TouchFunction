@@ -202,14 +202,10 @@ public partial class Player : MonoBehaviour
             {
                 RotateCameraMouse();
             }
-        }
-
-        /*// setting the transform of player to align with roller coaster
-        if (isRiding)
+        } else
         {
-            controller.Move(RCControlRiding.FinalMoveVector);
-            transform.forward = RCControlRiding.transform.forward;
-        }*/
+            RotateCameraMouse();
+        }
 
         setAnimatorBool();
     }

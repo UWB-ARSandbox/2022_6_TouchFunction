@@ -35,8 +35,8 @@ public class RollerCoasterControl : MonoBehaviour
     public Vector3 norm;
     RaycastHit hit;
 
-    public float ConversionRate = 0.05f;
-    public float InheritRate = 1f;
+    public float ConversionRate = 0.01f;
+    public float InheritRate = 0.95f;
 
     public float speedLimit = 2f;
 
@@ -44,12 +44,14 @@ public class RollerCoasterControl : MonoBehaviour
 
     public bool isEnd;
     public bool isDerail = false;
-    public float derailLastTime = 5f;
+    public float derailLastTime = 3f;
 
     Vector3 initPosCopy;
     Vector3 initRotCopy;
 
     public RollerCoasterASL RCASL;
+
+    public GameObject SignalLight;
     //public int addCount = 0;
     private void Awake()
     {
@@ -125,8 +127,12 @@ public class RollerCoasterControl : MonoBehaviour
 
             limitSpeed();
             checkForGoingOver();
-            //Debug.DrawRay(transform.position, FinalMoveVector, Color.green, 0.01f);
-            transform.position += FinalMoveVector;
+            Debug.DrawRay(transform.position, FinalMoveVector, Color.green, 0.01f);
+            if (FinalMoveVector.magnitude > 0.01f)
+            {
+                transform.position += FinalMoveVector;
+            }
+
             alignPlayers();
             DriverSpeedVector = Vector3.zero;
         }
@@ -169,10 +175,10 @@ public class RollerCoasterControl : MonoBehaviour
         } else
         {
             Vector3 cp = mesh.FindClosestPoint(transform.position);
-            if (cp.x <= mesh.minVal+2f || cp.x >= mesh.maxVal-2f)
+/*            if (cp.x <= mesh.minVal+2f || cp.x >= mesh.maxVal-2f)
             {
-                isEnd = true;
-            } else
+                //isEnd = true;
+            } else*/
             {
                 isDerail = true;
             }
@@ -305,13 +311,14 @@ public class RollerCoasterControl : MonoBehaviour
 
     void resetRC()
     {
+        isActivated = false;
         SlidingVector = Vector3.zero;
         isDerail = false;
 
         transform.position = initPosCopy;
         transform.eulerAngles = initRotCopy;
-        derailLastTime = 5;
-        isActivated = false;
+        derailLastTime = 3;
+ 
 
         alignPlayers();
 
