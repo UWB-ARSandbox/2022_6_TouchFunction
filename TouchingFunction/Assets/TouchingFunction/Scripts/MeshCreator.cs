@@ -39,23 +39,9 @@ public class MeshCreator : MonoBehaviour
     string cachedFunction;
 
     public void onGraphChanged() {
-        Vector3 meshScale = transform.localScale;
-        Vector3 meshPos = transform.position;
-        
-        double xUnitSpace = graphManScript.GetXUnitSpace();
-        float xScale = (float) xUnitSpace;
-        float xPos = (xScale - 1) * maxVal;
-        Debug.Log("xscale: " + xScale);
-        Debug.Log("xPos: " + xPos);
-
-        double yUnitSpace = graphManScript.GetYUnitSpace();
-        float yScale = (float) yUnitSpace;
-        float yPos = graphAxes.transform.localPosition.y - (yScale / 2);
-        Debug.Log("yscale: " + yScale);
-        Debug.Log("yPos: " + yPos);
-
-        transform.localScale = new Vector3(xScale, yScale, meshScale.z);
-        transform.position = graphAxes.transform.localPosition;
+        createGraphMesh();
+        UpdateMesh();
+        transform.localPosition = graphAxes.transform.localPosition;
     }
 
     public void InitGraphParameters(int min, int max, int width, float increment)
@@ -86,7 +72,7 @@ public class MeshCreator : MonoBehaviour
         createGraphMesh();
         UpdateMesh();
         //GetComponent<PointsCreator>().CreatePoints();
-        onGraphChanged();
+        //onGraphChanged();
 
          //FindObjectOfType<MeshManager>().addMesh(GetComponent<MeshCreator>());
         
@@ -135,11 +121,15 @@ public class MeshCreator : MonoBehaviour
         float xOrigin = 0f;
         float yOrigin = 0f;
         float xVal, yVal;
+
+        float xUnitSpace = (float) graphManScript.GetXUnitSpace();
+        float yUnitSpace = (float) graphManScript.GetYUnitSpace();
+
         
         for (int i = 0; i < MeshPerX * (maxVal - minVal); i++)
         {
-            xVal = xOrigin + minVal + (i * xIncrement);
-            yVal = yOrigin + getY(i);
+            xVal = (xOrigin + minVal + (i * xIncrement)) * xUnitSpace;
+            yVal = (yOrigin + getY(i)) * yUnitSpace;
             for (int j = 0; j < 2; j++)
             {
                 vertices[2 * i + j] = new Vector3(xVal, yVal, zVals[j]);
@@ -172,6 +162,7 @@ public class MeshCreator : MonoBehaviour
         normals[1] = normals[0];
         normals[vlength - 2] = -Vector3.Cross((vertices[vlength-3] - vertices[vlength-1]), (vertices[vlength-2] - vertices[vlength-1])).normalized;
         normals[vlength - 1] = normals[vlength - 2];
+        transform.localPosition = graphAxes.transform.localPosition;
     }
 
     public bool isEmpty()

@@ -179,6 +179,7 @@ public class PlayerASL : MonoBehaviour
         FindObjectOfType<ChangeColor>().SetCamera(GetComponentInChildren<Camera>(), GetComponentInChildren<Player>());
         FindObjectOfType<MirrorCamera>().player = player.transform;
         player.canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        FindObjectOfType<GraphManipulation>().SetPlayer(this);
     }
 
     IEnumerator NetworkedUpdate()

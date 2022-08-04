@@ -2,10 +2,12 @@ using UnityEngine;
 using System;
 using TMPro;
 using ASL;
+using System.Collections.Generic;
 
 public partial class GraphManipulation : MonoBehaviour
 {
     ASLObject aslObj;
+    PlayerASL playerASL;
 
     public GameObject xAxisPos;
     public GameObject xAxisNeg;
@@ -19,6 +21,10 @@ public partial class GraphManipulation : MonoBehaviour
 
     public GameObject xScale;
     public GameObject yScale;
+
+    public GameObject VerticalGridline;
+    public GameObject HorizontalGridline;
+    bool displayGridlines;
 
     public GameObject meshManager;
 
@@ -39,6 +45,8 @@ public partial class GraphManipulation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        displayGridlines = true;
+        
         xIntervalSize = 1.0;
         yIntervalSize = 1.0;
         xNumIntervals = 10;
@@ -67,6 +75,68 @@ public partial class GraphManipulation : MonoBehaviour
         selectedColor = new Color(1, 1, 0, 1);  // yellow
         defaultColor = new Color(1, 1, 1, 1);   // white
     }
+
+    public void ToggleGridlines()
+    {
+        displayGridlines = !displayGridlines;   
+    }
+
+    void SetupGridlines()
+    {
+        if (!displayGridlines)
+        {
+            return;
+        }
+
+        List<GameObject> gridlines = new List<GameObject>();
+
+        float verticalPos = (float) ((yAxisLengthPos - yAxisLengthNeg) / 2);
+        float verticalScale = (float) (yAxisLengthPos + yAxisLengthNeg + 4);
+
+        float horizontalPos = (float) ((xAxisLengthPos - xAxisLengthNeg) / 2);
+        float horizontalScale = (float) (xAxisLengthPos + xAxisLengthNeg + 4);
+
+        foreach (Transform child in transform)
+        {        
+            if (child.name.Equals("xScale"))
+            {
+                GameObject gridline = Instantiate(VerticalGridline);
+                gridline.name = "verticalGridline";
+                Vector3 gridLinePos = child.transform.position;
+                gridline.transform.position = new Vector3(gridLinePos.x, gridLinePos.y + verticalPos, gridLinePos.z);
+                Vector3 gridlineScale = gridline.transform.localScale;
+                gridline.transform.localScale = new Vector3(gridlineScale.x, verticalScale, gridlineScale.z);
+                gridlines.Add(gridline);
+            }
+            else if (child.name.Equals("yScale"))
+            {
+                GameObject gridline = Instantiate(HorizontalGridline);
+                gridline.name = "horizontalGridline";
+                Vector3 gridLinePos = child.transform.position;
+                gridline.transform.position = new Vector3(gridLinePos.x + horizontalPos, gridLinePos.y, gridLinePos.z);
+                Vector3 gridlineScale = gridline.transform.localScale;
+                gridline.transform.localScale = new Vector3(horizontalScale, gridlineScale.y, gridlineScale.z);
+                gridlines.Add(gridline);
+            }
+        }
+
+        foreach (GameObject gridline in gridlines)
+        {
+            gridline.transform.parent = transform;
+        }
+    }
+
+    void ClearGridlines()
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.name.Equals("horizontalGridline") || child.name.Equals("verticalGridline"))
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+        }
+    }
+
 
     // Calculates the space between each interval (for both x and y axis)
     void CalcIntervalSpace()
@@ -274,12 +344,12 @@ public partial class GraphManipulation : MonoBehaviour
     }
 
     // Setter for length of x axis
-    public void SetXAxisLength(double axisLength)
+    public void SetXAxisLengthPos(double axisLength)
     {
         if (axisLength > 0 && xAxisLengthPos != axisLength)
         {
             xAxisLengthPos = Math.Round(axisLength, 2);
-            SetupXAxis();
+            SetupXAxisPos();
             ResetXScales();
             CalcNumIntervals();
             SetupXScales();
@@ -289,7 +359,7 @@ public partial class GraphManipulation : MonoBehaviour
     }
 
     // Modifies the x axis position and scale based on axis length
-    public void SetupXAxis()
+    public void SetupXAxisPos()
     {
         Vector3 axisScale = xAxisPos.transform.localScale;
         xAxisPos.transform.localScale = new Vector3(axisScale.x, (float)xAxisLengthPos, axisScale.z);
@@ -335,12 +405,12 @@ public partial class GraphManipulation : MonoBehaviour
 
 
     // Setter for length of y axis
-    public void SetYAxisLength(double axisLength)
+    public void SetYAxisLengthPos(double axisLength)
     {
         if (axisLength > 0 && yAxisLengthPos != axisLength)
         {
             yAxisLengthPos = Math.Round(axisLength, 2);
-            SetupYAxis();
+            SetupYAxisPos();
             ResetYScales();
             CalcNumIntervals();
             SetupYScales();
@@ -350,7 +420,7 @@ public partial class GraphManipulation : MonoBehaviour
     }
 
     // Modifies the y axis position and scale based on axis length
-    public void SetupYAxis()
+    public void SetupYAxisPos()
     {
         Vector3 axisScale = yAxisPos.transform.localScale;
         yAxisPos.transform.localScale = new Vector3(axisScale.x, (float)yAxisLengthPos, axisScale.z);
@@ -375,8 +445,6 @@ public partial class GraphManipulation : MonoBehaviour
             CalcNumIntervals();
             SetupYScales();
             meshManagerScript.UpdateGraphs();
-            Vector3 origin = transform.localPosition;
-            transform.localPosition = new Vector3(origin.x, (float) (yAxisLengthNeg + 2), origin.z);
             SendGraphDetails();
         }
     }
@@ -394,6 +462,10 @@ public partial class GraphManipulation : MonoBehaviour
         Vector3 endPos = yAxisEndNeg.transform.position;
         double endPosY = -(yAxisLengthNeg + 0.8);
         yAxisEndNeg.transform.localPosition = new Vector3(0, (float)endPosY, 0);
+
+        // Adjusting the graph so that it is grounded to the floor
+        Vector3 origin = transform.localPosition;
+        transform.localPosition = new Vector3(origin.x, (float) (yAxisLengthNeg + 2), origin.z);
     }
 
 
@@ -449,16 +521,33 @@ public partial class GraphManipulation : MonoBehaviour
         return yUnitSpace;
     }
 
-    // Getter for axis length (x axis)
-    public double GetXAxisLength()
+    // Getter for axis length (x axis positve)
+    public double GetXAxisLengthPos()
     {
         return xAxisLengthPos;
     }
+
+    // Getter for axis length (x axis negative)
+    public double GetXAxisLengthNeg()
+    {
+        return xAxisLengthNeg;
+    }
     
-    // Getter for axis length (x axis)
-    public double GetYAxisLength()
+    // Getter for axis length (y axis positive)
+    public double GetYAxisLengthPos()
     {
         return yAxisLengthPos;
+    }
+
+    // Getter for axis length (y axis negative)
+    public double GetYAxisLengthNeg()
+    {
+        return yAxisLengthNeg;
+    }
+
+    public void SetPlayer(PlayerASL playerASL)
+    {
+        this.playerASL = playerASL;
     }
 
     // Sends graph parameter details to other players in game
@@ -476,7 +565,7 @@ public partial class GraphManipulation : MonoBehaviour
         graphDetails[8] = (float)yAxisLengthPos;
         graphDetails[9] = (float)xAxisLengthNeg;
         graphDetails[10] = (float)yAxisLengthNeg;
-        graphDetails[11] = Camera.main.GetInstanceID();
+        graphDetails[11] = playerASL.GetInstanceID();
 
         aslObj.SendAndSetClaim(() =>
         {
@@ -492,9 +581,9 @@ public partial class GraphManipulation : MonoBehaviour
         switch (value[0])
         {
             case 0f:
-                if (Camera.main.GetInstanceID() == value[11])
+                if (playerASL.GetInstanceID() == value[11])
                 {
-                    break;
+                    break;  // ignore graph parameters if current client set the parameters
                 }
                 xIntervalSize = Math.Round((double)value[1], 2);
                 yIntervalSize = Math.Round((double)value[2], 2);
@@ -507,11 +596,12 @@ public partial class GraphManipulation : MonoBehaviour
                 xAxisLengthNeg = Math.Round((double)value[9], 2);
                 yAxisLengthNeg = Math.Round((double)value[10], 2);
 
-
                 ResetXScales();
                 ResetYScales();
-                SetupXAxis();
-                SetupYAxis();
+                SetupXAxisPos();
+                SetupYAxisPos();
+                SetupXAxisNeg();
+                SetupYAxisNeg();
                 SetupXScales();
                 SetupYScales();
 

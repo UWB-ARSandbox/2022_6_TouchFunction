@@ -8,13 +8,13 @@ public class GraphPanelInput : MonoBehaviour
 {
     public Button submitButton;
     public TMP_InputField xIntSizeInput;
-    public TMP_InputField xNumIntInput;
     public TMP_InputField xIntSpaceInput;
-    public TMP_InputField xAxisLenInput;
+    public TMP_InputField xAxisLenPosInput;
+    public TMP_InputField xAxisLenNegInput;
     public TMP_InputField yIntSizeInput;
-    public TMP_InputField yNumIntInput;
     public TMP_InputField yIntSpaceInput;
-    public TMP_InputField yAxisLenInput;
+    public TMP_InputField yAxisLenPosInput;
+    public TMP_InputField yAxisLenNegInput;
     public GameObject graphAxes;
 
     GraphManipulation graphManScript;
@@ -31,35 +31,35 @@ public class GraphPanelInput : MonoBehaviour
     {
         // Get x axis interval size
         string xIntervalSize = graphManScript.GetXIntervalSize().ToString(); 
-        xIntSizeInput.placeholder.GetComponent<Text>().text = xIntervalSize;
-
-        // Get x axis number of intervals
-        string xNumIntervals = graphManScript.GetXNumIntervals().ToString();
-        xNumIntInput.placeholder.GetComponent<Text>().text = xNumIntervals;
+        xIntSizeInput.placeholder.GetComponent<TextMeshProUGUI>().text = xIntervalSize;
 
         // Get x axis interval spacing
         string xIntervalSpace = graphManScript.GetXIntervalSpace().ToString();
-        xIntSpaceInput.placeholder.GetComponent<Text>().text = xIntervalSpace;
+        xIntSpaceInput.placeholder.GetComponent<TextMeshProUGUI>().text = xIntervalSpace;
 
-        // Get x axis length
-        string xAxisLen = graphManScript.GetXAxisLength().ToString();
-        xAxisLenInput.placeholder.GetComponent<Text>().text = xAxisLen;
+        // Get x axis length (positive)
+        string xAxisLenPos = graphManScript.GetXAxisLengthPos().ToString();
+        xAxisLenPosInput.placeholder.GetComponent<TextMeshProUGUI>().text = xAxisLenPos;
+
+        // Get x axis length (negative)
+        string xAxisLenNeg = graphManScript.GetXAxisLengthNeg().ToString();
+        xAxisLenNegInput.placeholder.GetComponent<TextMeshProUGUI>().text = xAxisLenNeg;
 
         // Get y axis interval size
         string yIntervalSize = graphManScript.GetYIntervalSize().ToString();
-        yIntSizeInput.placeholder.GetComponent<Text>().text = yIntervalSize;
-
-        // Get y axis number of intervals
-        string yNumIntervals = graphManScript.GetYNumIntervals().ToString();
-        yNumIntInput.placeholder.GetComponent<Text>().text = yNumIntervals;
+        yIntSizeInput.placeholder.GetComponent<TextMeshProUGUI>().text = yIntervalSize;
 
         // Get y axis interval spacing
         string yIntervalSpace = graphManScript.GetYIntervalSpace().ToString();
-        yIntSpaceInput.placeholder.GetComponent<Text>().text = yIntervalSpace;
+        yIntSpaceInput.placeholder.GetComponent<TextMeshProUGUI>().text = yIntervalSpace;
 
-        // Get y axis length
-        string yAxisLen = graphManScript.GetYAxisLength().ToString();
-        yAxisLenInput.placeholder.GetComponent<Text>().text = yAxisLen;
+        // Get y axis length (positve)
+        string yAxisLenPos = graphManScript.GetYAxisLengthPos().ToString();
+        yAxisLenPosInput.placeholder.GetComponent<TextMeshProUGUI>().text = yAxisLenPos;
+
+        // Get y axis length (negative)
+        string yAxisLenNeg = graphManScript.GetYAxisLengthNeg().ToString();
+        yAxisLenNegInput.placeholder.GetComponent<TextMeshProUGUI>().text = yAxisLenNeg;
     }
 
     private void GetInputOnClickHandler() 
@@ -67,20 +67,11 @@ public class GraphPanelInput : MonoBehaviour
         double numDouble;
         bool isDouble;
 
-        int numInt;
-        bool isInt;
-
         isDouble = double.TryParse(xIntSizeInput.text, out numDouble);
         if (isDouble) {
             graphManScript.SetXIntervalSize(numDouble);
         }
         xIntSizeInput.text = "";
-
-        isInt = int.TryParse(xNumIntInput.text, out numInt);
-        if (isInt) {
-            graphManScript.SetXNumIntervals(numInt);
-        }
-        xNumIntInput.text = "";
 
         isDouble = double.TryParse(xIntSpaceInput.text, out numDouble);
         if (isDouble) {
@@ -88,11 +79,17 @@ public class GraphPanelInput : MonoBehaviour
         }
         xIntSpaceInput.text = "";
 
-        isDouble = double.TryParse(xAxisLenInput.text, out numDouble);
+        isDouble = double.TryParse(xAxisLenPosInput.text, out numDouble);
         if (isDouble) {
-            graphManScript.SetXAxisLength(numDouble);
+            graphManScript.SetXAxisLengthPos(numDouble);
         }
-        xAxisLenInput.text = "";
+        xAxisLenPosInput.text = "";
+
+        isDouble = double.TryParse(xAxisLenNegInput.text, out numDouble);
+        if (isDouble) {
+            graphManScript.SetXAxisLengthNeg(numDouble);
+        }
+        xAxisLenNegInput.text = "";
 
         isDouble = double.TryParse(yIntSizeInput.text, out numDouble);
         if (isDouble) {
@@ -100,22 +97,22 @@ public class GraphPanelInput : MonoBehaviour
         }
         yIntSizeInput.text = "";
 
-        isInt = int.TryParse(yNumIntInput.text, out numInt);
-        if (isInt) {
-            graphManScript.SetYNumIntervals(numInt);
-        }
-        yNumIntInput.text = "";
-
         isDouble = double.TryParse(yIntSpaceInput.text, out numDouble);
         if (isDouble) {
             graphManScript.SetYIntervalSpace(numDouble);
         }
         yIntSpaceInput.text = "";
 
-        isDouble = double.TryParse(yAxisLenInput.text, out numDouble);
+        isDouble = double.TryParse(yAxisLenPosInput.text, out numDouble);
         if (isDouble) {
-            graphManScript.SetYAxisLength(numDouble);
+            graphManScript.SetYAxisLengthPos(numDouble);
         }
-        yAxisLenInput.text = "";
+        yAxisLenPosInput.text = "";
+
+        isDouble = double.TryParse(yAxisLenNegInput.text, out numDouble);
+        if (isDouble) {
+            graphManScript.SetYAxisLengthNeg(numDouble);
+        }
+        yAxisLenNegInput.text = "";
     }
 }
