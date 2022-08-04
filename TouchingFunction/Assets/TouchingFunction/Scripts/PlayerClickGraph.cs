@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class PlayerClickGraph : MonoBehaviour
 {
@@ -31,6 +32,7 @@ public class PlayerClickGraph : MonoBehaviour
     LayerMask layerMask;
     int graphLayer;
     int pointLayer;
+    LayerMask UILayer;
 
     RaycastHit hit;
 
@@ -38,9 +40,12 @@ public class PlayerClickGraph : MonoBehaviour
     Vector3 pLeft;
     Vector3 pRight;
 
+    PlayerActivateVRHands vRHands;
+
     // Start is called before the first frame update
     void Start()
     {
+        
         graphPlane = GameObject.Find("GraphAxes").transform;
 
         
@@ -48,14 +53,17 @@ public class PlayerClickGraph : MonoBehaviour
         pointLayer = LayerMask.NameToLayer("Point");
         graphLayer = LayerMask.NameToLayer("GraphMesh");
         layerMask = LayerMask.GetMask("GraphMesh", "Point");
+        UILayer = LayerMask.GetMask("UI");
 
         playerCam = GetComponentInChildren<Camera>();
         
         hoverPoint = GameObject.Find("hoverPoint");
         hoverPoint.SetActive(false);
 
-        LeftCon = GetComponent<PlayerActivateVRHands>().LeftHand.transform;
-        RightCon = GetComponent<PlayerActivateVRHands>().RightHand.transform;
+        vRHands = GetComponent<PlayerActivateVRHands>();
+
+        LeftCon = vRHands.LeftHand.transform;
+        RightCon = vRHands.RightHand.transform;
     }
 
     void Awake()
@@ -127,7 +135,7 @@ public class PlayerClickGraph : MonoBehaviour
     void Update()
     {
         // if VR enabled
-        if( GetComponent<PlayerActivateVRHands>().VRActive)
+        if( vRHands.VRActive)
         {
 
             pRight = IntersectPlane(new Ray(RightCon.position, RightCon.forward));
@@ -153,16 +161,31 @@ public class PlayerClickGraph : MonoBehaviour
             p = IntersectPlane(Camera.main.ScreenPointToRay(Input.mousePosition));
         }
         
-
+        
         if(enableDragPoint)
         {
             if(p != Vector3.negativeInfinity)
                 currDraggingPoint.GetComponent<Point>().UpdatePosition(p.x);
         }
 
+        if (vRHands.VRActive)
+        {
+            if(vRHands.IsLeftHandOverUI() || vRHands.IsRightHandOverUI())
+            {
+                hoverPoint.SetActive(false);
+                return;
+            }
+        }
+        else if(EventSystem.current.IsPointerOverGameObject())
+        {
+            hoverPoint.SetActive(false);
+            return;
+        }
+
         // Hovering on the graph
         if (Physics.Raycast(p + new Vector3(0f, 1f, 0f), Vector3.down, out hit, 2f, layerMask))
         {
+
             if(hit.transform.gameObject.layer == graphLayer && !enableDragPoint)
             {
                 if(currHoveringPoint != null)
@@ -198,6 +221,7 @@ public class PlayerClickGraph : MonoBehaviour
 
             hoverPoint.SetActive(false);
         }
+        
     }
 
     void Click(InputAction.CallbackContext obj)
