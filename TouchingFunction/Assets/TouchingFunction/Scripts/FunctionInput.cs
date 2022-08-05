@@ -43,7 +43,7 @@ public class FunctionInput : MonoBehaviour
             if(function != null)
             {
                 meshManager.SendFunctionToNetwork(function);
-                wolframAlpha.Solve(function, float.Parse(min.text), float.Parse(max.text), float.Parse(width.text), 1f /MeshResolution);
+                wolframAlpha.Solve(function, float.Parse(min.text), float.Parse(max.text), float.Parse(width.text));
                 wolframAlpha.GetFunctionInfo(function);
             }
         } else

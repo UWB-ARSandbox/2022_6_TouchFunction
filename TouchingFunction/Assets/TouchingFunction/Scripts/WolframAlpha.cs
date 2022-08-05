@@ -51,9 +51,9 @@ public class WolframAlpha : MonoBehaviour
     // @param: end      -- float end point of plot
     // @param: inc      -- float increment amount 
     // @returns: list of y coordinate floats
-    public async void Solve(string equation, float start, float end, float width, float inc){
+    public async void Solve(string equation, float start, float end, float width) {
         // increment value set up so that always have 400 vertices
-        inc = Mathf.Abs((end - start)/400);     
+        float inc = Mathf.Abs((end - start)/400);     
 
         string input = "Table[" + equation + "], {x, " + start + ", " + end + ", " + inc + "}]";
 

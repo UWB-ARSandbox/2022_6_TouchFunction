@@ -42,6 +42,11 @@ public class MeshCreator : MonoBehaviour
         createGraphMesh();
         UpdateMesh();
         transform.localPosition = graphAxes.transform.localPosition;
+
+        for(int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).GetComponent<Point>().UpdatePosition();
+        }
     }
 
     public void InitGraphParameters(int min, int max, int width, float increment)
@@ -116,7 +121,6 @@ public class MeshCreator : MonoBehaviour
         triangles = new int[(MeshPerX * (maxVal - minVal) - 1) * 6];
         normals = new Vector3[vertices.Length];
 
-        //float[] zArr = {-1f, -0.9f, -0.8f, -0.7f, -0.6f, -0.5f, -0.4f, -0.3f, -0.2f, -0.1f, 0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f};
         float xIncrement = 1f / MeshPerX;
         float xOrigin = 0f;
         float yOrigin = 0f;
@@ -212,7 +216,7 @@ public class MeshCreator : MonoBehaviour
         }
     }
 
-    public Vector3 FindClosestPoint(Vector3 point)
+    public Vector2 WorldToCartesian(Vector3 point)
     {
         Vector3 graphOrigin = graphAxes.transform.localPosition;
         
@@ -221,6 +225,19 @@ public class MeshCreator : MonoBehaviour
 
         float x = xDistance / (float) graphManScript.GetXUnitSpace();
         float y = yDistance / (float) graphManScript.GetYUnitSpace();
+
+        return new Vector2(x, y);
+    }
+
+    public Vector3 CartesianToWorld(Vector2 coordinates)
+    {
+        Vector3 graphOrigin = graphAxes.transform.localPosition;
+
+        float x = coordinates.x * (float) graphManScript.GetXUnitSpace();
+        float y = coordinates.y * (float) graphManScript.GetYUnitSpace();
+
+        x += graphOrigin.x;
+        y += graphOrigin.y;
 
         return new Vector3(x, y, 0);
     }

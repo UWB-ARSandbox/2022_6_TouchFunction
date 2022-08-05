@@ -15,11 +15,6 @@ public class FuncitonPropertyManager : MonoBehaviour
         WolframAlpha.onObtainFunctionInfo += FindNextFPAndSend;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     private int NextEmptyFunctionProperty()
     {
         for (int i = 0; i < FunctionPD.Length; i++)
