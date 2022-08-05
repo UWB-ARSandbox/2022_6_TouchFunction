@@ -234,6 +234,7 @@ public partial class Player : MonoBehaviour
             {
                 Vector2 driverMove = movement.ReadValue<Vector2>();
                 RCControlRiding.DriverSpeedVector = RCControlRiding.transform.forward * driverMove.y * 0.1f;
+                //RCControlRiding.transform.position += RCControlRiding.transform.forward * driverMove.y ;
                 RCControlRiding.transform.RotateAround(RCControlRiding.transform.position, Vector3.up, 3*driverMove.x);
 
                 /*if (isForward)
@@ -358,7 +359,7 @@ public partial class Player : MonoBehaviour
 
     void horizontalMove()
     {
-        Vector2 moveValue = movement.ReadValue<Vector2>();
+        Vector2 moveValue = movement.ReadValue<Vector2>() * Mathf.Sqrt(transform.localScale.x);
         //Vector3 move = transform.right * (moveValue.x * 1.25f) + transform.up * velocity.y + transform.forward * (moveValue.y * 1.25f);
         velocity += transform.right * moveValue.x * 1.5f + transform.forward * moveValue.y * 1.5f;
         if (moveValue != Vector2.zero)
@@ -588,6 +589,7 @@ public partial class Player : MonoBehaviour
         PlayerAnimator.SetBool("IsFlapping", isFlying);
         PlayerAnimator.SetBool("IsThinking", isThinking);
         PlayerAnimator.SetBool("IsRiding", isRiding);
+        PlayerAnimator.speed = 1f / transform.localScale.x;
     }
 
     public void EnterExitVehicle(InputAction.CallbackContext obj)
