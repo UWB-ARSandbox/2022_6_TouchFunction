@@ -589,7 +589,13 @@ public partial class Player : MonoBehaviour
         PlayerAnimator.SetBool("IsFlapping", isFlying);
         PlayerAnimator.SetBool("IsThinking", isThinking);
         PlayerAnimator.SetBool("IsRiding", isRiding);
-        PlayerAnimator.speed = 1f / transform.localScale.x;
+        if (isMoving)
+        {
+            PlayerAnimator.speed = 1f / Mathf.Sqrt(transform.localScale.x);
+        } else
+        {
+            PlayerAnimator.speed = 1f;
+        }        
     }
 
     public void EnterExitVehicle(InputAction.CallbackContext obj)
@@ -618,6 +624,8 @@ public partial class Player : MonoBehaviour
                     //controller.enabled = false;
                     //gameObject.transform.parent = RCControlToRide.transform;
                     RCControlRiding = RCControlToRide;
+
+                    transform.localScale = Vector3.one;
 
                     SetEnterVehicleGUI(false);
 
