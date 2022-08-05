@@ -64,7 +64,7 @@ public class RollerCoasterControl : MonoBehaviour
         isActivated = false;
         players = new Player[4];
         SeatPositions = new Vector3[4] { new Vector3(-1.2f, 0.7f, .75f), new Vector3(0.8f, 0.7f, .75f), 
-                                        new Vector3(-1.2f, 1.5f, -3f), new Vector3(0.8f, 1.5f, -3f) };
+                                        new Vector3(-1.2f, 1.5f, -2.4f), new Vector3(0.8f, 1.5f, -2.4f) };
         meshMask = LayerMask.GetMask("GraphMesh");
         initPosCopy = transform.position;
         initRotCopy = transform.eulerAngles;

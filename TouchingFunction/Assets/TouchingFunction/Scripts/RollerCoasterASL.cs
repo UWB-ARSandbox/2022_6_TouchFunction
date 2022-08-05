@@ -48,7 +48,7 @@ public class RollerCoasterASL : MonoBehaviour
 
         while (true)
         {
-
+            
             //SendTransform();
             //Debug.LogError("sending RC transform");
             aslObj.SendAndSetClaim(() =>
@@ -66,11 +66,13 @@ public class RollerCoasterASL : MonoBehaviour
 
     public void StartASL()
     {
+        isLocal = true;
         networkCoroutine = StartCoroutine(NetworkUpdate());
     }
 
     public void StopASL()
     {
+        isLocal = false;
         StopCoroutine(networkCoroutine);
     }
 
@@ -124,6 +126,11 @@ public class RollerCoasterASL : MonoBehaviour
                     }
                 }
                 break;
+            case 2:
+                if (isLocal) break;
+                transform.position = new Vector3(_f[1], _f[2], _f[3]);
+                transform.eulerAngles = new Vector3(_f[4], _f[5], _f[6]);
+                break;
         }
     }
 
@@ -144,6 +151,16 @@ public class RollerCoasterASL : MonoBehaviour
     public void SendMeshInfo()
     {
         float[] f = { 1, RCControl.mesh.GraphIndex };
+        aslObj.SendAndSetClaim(() => 
+        {
+            aslObj.SendFloatArray(f);
+        });
+    }
+
+    void SendRotationArray ()
+    {
+        float[] f = { 2, transform.position.x, transform.position.y, transform.position.z, 
+            transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z };
         aslObj.SendAndSetClaim(() => 
         {
             aslObj.SendFloatArray(f);
