@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 773ac5f420d3ddc48a61d55202fee5d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coordinates: {x: 0, y: 0, z: 0}
+  coordinates: {x: 0, y: 0}
   line: {fileID: 7200708776780067722}
   textMeshPro: {fileID: 5155997900985713766}
   dragPoint: {fileID: 1786965704682975505}
@@ -167,7 +167,6 @@ GameObject:
   - component: {fileID: 5240311601035346972}
   - component: {fileID: 2915308513494921634}
   - component: {fileID: 2823487567549815014}
-  - component: {fileID: 3072358782815149840}
   m_Layer: 7
   m_Name: Sphere
   m_TagString: Untagged
@@ -251,18 +250,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3072358782815149840
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1786965704682975505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 515bb934be2f7964789fb65332ea9a2f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2477702456233353284
 GameObject:
   m_ObjectHideFlags: 0

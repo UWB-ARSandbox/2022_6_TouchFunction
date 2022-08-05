@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ASL;
+using TMPro;
 
 public class PlayerASL : MonoBehaviour
 {
     private static readonly float UPDATES_PER_SECOND = 60.0f;
     bool isLocal = false; // Whether this player is controlled by this client
-    public TextMesh nameText;
+    public TMP_Text nameText;
     public ASLObject aslObj;
     public Player player;
 

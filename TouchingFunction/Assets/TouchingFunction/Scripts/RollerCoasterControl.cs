@@ -174,11 +174,11 @@ public class RollerCoasterControl : MonoBehaviour
             }
         } else
         {
-            Vector3 cp = mesh.FindClosestPoint(transform.position);
-/*            if (cp.x <= mesh.minVal+2f || cp.x >= mesh.maxVal-2f)
+            Vector3 cp = mesh.WorldToCartesian(transform.position);
+            if (cp.x <= mesh.minVal+2f || cp.x >= mesh.maxVal-2f)
             {
                 //isEnd = true;
-            } else*/
+            } else
             {
                 isDerail = true;
             }
