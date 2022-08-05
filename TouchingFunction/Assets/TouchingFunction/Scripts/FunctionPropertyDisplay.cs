@@ -33,6 +33,11 @@ public class FunctionPropertyDisplay : MonoBehaviour
         //WolframAlpha.onObtainFunctionInfo += SendPropertiesToNetwork;
     }
 
+    // void Update()
+    // {
+    //     FDPButton.transform.position = new Vector3(FDPButton.transform.position.x, FDPButton.transform.position.y, GameObject.Find("Canvas").transform.position.z);
+    // }
+
     public void SendPropertiesToNetwork(Dictionary<string, string> dictionary)
     {
         Debug.Log("in SendFLoat");
