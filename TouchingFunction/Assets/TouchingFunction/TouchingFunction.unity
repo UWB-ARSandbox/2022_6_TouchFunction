@@ -8203,16 +8203,14 @@ MonoBehaviour:
 
     Start
 
-    Grip + Start
-
     Grip + L/R Trigger
 
     L/R Trigger
 
-    L/R
-    Grip
+    L/R Grip
 
-    Right Secondary'
+    Right
+    Secondary'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -13819,16 +13817,14 @@ MonoBehaviour:
     Teleport
     UI
 
-    Hide UI
-
     Manipulate Axis
 
     Create Point
 
     Delete Point
 
-    Ride
-    Roller Coaster'
+    Ride Roller
+    Coaster'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -19167,14 +19163,12 @@ MonoBehaviour:
 
     Tab
 
-    Escape
-
     Right Click
 
-    Left
+    Left Click
+
+    Right
     Click
-
-    Right Click
 
     R'
   m_isRightToLeft: 0
@@ -22641,7 +22635,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 310, y: -233}
+  m_AnchoredPosition: {x: 310, y: -40}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1595386296
@@ -34001,7 +33995,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8477704363810029642
 RectTransform:
   m_ObjectHideFlags: 0
@@ -34078,12 +34072,12 @@ MonoBehaviour:
   submitButton: {fileID: 8477704364761976582}
   xIntSizeInput: {fileID: 1627447709}
   xIntSpaceInput: {fileID: 725628949}
-  xAxisLenPosInput: {fileID: 0}
-  xAxisLenNegInput: {fileID: 0}
+  xAxisLenPosInput: {fileID: 1836520188}
+  xAxisLenNegInput: {fileID: 90798408}
   yIntSizeInput: {fileID: 366468905}
   yIntSpaceInput: {fileID: 470541388}
-  yAxisLenPosInput: {fileID: 0}
-  yAxisLenNegInput: {fileID: 0}
+  yAxisLenPosInput: {fileID: 848203613}
+  yAxisLenNegInput: {fileID: 1949662181}
   graphAxes: {fileID: 2079052545}
 --- !u!1 &8477704363910801224
 GameObject:

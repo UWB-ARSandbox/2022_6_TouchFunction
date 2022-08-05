@@ -161,6 +161,7 @@ public class WolframAlpha : MonoBehaviour
     // @param: funciton -- string of function to get info for
     // @returns: Dictonary of all Plaintext information
     public async void GetFunctionInfo(string function){
+        function = "y=" + function;
         // query of just the function returns multiple strings of information on the function
         FullResultResponse results = await client.FullResultAsync(function);
 

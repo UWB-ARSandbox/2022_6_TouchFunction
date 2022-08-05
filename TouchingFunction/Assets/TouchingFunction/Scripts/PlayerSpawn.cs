@@ -31,4 +31,9 @@ public class PlayerSpawn : MonoBehaviour
     {
         player.GetComponent<PlayerASL>().Quit();
     }
+
+    public GameObject GetPlayer()
+    {
+        return player;
+    }
 }

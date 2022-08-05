@@ -26,7 +26,7 @@ public class VKeyboard : MonoBehaviour
         
         if(TrackPlayer)
         {
-        GameObject player = GameObject.Find("PlayerPre(Clone)");
+        GameObject player = camera.transform.parent.parent.parent.gameObject;
         playerScale = player.transform.localScale.x;
         keyboardScale = gameObject.transform.localScale.x;
         // float playerScale = 1;
@@ -54,6 +54,10 @@ public class VKeyboard : MonoBehaviour
                 lastKeyboardScale = keyboardScale;
                 gameObject.transform.localScale = gameObject.transform.localScale / keyboardScale;
             }
+        }
+        if(player.transform.localScale.x < 1)
+        {
+            gameObject.transform.localScale = new Vector3(.002f, .002f, .002f);
         }
         gameObject.transform.position = camera.transform.position;
         gameObject.transform.position = gameObject.transform.position + (camera.transform.forward * (playerScale));

@@ -46,7 +46,7 @@ public class UIControls : MonoBehaviour
     #region PlayerControls
     private PlayerInput playerInput;
     private InputAction summonUI;
-    private InputAction toggleUI;
+    //private InputAction toggleUI;
     #endregion
 
     #region Toggles
@@ -75,9 +75,9 @@ public class UIControls : MonoBehaviour
         summonUI.performed += TeleportUI;
         summonUI.Enable();
 
-        toggleUI = playerInput.PlayerControls.ToggleUI;
-        toggleUI.performed += ToggleUI;
-        toggleUI.Enable();
+        // toggleUI = playerInput.PlayerControls.ToggleUI;
+        // toggleUI.performed += ToggleUI;
+        // toggleUI.Enable();
 
     }
 
@@ -183,7 +183,13 @@ public class UIControls : MonoBehaviour
 
     private void TeleportUI(InputAction.CallbackContext obj)
     {
-        GameObject player = GameObject.Find("PlayerPre(Clone)");
+        if(GetComponent<Canvas>().enabled)
+        {
+            GetComponent<Canvas>().enabled = false;
+        }
+        else
+        {
+        GameObject player = GameObject.Find("PlayerSpawner").GetComponent<PlayerSpawn>().GetPlayer();
         float playerScale = 1;
         Debug.Log(player.transform.localScale.x);
         if(player.transform.localScale.x == 1)
@@ -214,6 +220,7 @@ public class UIControls : MonoBehaviour
             tempLoc.position = new Vector3(tempLoc.position.x, 1, tempLoc.position.z);
         }
         GetComponent<Canvas>().enabled = true;
+        }
     }
 
     private void ToggleUI(InputAction.CallbackContext obj)
