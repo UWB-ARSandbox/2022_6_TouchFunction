@@ -8,6 +8,7 @@ public partial class GraphManipulation : MonoBehaviour
 {
     ASLObject aslObj;
     PlayerASL playerASL;
+    Player player;
 
     public GameObject xAxisPos;
     public GameObject xAxisNeg;
@@ -548,6 +549,7 @@ public partial class GraphManipulation : MonoBehaviour
     public void SetPlayer(PlayerASL playerASL)
     {
         this.playerASL = playerASL;
+        this.player = playerASL.GetComponent<Player>();
     }
 
     // Sends graph parameter details to other players in game

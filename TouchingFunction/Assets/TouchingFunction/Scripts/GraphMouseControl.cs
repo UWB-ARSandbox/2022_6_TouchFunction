@@ -199,9 +199,12 @@ public partial class GraphManipulation : MonoBehaviour
                 originalMousePos = currPos;
             }
         }
-        else
+        else if (playerASL == null || !player.IsCursorLocked() || RightCon != null || LeftCon != null)
         {
             SelectObject();
+        }
+        else {
+            SetSelectedColor(defaultColor);
         }
     }
 
