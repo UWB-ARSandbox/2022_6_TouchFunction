@@ -25,14 +25,10 @@ public class UIControls : MonoBehaviour
     public ChangeColor CColor;
     public GameObject FaceChange;
     public MirrorCamera MirrorCam;
+    public GameObject ColorPickerBackground;
     #endregion
 
-    #region GraphList
-    public GameObject FunctionInfo;
-    public GameObject GraphList;
-    #endregion
-
-    #region 
+    #region Control 
     public GameObject ControlsPanel;
     public GameObject Controlbutton;
     #endregion
@@ -122,6 +118,7 @@ public class UIControls : MonoBehaviour
         CColor.player.isThinking = false;
         FlexibleColorPickerButton.SetActive(true);
         MirrorCam.StopMirrorCamera();
+        ColorPickerBackground.SetActive(false);
 
         // User controls
         ControlsPanel.SetActive(false);
@@ -164,6 +161,7 @@ public class UIControls : MonoBehaviour
         TargetSelector.SetActive(true);
         MirrorCam.StartMirrorCamera();
         VKeyboardButton.SetActive(true);
+        ColorPickerBackground.SetActive(true);
     }
     public void SetControlsActive()
     {

@@ -36,7 +36,7 @@ public class ListEntry : MonoBehaviour
             {
                 Debug.Log("Update button location");
                 FunctionDisplayButton.SetActive(true);
-                FunctionDisplayButton.transform.position = new Vector3(FunctionDisplayButton.transform.position.x, gameObject.transform.position.y, FunctionDisplayButton.transform.position.z);
+                //FunctionDisplayButton.transform.position = new Vector3(FunctionDisplayButton.transform.position.x, gameObject.transform.position.y, GameObject.Find("Canvas").transform.position.z);
                 FindObjectOfType<GraphListButtonControl>().claimButton(ListIndex, FunctionDisplayButton);
             }
         }
