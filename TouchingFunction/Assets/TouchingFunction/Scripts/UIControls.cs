@@ -189,7 +189,7 @@ public class UIControls : MonoBehaviour
         }
         else
         {
-        GameObject player = GameObject.Find("PlayerSpawner").GetComponent<PlayerSpawn>().GetPlayer();
+        GameObject player = PlayerSpawn.GetPlayer();
         float playerScale = 1;
         Debug.Log(player.transform.localScale.x);
         if(player.transform.localScale.x == 1)

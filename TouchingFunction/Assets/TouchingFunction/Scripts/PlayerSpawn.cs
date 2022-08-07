@@ -27,12 +27,7 @@ public class PlayerSpawn : MonoBehaviour
         player = obj;
     }
 
-    public void onQuit()
-    {
-        player.GetComponent<PlayerASL>().Quit();
-    }
-
-    public GameObject GetPlayer()
+    public static GameObject GetPlayer()
     {
         return player;
     }

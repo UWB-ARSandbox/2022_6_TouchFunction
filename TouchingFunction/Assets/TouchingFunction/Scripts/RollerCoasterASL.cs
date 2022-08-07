@@ -88,7 +88,7 @@ public class RollerCoasterASL : MonoBehaviour
                 f[i] = -1;
             } else
             {
-                f[i] = RCControl.players[i-1].GetComponent<PlayerASL>().PeerID;
+                f[i] = RCControl.players[i-1].GetComponent<PlayerASL>().peerId;
             }
         }
         
@@ -140,7 +140,7 @@ public class RollerCoasterASL : MonoBehaviour
         var pList = FindObjectsOfType<PlayerASL>();
         foreach(var p in pList)
         {
-            if (p.PeerID == pid)
+            if (p.peerId == pid)
             {
                 return p.GetComponent<Player>();
             }

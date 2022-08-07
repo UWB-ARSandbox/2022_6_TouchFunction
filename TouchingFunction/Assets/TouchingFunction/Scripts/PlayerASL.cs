@@ -8,7 +8,11 @@ using TMPro;
 public class PlayerASL : MonoBehaviour
 {
     private static readonly float UPDATES_PER_SECOND = 60.0f;
+
     bool isLocal = false; // Whether this player is controlled by this client
+
+    public int peerId = -1;
+
     public TMP_Text nameText;
     public ASLObject aslObj;
     public Player player;
@@ -26,8 +30,6 @@ public class PlayerASL : MonoBehaviour
     public Transform[] SkinParts;
 
     public Material[] HeadMat;
-    public int PeerID = -1;
-    public bool recievedPeerID = false;
 
     public void SetLocal()
     {
@@ -38,15 +40,15 @@ public class PlayerASL : MonoBehaviour
 
     public void Quit()
     {
-        if(IsLocal())
+        if (IsLocal())
         {
-            aslObj.SendAndSetClaim(()  =>
+            aslObj.SendAndSetClaim(() =>
             {
                 aslObj.DeleteObject();
             });
         }
     }
-    
+
     public bool IsLocal()
     {
         return isLocal;
@@ -63,7 +65,7 @@ public class PlayerASL : MonoBehaviour
 
     //static public void DownloadAvatar(GameObject g, Texture2D texture)
     //{
-        //g.transform.Find("body").Find("head").GetComponent<MeshRenderer>().material.mainTexture = texture;
+    //g.transform.Find("body").Find("head").GetComponent<MeshRenderer>().material.mainTexture = texture;
     //}
 
     public void SendTransform()
@@ -102,11 +104,10 @@ public class PlayerASL : MonoBehaviour
         switch (_f[0])
         {
             case 0: // Set ASL id / name
+                peerId = (int)_f[1];
                 
                 if (!nameText.gameObject.activeInHierarchy) break;
-
-                int ASL_id = (int)_f[1];
-                nameText.text = GameLiftManager.GetInstance().m_Players[ASL_id];
+                nameText.text = GameLiftManager.GetInstance().m_Players[peerId];
                 break;
             case 1: // Set transform
                 if (isLocal) break;
@@ -117,7 +118,7 @@ public class PlayerASL : MonoBehaviour
                 player.isThinking = _f[5] > 0;
                 player.isRiding = _f[9] > 0;
                 player.setAnimatorBool();
-                
+
                 playerHead.transform.localRotation = Quaternion.Euler(_f[6], 0, 0);
                 transform.localRotation = Quaternion.Euler(0, _f[7], 0);
                 transform.localScale = new Vector3(_f[8], _f[8], _f[8]);
@@ -139,7 +140,7 @@ public class PlayerASL : MonoBehaviour
                 {
                     part.GetComponent<MeshRenderer>().material.color = hairColor;
                 }
-                foreach(var part in ShirtParts)
+                foreach (var part in ShirtParts)
                 {
                     part.GetComponent<MeshRenderer>().material.color = shirtColor;
                 }
@@ -151,19 +152,30 @@ public class PlayerASL : MonoBehaviour
                 {
                     part.GetComponent<MeshRenderer>().material.color = skinColor;
                 }
-                if(_f[18] > 0)
+                if (_f[18] > 0)
                 {
                     HairParts[1].gameObject.SetActive(true);
-                } else
+                }
+                else
                 {
                     HairParts[1].gameObject.SetActive(false);
                 }
                 break;
+            case 4: // Received request for player ID
+                if(peerId == -1) break;
 
-            case 4:     //set PeerID
-                PeerID = (int)_f[1];
+                aslObj.SendAndSetClaim(() => {
+                    aslObj.SendFloatArray(new float[] { 0, GameLiftManager.GetInstance().m_PeerId });
+                });
                 break;
         }
+    }
+
+    void SendIDRequest()
+    {
+        aslObj.SendAndSetClaim(() => {
+            aslObj.SendFloatArray(new float[] { 4 });
+        });
     }
 
     // Update is called once per frame
@@ -174,7 +186,6 @@ public class PlayerASL : MonoBehaviour
 
     public void InitLocalPlayer()
     {
-        
         StartCoroutine(NetworkedUpdate());
         FindObjectOfType<ChangeColor>().SetPlayer(this);
         FindObjectOfType<ChangeColor>().SetCamera(GetComponentInChildren<Camera>(), GetComponentInChildren<Player>());
@@ -189,19 +200,12 @@ public class PlayerASL : MonoBehaviour
         {
             yield return null;
         }
-
-        aslObj.SendAndSetClaim(() =>
-        {
-            aslObj.SendFloatArray(new float[] { 0, GameLiftManager.GetInstance().m_PeerId });
-        });
-
-        aslObj.SendAndSetClaim(() =>
-        {
-            aslObj.SendFloatArray(new float[] { 4, GameLiftManager.GetInstance().m_PeerId });
-        });
-
         while (true)
-        { 
+        {
+            if (peerId == -1)
+            {
+                SendIDRequest();
+            }
 
             if (!player.isRiding)
             {
@@ -211,7 +215,6 @@ public class PlayerASL : MonoBehaviour
                     aslObj.SendAndSetWorldPosition(transform.position);
                 });
             }
-
 
             yield return new WaitForSeconds(1 / UPDATES_PER_SECOND);
         }
