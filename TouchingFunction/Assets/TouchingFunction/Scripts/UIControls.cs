@@ -129,7 +129,7 @@ public class UIControls : MonoBehaviour
         QuitWindowButton.SetActive(true);
 
         VKeyboardButton.SetActive(false);
-        VKeyboard.GetComponent<VKeyboard>().TrackPlayer = false;
+        VKeyboard.GetComponent<VKeyboard>().HideKeyboard();
 
         Gridline.SetActive(true);
         SpawnRC.SetActive(true);
@@ -177,7 +177,15 @@ public class UIControls : MonoBehaviour
 
     public void ToggleVirtualKeyboard()
     {
-        VKeyboard.GetComponent<VKeyboard>().TrackPlayer = !VKeyboard.GetComponent<VKeyboard>().TrackPlayer;
+        if(VKeyboard.GetComponent<VKeyboard>().IsKeyboardVisable())
+        {
+            VKeyboard.GetComponent<VKeyboard>().HideKeyboard();
+        }
+        else
+        {
+            VKeyboard.GetComponent<VKeyboard>().ViewKeyboard();
+        }
+        // VKeyboard.GetComponent<VKeyboard>().TrackPlayer = !VKeyboard.GetComponent<VKeyboard>().TrackPlayer;
  
     }
 

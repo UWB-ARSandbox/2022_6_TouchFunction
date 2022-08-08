@@ -566,7 +566,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_LineWidth: 0.01
-  m_OverrideInteractorLineLength: 1
+  m_OverrideInteractorLineLength: 0
   m_LineLength: 10
   m_WidthCurve:
     serializedVersion: 2
@@ -1741,7 +1741,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_LineWidth: 0.01
-  m_OverrideInteractorLineLength: 1
+  m_OverrideInteractorLineLength: 0
   m_LineLength: 10
   m_WidthCurve:
     serializedVersion: 2
@@ -2553,6 +2553,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ff16f125924324cb3d33affe357298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  peerId: -1
   nameText: {fileID: 4149405062583973843}
   aslObj: {fileID: 0}
   player: {fileID: 7473864094519733550}
@@ -2580,8 +2581,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: f31d17728c3b37949987babefe0001fc, type: 2}
   - {fileID: 2100000, guid: f44a48d7e5dda2e45885f1a63434e437, type: 2}
   - {fileID: 2100000, guid: 5abae24421aaaf4478698cbd6a0f7ce1, type: 2}
-  PeerID: 0
-  recievedPeerID: 0
 --- !u!114 &2960209404111065072
 MonoBehaviour:
   m_ObjectHideFlags: 0

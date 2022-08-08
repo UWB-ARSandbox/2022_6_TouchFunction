@@ -36,6 +36,18 @@ public class PlayerActivateVRHands : MonoBehaviour
         
     }
 
+    void Update()
+    {
+        if(VRActive)
+        {
+            LeftHand.GetComponent<XRRayInteractor>().maxRaycastDistance = 10f * transform.localScale.x;
+            LeftHand.GetComponent<XRInteractorLineVisual>().lineWidth = .01f * transform.localScale.x;
+
+            RightHand.GetComponent<XRRayInteractor>().maxRaycastDistance = 10f * transform.localScale.x;
+            RightHand.GetComponent<XRInteractorLineVisual>().lineWidth = .01f * transform.localScale.x;
+        }
+    }
+
     private void togVRHands(InputAction.CallbackContext obj)
     {
         LeftHand.SetActive(true);

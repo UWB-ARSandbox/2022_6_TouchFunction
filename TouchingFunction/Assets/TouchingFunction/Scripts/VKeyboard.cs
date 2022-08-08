@@ -20,54 +20,24 @@ public class VKeyboard : MonoBehaviour
         standby = new Vector3(0, -30, 0);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PosiitonKeyboard()
     {
-        
-        if(TrackPlayer)
-        {
-        GameObject player = camera.transform.parent.parent.parent.gameObject;
-        playerScale = player.transform.localScale.x;
-        keyboardScale = gameObject.transform.localScale.x;
-        // float playerScale = 1;
-        // float keyboardScale = 1;
-        Debug.Log(player.transform.localScale.x);
-        
-            
-            if (player.transform.localScale.x > 2f)
-            {
-                playerScale = player.transform.localScale.x;
-                keyboardScale = player.transform.localScale.x /2f;
-            }
-        if(player.transform.localScale.x != lastPlayerScale)
-        {    
-            lastPlayerScale = player.transform.localScale.x;
-            keyboardScale = player.transform.localScale.x /2f;
-            lastPlayerScale = player.transform.localScale.x;
-            if(lastKeyboardScale < keyboardScale)
-            {
-                lastKeyboardScale = keyboardScale;
-                gameObject.transform.localScale = gameObject.transform.localScale * keyboardScale;
-            }
-            else if(lastKeyboardScale > keyboardScale)
-            {
-                lastKeyboardScale = keyboardScale;
-                gameObject.transform.localScale = gameObject.transform.localScale / keyboardScale;
-            }
-        }
-        if(player.transform.localScale.x < 1)
-        {
-            gameObject.transform.localScale = new Vector3(.002f, .002f, .002f);
-        }
-        gameObject.transform.position = camera.transform.position;
-        gameObject.transform.position = gameObject.transform.position + (camera.transform.forward * (playerScale));
-        gameObject.transform.position = gameObject.transform.position + (camera.transform.up * -.4f );
-        
+        transform.position = transform.parent.position + transform.parent.forward * 2f + transform.parent.up * -.4f;
         gameObject.transform.rotation = Quaternion.LookRotation(gameObject.transform.position - camera.transform.position, Vector3.up);
-        }
-        else
-        {
-            gameObject.transform.position = standby;
-        }
+    }
+
+    public void ViewKeyboard()
+    {
+        GetComponent<Canvas>().enabled = true;
+    }
+
+    public void HideKeyboard()
+    {
+        GetComponent<Canvas>().enabled = false;
+    }
+
+    public bool IsKeyboardVisable()
+    {
+        return GetComponent<Canvas>().enabled;
     }
 }

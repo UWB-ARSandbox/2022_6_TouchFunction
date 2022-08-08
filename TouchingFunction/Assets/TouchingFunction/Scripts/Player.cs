@@ -176,6 +176,11 @@ public partial class Player : MonoBehaviour
         GameObject tmpCam = GameObject.Find("PlayerCamera");
         tmpCam.transform.parent = head;
         tmpCam.transform.position = head.position;//new Vector3(0,2f,0);
+
+        // Script to attatch VR Keyboard to head
+        GameObject tmpKey = GameObject.Find("Keyboard Canvas");
+        tmpKey.transform.parent = head;
+        tmpKey.GetComponent<VKeyboard>().PosiitonKeyboard();
     }
 
     private void togMouseLook(InputAction.CallbackContext obj)
