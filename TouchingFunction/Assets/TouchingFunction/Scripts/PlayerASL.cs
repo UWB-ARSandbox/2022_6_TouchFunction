@@ -61,6 +61,7 @@ public class PlayerASL : MonoBehaviour
         aslObj._LocallySetFloatCallback(Receive);
         //aslObj._LocallySetPostDownloadFunction(DownloadAvatar);
 
+        StartCoroutine(SetNameAndID());
     }
 
     //static public void DownloadAvatar(GameObject g, Texture2D texture)
@@ -162,7 +163,7 @@ public class PlayerASL : MonoBehaviour
                 }
                 break;
             case 4: // Received request for player ID
-                if(peerId == -1) break;
+                if(!isLocal) break;
 
                 aslObj.SendAndSetClaim(() => {
                     aslObj.SendFloatArray(new float[] { 0, GameLiftManager.GetInstance().m_PeerId });
@@ -194,6 +195,15 @@ public class PlayerASL : MonoBehaviour
         FindObjectOfType<GraphManipulation>().SetPlayer(this);
     }
 
+    IEnumerator SetNameAndID()
+    {
+        while (peerId == -1)
+        {
+            SendIDRequest();
+            yield return new WaitForSeconds(1 / UPDATES_PER_SECOND);
+        }
+    } 
+
     IEnumerator NetworkedUpdate()
     {
         while (aslObj == null)
@@ -202,10 +212,6 @@ public class PlayerASL : MonoBehaviour
         }
         while (true)
         {
-            if (peerId == -1)
-            {
-                SendIDRequest();
-            }
 
             if (!player.isRiding)
             {
