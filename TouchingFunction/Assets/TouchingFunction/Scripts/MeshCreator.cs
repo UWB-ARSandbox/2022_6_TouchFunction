@@ -25,6 +25,7 @@ public class MeshCreator : MonoBehaviour
     public int minVal = 0;       // minimum of X to render
     public int maxVal = 20;      // maximum of X to render
     public int MeshPerX;     // number of vertices per increment of X;
+    float xIncrement;
     #endregion
 
     #region Mesh Data
@@ -62,6 +63,7 @@ public class MeshCreator : MonoBehaviour
             zVals[i] = -(width / 2f) + i * 0.5f;
         }*/
         MeshPerX = Mathf.RoundToInt(1f / increment);
+        xIncrement = increment;
         //Debug.LogError(increment);
         minVal = min;
         maxVal = max;
@@ -92,6 +94,7 @@ public class MeshCreator : MonoBehaviour
 
         //GetComponent<ASLObject>()._LocallySetFloatCallback(ReceivePointsFromNetwork);
         MeshPerX = FindObjectOfType<FunctionInput>().MeshResolution;
+        xIncrement = 1.0f / MeshPerX;
         mesh = new Mesh();
         zVals = new float[2];
         GetComponent<MeshFilter>().mesh = mesh;
@@ -117,11 +120,12 @@ public class MeshCreator : MonoBehaviour
     void createGraphMesh()
     {
         meshIsEmpty = false;
-        vertices = new Vector3[2 * MeshPerX * (maxVal - minVal)];
-        triangles = new int[(MeshPerX * (maxVal - minVal) - 1) * 6];
+
+        int numVertices = (int) ((maxVal - minVal) / xIncrement) + 1;
+        vertices = new Vector3[2 * numVertices];
+        triangles = new int[(numVertices - 1) * 6];
         normals = new Vector3[vertices.Length];
 
-        float xIncrement = 1f / MeshPerX;
         float xOrigin = 0f;
         float yOrigin = 0f;
         float xVal, yVal;
@@ -130,7 +134,7 @@ public class MeshCreator : MonoBehaviour
         float yUnitSpace = (float) graphManScript.GetYUnitSpace();
 
         
-        for (int i = 0; i < MeshPerX * (maxVal - minVal); i++)
+        for (int i = 0; i < numVertices; i++)
         {
             xVal = (xOrigin + minVal + (i * xIncrement)) * xUnitSpace;
             yVal = (yOrigin + getY(i)) * yUnitSpace;
@@ -140,7 +144,7 @@ public class MeshCreator : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < MeshPerX * (maxVal - minVal) - 1; i++)
+        for (int i = 0; i < numVertices - 1; i++)
         {
 
              triangles[6 * i ] = 2 * i;

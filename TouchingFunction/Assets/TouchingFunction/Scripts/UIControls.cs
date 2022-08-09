@@ -57,6 +57,7 @@ public class UIControls : MonoBehaviour
     public GameObject Gridline;
     public GameObject SpawnRC;
     public GameObject DeleteRC;
+    public GameObject LockGraph;
     #endregion
 
     //public Canvas canvas;
@@ -103,6 +104,7 @@ public class UIControls : MonoBehaviour
         Gridline.SetActive(false);
         SpawnRC.SetActive(false);
         DeleteRC.SetActive(false);
+        LockGraph.SetActive(false);
     }
 
     public void ResetUI()
@@ -138,6 +140,7 @@ public class UIControls : MonoBehaviour
         Gridline.SetActive(true);
         SpawnRC.SetActive(true);
         DeleteRC.SetActive(true);
+        LockGraph.SetActive(true);
 
     }
 
@@ -195,13 +198,7 @@ public class UIControls : MonoBehaviour
 
     private void TeleportUI(InputAction.CallbackContext obj)
     {
-        if(GetComponent<Canvas>().enabled)
-        {
-            GetComponent<Canvas>().enabled = false;
-            
-        }
-        else
-        {
+        
         GameObject player = PlayerSpawn.GetPlayer();
         //if player in VR, don't unlock cursor. 
         if(!player.GetComponent<PlayerActivateVRHands>().VRActive)
@@ -239,7 +236,7 @@ public class UIControls : MonoBehaviour
             tempLoc.position = new Vector3(tempLoc.position.x, 1, tempLoc.position.z);
         }
         GetComponent<Canvas>().enabled = true;
-        }
+        
     }
 
     public void CloseUI()
