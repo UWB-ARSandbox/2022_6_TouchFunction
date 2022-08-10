@@ -9,7 +9,7 @@ using TMPro;
 
 public class UIControls : MonoBehaviour
 {
-    #region Funciton Input
+    #region Function Input
     public GameObject FunctionInputPanel;
     public GameObject FunctionInputButton;
     #endregion
@@ -272,10 +272,18 @@ public class UIControls : MonoBehaviour
     public void onSetRCToggle(bool rcBool)
     {
         CColor.player.GetComponent<RCPlayerManager>().IsSettingRC = rcBool;
+        if (rcBool)
+        {
+            GetComponent<Canvas>().enabled = false;
+        }
     }
 
     public void onDeleteRCToggle(bool rcBool)
     {
         CColor.player.GetComponent<RCPlayerManager>().IsDeletingRC = rcBool;
+        if (rcBool)
+        {
+            GetComponent<Canvas>().enabled = false;
+        }
     }
 }

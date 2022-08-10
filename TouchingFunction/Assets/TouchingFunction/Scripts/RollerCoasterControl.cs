@@ -128,7 +128,7 @@ public class RollerCoasterControl : MonoBehaviour
             }
 
             Debug.DrawRay(transform.position, FinalMoveVector, Color.green, 0.01f);
-            if (FinalMoveVector.magnitude > 0.03f)
+            if (FinalMoveVector.magnitude > 0.01f)
             {
                 transform.position += FinalMoveVector;
             }
