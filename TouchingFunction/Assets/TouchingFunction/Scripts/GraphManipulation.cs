@@ -27,29 +27,41 @@ public partial class GraphManipulation : MonoBehaviour
     public GameObject HorizontalGridline;
     bool displayGridlines;
 
+    bool localLockGraph;
+
     public GameObject meshManager;
 
     MeshManager meshManagerScript;
 
     double xIntervalSize;
     double yIntervalSize;
+    double defaultIntervalSize;
+
     int xNumIntervals;
     int yNumIntervals;
+
     double xIntervalSpace;
     double yIntervalSpace;
+    double defaultIntervalSpace;
 
     double xAxisLengthPos;
     double xAxisLengthNeg;
     double yAxisLengthPos;
     double yAxisLengthNeg;
+    double defaultAxisLength;
 
     // Start is called before the first frame update
     void Start()
     {
         displayGridlines = true;
+        localLockGraph = false;
+
+        defaultAxisLength = 30.0;
+        defaultIntervalSize = 1.0;
+        defaultIntervalSpace = 6.0;
         
-        xIntervalSize = 1.0;
-        yIntervalSize = 1.0;
+        xIntervalSize = defaultIntervalSize;
+        yIntervalSize = defaultIntervalSize;
         xNumIntervals = 10;
         yNumIntervals = 10;
 
@@ -80,6 +92,30 @@ public partial class GraphManipulation : MonoBehaviour
     public void ToggleGridlines()
     {
         displayGridlines = !displayGridlines;   
+    }
+
+    public void ToggleLocalLock()
+    {
+        localLockGraph = !localLockGraph;
+
+        if (!localLockGraph)
+        {
+            RecieveGraphDetails();
+        }  
+    }
+
+    public void ResetGraphParameters()
+    {
+        SetXIntervalSize(defaultIntervalSize);
+        SetYIntervalSize(defaultIntervalSize);
+
+        SetXIntervalSpace(defaultIntervalSpace);
+        SetYIntervalSpace(defaultIntervalSpace);
+
+        SetXAxisLengthPos(defaultAxisLength);
+        SetXAxisLengthNeg(defaultAxisLength);
+        SetYAxisLengthPos(defaultAxisLength);
+        SetYAxisLengthNeg(defaultAxisLength);
     }
 
     void SetupGridlines()
@@ -555,6 +591,11 @@ public partial class GraphManipulation : MonoBehaviour
     // Sends graph parameter details to other players in game
     public void SendGraphDetails()
     {
+        if (localLockGraph)
+        {
+            return;
+        }
+
         float[] graphDetails = new float[12];
         graphDetails[0] = 0;
         graphDetails[1] = (float)xIntervalSize;
@@ -575,6 +616,15 @@ public partial class GraphManipulation : MonoBehaviour
         });
     }
 
+    public void RecieveGraphDetails()
+    {
+        float[] receiveMessage = { 1, playerASL.GetInstanceID() };
+        aslObj.SendAndSetClaim(() =>
+        {
+            aslObj.SendFloatArray(receiveMessage);
+        });
+    }
+
     /*  Determine what we do with the array based on value[0]
         *  0: Use the float array to set graph parameters 
         */
@@ -587,6 +637,11 @@ public partial class GraphManipulation : MonoBehaviour
                 {
                     break;  // ignore graph parameters if current client set the parameters
                 }
+                if (localLockGraph)
+                {
+                    break; // ignore graph parameters if local lock
+                }
+
                 xIntervalSize = Math.Round((double)value[1], 2);
                 yIntervalSize = Math.Round((double)value[2], 2);
                 xNumIntervals = (int)value[3];
@@ -611,6 +666,13 @@ public partial class GraphManipulation : MonoBehaviour
 
                 break;
 
+            case 1f:
+                if (playerASL.GetInstanceID() == value[1])
+                {
+                    break;  // ignore recieve request if current client sent the request
+                }
+                SendGraphDetails();
+                break;
         }
     }
 }

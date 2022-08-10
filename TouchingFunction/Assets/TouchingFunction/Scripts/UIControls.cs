@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.XR;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.XR;
+using TMPro;
 
 public class UIControls : MonoBehaviour
 {
@@ -31,6 +32,9 @@ public class UIControls : MonoBehaviour
     #region Control 
     public GameObject ControlsPanel;
     public GameObject Controlbutton;
+    public GameObject VRControls;
+    public GameObject PCControls;
+    public GameObject ControlButton;
     #endregion
 
     #region QuitWindow
@@ -53,6 +57,7 @@ public class UIControls : MonoBehaviour
     public GameObject Gridline;
     public GameObject SpawnRC;
     public GameObject DeleteRC;
+    public GameObject LockGraph;
     #endregion
 
     //public Canvas canvas;
@@ -99,6 +104,7 @@ public class UIControls : MonoBehaviour
         Gridline.SetActive(false);
         SpawnRC.SetActive(false);
         DeleteRC.SetActive(false);
+        LockGraph.SetActive(false);
     }
 
     public void ResetUI()
@@ -134,6 +140,7 @@ public class UIControls : MonoBehaviour
         Gridline.SetActive(true);
         SpawnRC.SetActive(true);
         DeleteRC.SetActive(true);
+        LockGraph.SetActive(true);
 
     }
 
@@ -191,13 +198,14 @@ public class UIControls : MonoBehaviour
 
     private void TeleportUI(InputAction.CallbackContext obj)
     {
-        if(GetComponent<Canvas>().enabled)
-        {
-            GetComponent<Canvas>().enabled = false;
-        }
-        else
-        {
+        
         GameObject player = PlayerSpawn.GetPlayer();
+        //if player in VR, don't unlock cursor. 
+        if(!player.GetComponent<PlayerActivateVRHands>().VRActive)
+        {
+            player.GetComponent<Player>().UnlockCursor();
+        }
+        
         float playerScale = 1;
         Debug.Log(player.transform.localScale.x);
         if(player.transform.localScale.x == 1)
@@ -228,6 +236,31 @@ public class UIControls : MonoBehaviour
             tempLoc.position = new Vector3(tempLoc.position.x, 1, tempLoc.position.z);
         }
         GetComponent<Canvas>().enabled = true;
+        
+    }
+
+    public void CloseUI()
+    {
+        ResetUI();
+        GameObject player = PlayerSpawn.GetPlayer();
+        player.GetComponent<Player>().LockCursor();
+        GetComponent<Canvas>().enabled = false;
+
+    }
+
+    public void ToggleControlList()
+    {
+        if(PCControls.activeSelf)
+        {
+            PCControls.SetActive(false);
+            ControlButton.GetComponent<TMP_Text>().text = "PC Controls";
+            VRControls.SetActive(true);
+        }
+        else 
+        {
+            VRControls.SetActive(false);
+            ControlButton.GetComponent<TMP_Text>().text = "VR Controls";
+            PCControls.SetActive(true);
         }
     }
 
