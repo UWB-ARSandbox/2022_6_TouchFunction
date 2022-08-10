@@ -64,7 +64,7 @@ public class RollerCoasterControl : MonoBehaviour
         isActivated = false;
         players = new Player[4];
         SeatPositions = new Vector3[4] { new Vector3(-1.2f, 0.7f, .75f), new Vector3(0.8f, 0.7f, .75f), 
-                                        new Vector3(-1.2f, 1.5f, -2.4f), new Vector3(0.8f, 1.5f, -2.4f) };
+                                        new Vector3(-1.2f, 1.5f, -3.5f), new Vector3(0.8f, 1.5f, -3.5f) };
         meshMask = LayerMask.GetMask("GraphMesh");
         initPosCopy = transform.position;
         initRotCopy = transform.eulerAngles;
@@ -123,18 +123,23 @@ public class RollerCoasterControl : MonoBehaviour
             {
                 FinalMoveVector += SlidingVector;
                 FinalMoveVector += MeshOffsetAdjustment;
+                limitSpeed();
+                checkForGoingOver();
             }
 
-            limitSpeed();
-            checkForGoingOver();
             Debug.DrawRay(transform.position, FinalMoveVector, Color.green, 0.01f);
-            if (FinalMoveVector.magnitude > 0.01f)
+            if (FinalMoveVector.magnitude > 0.03f)
             {
                 transform.position += FinalMoveVector;
             }
 
             alignPlayers();
             DriverSpeedVector = Vector3.zero;
+
+            if (transform.position.y < -30)
+            {
+                resetRC();
+            }
         }
         
         //Debug.DrawRay(transform.position, -transform.up, Color.green, 10f);
@@ -175,9 +180,14 @@ public class RollerCoasterControl : MonoBehaviour
         } else
         {
             Vector3 cp = mesh.WorldToCartesian(transform.position);
-            if (cp.x <= mesh.minVal+2f || cp.x >= mesh.maxVal-2f)
+            if (cp.x <= mesh.minVal+5f || cp.x >= mesh.maxVal-5f)
             {
-                //isEnd = true;
+                isEnd = true;
+                FinalMoveVector = Vector3.zero; 
+                SlidingVector = Vector3.zero;
+                inheritedVec = Vector3.zero;
+                MeshOffsetAdjustment = Vector3.zero;
+                
             } else
             {
                 isDerail = true;
@@ -319,10 +329,7 @@ public class RollerCoasterControl : MonoBehaviour
         transform.eulerAngles = initRotCopy;
         derailLastTime = 3;
  
-
         alignPlayers();
-
-
     }
 
 

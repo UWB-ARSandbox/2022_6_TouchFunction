@@ -7,7 +7,7 @@ using TMPro;
 
 public class PlayerASL : MonoBehaviour
 {
-    private static readonly float UPDATES_PER_SECOND = 60.0f;
+    private static readonly float UPDATES_PER_SECOND = 30.0f;
 
     bool isLocal = false; // Whether this player is controlled by this client
 
@@ -57,6 +57,7 @@ public class PlayerASL : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         aslObj = GetComponent<ASLObject>();
         aslObj._LocallySetFloatCallback(Receive);
         //aslObj._LocallySetPostDownloadFunction(DownloadAvatar);
@@ -182,6 +183,7 @@ public class PlayerASL : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         nameText.transform.rotation = Quaternion.LookRotation(nameText.transform.position - Camera.main.transform.position, Vector3.up);
     }
 

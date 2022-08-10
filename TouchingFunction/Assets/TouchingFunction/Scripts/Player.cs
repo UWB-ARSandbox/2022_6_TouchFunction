@@ -218,38 +218,22 @@ public partial class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!GameObject.Find("PlayerSpawner").GetComponent<PlayerSpawn>().AllPlayerReady)
+        {
+            return;
+        }
+
         isGrounded = controller.isGrounded;
 
         if (isRiding)
         {
-            /*if (RCControlRiding.IsDriver(this))
-            {
-                //Debug.LogError("!!!!!!!");
-                if (Input.GetKey(KeyCode.W))
-                {
-                    
-                    RCControlRiding.DriverMoveVector = RCControlRiding.transform.forward * 0.1f;
-                }
-                else if (Input.GetKey(KeyCode.S))
-                {
-                    RCControlRiding.DriverMoveVector = RCControlRiding.transform.forward * -0.1f;
-                }
-            }*/
+
             if (RCControlRiding.IsDriver(this))
             {
                 Vector2 driverMove = movement.ReadValue<Vector2>();
                 RCControlRiding.DriverSpeedVector = RCControlRiding.transform.forward * driverMove.y * 0.1f;
                 //RCControlRiding.transform.position += RCControlRiding.transform.forward * driverMove.y ;
                 RCControlRiding.transform.RotateAround(RCControlRiding.transform.position, Vector3.up, 3*driverMove.x);
-
-                /*if (isForward)
-                {
-                    RCControlRiding.DriverSpeedVector = RCControlRiding.transform.forward * 0.1f;
-                }
-                else if (isBackward)
-                {
-                    RCControlRiding.DriverSpeedVector = RCControlRiding.transform.forward * -0.1f;
-                } */
             }
 
 
@@ -273,17 +257,6 @@ public partial class Player : MonoBehaviour
             //MovePlayer();
         }
         MovePlayer();
-        /*
-        if (checkFloorNormal() != Vector3.zero)
-        {
-            Debug.Log(checkFloorNormal());
-            velocity += checkFloorNormal();
-            velocity += Vector3.down / 2;
-        }
-        else
-        {
-            
-        }*/
 
         // give velocity.y a little bit of downward force to make player stick to ground (Required by CharacterController)
         if (controller.isGrounded)
@@ -350,16 +323,6 @@ public partial class Player : MonoBehaviour
         {
             ScalePlayerDown();
         }
-
-        /*else if (isSliding)
-        {
-            PlayerAnimator.Play("Sliding");
-        } else if (IsFlappingEnabled())
-        {
-            PlayerAnimator.Play("Flapping");
-        }*/
-
-
     }
 
     void horizontalMove()
@@ -379,15 +342,8 @@ public partial class Player : MonoBehaviour
 
     void MovePlayer()
     {
-        //Vector2 moveValue = movement.ReadValue<Vector2>();
-        //Vector3 move = transform.right * (moveValue.x * 1.25f) + transform.up * velocity.y + transform.forward * (moveValue.y * 1.25f);
-
-
         Vector3 finalMoveVector = velocity * speed * Time.deltaTime;
 
-        //checkFloorNormal();
-
-        //Debug.Log("Normal Vector : " + norm);
         if (isSliding)
         {
 
@@ -659,14 +615,6 @@ public partial class Player : MonoBehaviour
             }
 
             RCControlRiding.KickPlayer(this);
-            //if (RCControlRiding)
-            //isRiding = false;
-            ////////////////
-            //controller.enabled = true;
-            //controller.height = 2.1f;
-            //controller.radius = 0.5f;
-
-            //gameObject.transform.parent = null;
             RCControlRiding = null;
 
             movement.Enable();
@@ -686,31 +634,6 @@ public partial class Player : MonoBehaviour
         EnterVehicleGUI.SetActive(op);
     }
 
-/*    void carForward(InputAction.CallbackContext obj)
-    {
-        if (RCControlRiding.IsDriver(this))
-        {
-            isForward = true;
-        }
-            
-    }
-
-    void carBackward(InputAction.CallbackContext obj)
-    {
-        if (RCControlRiding.IsDriver(this))
-        {
-            isBackward = true;
-        }
-    }
-
-    void carStop(InputAction.CallbackContext obj)
-    {
-        if (RCControlRiding.IsDriver(this))
-        {
-            isForward = false;
-            isBackward = false;
-        }
-    }*/
 
     void clearSliding()
     {
