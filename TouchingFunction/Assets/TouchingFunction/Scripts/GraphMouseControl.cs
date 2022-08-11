@@ -56,9 +56,7 @@ public partial class GraphManipulation : MonoBehaviour
 
     private void OnEnable()
     {
-        // manipulateGraph = playerInput.PlayerControls.GraphManipulation;
-
-        manipulateGraph = new InputAction(binding: "<Mouse>/leftButton");
+        manipulateGraph = playerInput.PlayerControls.GraphManipulation;
         manipulateGraph.started += StartGraphManipulation;
         manipulateGraph.canceled += EndGraphManipulation;
         manipulateGraph.Enable();

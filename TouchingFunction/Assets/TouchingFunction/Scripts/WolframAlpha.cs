@@ -29,14 +29,14 @@ public class WolframAlpha : MonoBehaviour
 
 
     //Original WA APPID:
-    string originalWAAppId = "PW452E-9GJ74GUQT6";
+    string originalWAAppId = "GHE9KT-EP5Y898AAL";
     string userWAAppId = "";
     WolframAlphaClient client;
     // Start is called before the first frame update
     void Awake()
     {
         //Create the client.
-        client = new WolframAlphaClient("PW452E-9GJ74GUQT6");
+        client = new WolframAlphaClient("GHE9KT-EP5Y898AAL");
     }
 
     public void setAppId(string newAppId){

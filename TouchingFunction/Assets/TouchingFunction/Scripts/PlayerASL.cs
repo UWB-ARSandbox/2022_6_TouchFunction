@@ -195,6 +195,8 @@ public class PlayerASL : MonoBehaviour
         FindObjectOfType<MirrorCamera>().player = player.transform;
         player.canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         FindObjectOfType<GraphManipulation>().SetPlayer(this);
+        FindObjectOfType<ResetPlayerSize>().SetPlayer(this.GetComponent<Player>());
+        FindObjectOfType<DisplayPlayerSize>().SetPlayer(this.GetComponent<Player>());
     }
 
     IEnumerator SetNameAndID()

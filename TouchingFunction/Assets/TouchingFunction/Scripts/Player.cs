@@ -467,6 +467,33 @@ public partial class Player : MonoBehaviour
     }
 
     // Scaling funcitons ====================================================================
+    public float GetScale()
+    {
+        return transform.localScale.x;
+    }
+    
+    public void ResetScale()
+    {
+        float diff = transform.localScale.x - 1f;
+        float numSteps = diff / scalingFactor;
+        Debug.Log("Steps: " + numSteps);
+                
+        transform.localScale = new Vector3(1f, 1f, 1f);
+
+        // Vector3 newPos = new Vector3(0, 0, 0);
+        // for (int i = 0; i < numSteps; i++)
+        // {
+        //     Debug.Log("Here in loop  " + positionChangeFactor * transform.forward);
+        //     Debug.Log("Before: " + transform.localPosition);
+        //     newPos += transform.forward;
+        //     Debug.Log("After: " + transform.localPosition);
+        // }
+
+        // transform.localPosition = new Vector3(0, 0, 0);
+
+        // Debug.Log("End: " + transform.localPosition);       
+    }
+    
     private void BeginScalingUp(InputAction.CallbackContext obj)
     {
         scalingUp = true;

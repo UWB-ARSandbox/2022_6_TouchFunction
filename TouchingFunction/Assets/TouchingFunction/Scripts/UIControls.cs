@@ -60,6 +60,7 @@ public class UIControls : MonoBehaviour
     public GameObject LockGraph;
     #endregion
 
+    public GameObject ResetSizeButton;
     //public Canvas canvas;
     //public Camera camera;
 
@@ -101,6 +102,7 @@ public class UIControls : MonoBehaviour
         FlexibleColorPickerButton.SetActive(false);
         Controlbutton.SetActive(false);
         QuitWindowButton.SetActive(false);
+        ResetSizeButton.SetActive(false);
         Gridline.SetActive(false);
         SpawnRC.SetActive(false);
         DeleteRC.SetActive(false);
@@ -133,6 +135,8 @@ public class UIControls : MonoBehaviour
         // Quit Window
         QuitWindowPanel.SetActive(false);
         QuitWindowButton.SetActive(true);
+
+        ResetSizeButton.SetActive(true);
 
         VKeyboardButton.SetActive(false);
         VKeyboard.GetComponent<VKeyboard>().HideKeyboard();
