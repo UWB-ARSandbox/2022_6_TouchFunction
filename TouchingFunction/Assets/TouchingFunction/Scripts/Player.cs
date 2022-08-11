@@ -533,6 +533,12 @@ public partial class Player : MonoBehaviour
                 inheritedSliding = newSlidingVec.normalized * SlidingVector.magnitude * Vector3.Dot(newSlidingVec.normalized, SlidingVector.normalized);
                 SlidingVector = newSlidingVec + inheritedSliding;
             }
+            /*if (Vector3.Angle(norm, Vector3.up) > SlideLimit)   // if on a slope steeper than limit
+            {
+                isSliding = true;
+                //PlayerAnimator.SetBool("IsSliding", true);
+                SlidingVector = norm + Mathf.Sqrt(1 + (norm.x / norm.y) * (norm.x / norm.y)) * Vector3.down * Mathf.Abs(norm.x/norm.y);
+            }*/
             else
             {
 
