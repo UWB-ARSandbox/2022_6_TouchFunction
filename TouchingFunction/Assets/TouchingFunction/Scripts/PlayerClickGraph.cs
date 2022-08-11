@@ -21,24 +21,25 @@ public class PlayerClickGraph : MonoBehaviour
     GameObject pointPrefab;
     GameObject hoverPoint;
 
-    GameObject currHoveringPoint;
-    GameObject currDraggingPoint;
-
+    [SerializeField] GameObject currHoveringPoint;
+    [SerializeField] GameObject currDraggingPoint;
+    [SerializeField] GameObject currHoveringHandle;
+    [SerializeField] bool enableDragPoint = false;
     Transform RightCon;
     Transform LeftCon;
 
-    bool enableDragPoint = false;
+
 
     LayerMask layerMask;
     int graphLayer;
     int pointLayer;
+    int handleLayer;
     LayerMask UILayer;
 
     RaycastHit hit;
+    Ray currentRay;
 
     Vector3 p;
-    Vector3 pLeft;
-    Vector3 pRight;
 
     PlayerActivateVRHands vRHands;
 
@@ -51,7 +52,8 @@ public class PlayerClickGraph : MonoBehaviour
 
         pointLayer = LayerMask.NameToLayer("Point");
         graphLayer = LayerMask.NameToLayer("GraphMesh");
-        layerMask = LayerMask.GetMask("GraphMesh", "Point");
+        handleLayer = LayerMask.NameToLayer("PointHandle");
+        layerMask = LayerMask.GetMask("GraphMesh", "Point", "PointHandle");
         UILayer = LayerMask.GetMask("UI");
 
         LeftCon = vRHands.LeftHand.transform;
@@ -61,7 +63,7 @@ public class PlayerClickGraph : MonoBehaviour
     void Awake()
     {
         vRHands = GetComponent<PlayerActivateVRHands>();
-        playerCam = GetComponentInChildren<Camera>();   
+        playerCam = GetComponentInChildren<Camera>();
 
         playerInput = new PlayerInput();
 
@@ -96,7 +98,7 @@ public class PlayerClickGraph : MonoBehaviour
         Vector3 n = -graphPlane.forward;
         //We are intrerested in calculating a point in this plane called p
         //The vector between p and p0 and the normal is always perpendicular: (p - p_0) . n = 0
-        
+
         //A ray to point p can be defined as: l_0 + l * t = p, where:
         //the origin of the ray
         Vector3 l_0 = ray.origin;
@@ -126,90 +128,87 @@ public class PlayerClickGraph : MonoBehaviour
 
     void Update()
     {
-        //vRHands = GetComponent<PlayerActivateVRHands>();
-        // if VR enabled
-        if( vRHands.VRActive)
-        {
-            pRight = IntersectPlane(new Ray(RightCon.position, RightCon.forward));
-            pLeft = IntersectPlane(new Ray(LeftCon.position, LeftCon.forward));
+        hit = new RaycastHit();
+        currentRay = new Ray();
 
-            if(pLeft != Vector3.negativeInfinity)
-            {
-                if(Physics.Raycast(pLeft + new Vector3(0f, 1f, 0f), Vector3.down, out hit, 2f, layerMask))
-                {
-                    p = pLeft;
-                }
-            }
-            if(pRight != Vector3.negativeInfinity)
-            {
-                if(Physics.Raycast(pRight + new Vector3(0f, 1f, 0f), Vector3.down, out hit, 2f, layerMask))
-                {
-                    p = pRight;
-                }
-            }
+        if (vRHands.VRActive)
+        {
+            Ray rightRay = new Ray(RightCon.position, RightCon.forward);
+            if (Physics.Raycast(rightRay, 100f, layerMask) || Physics.Raycast(ReverseRay(rightRay, 100f), layerMask))
+                currentRay = rightRay;
+                
+            Ray leftRay = new Ray(LeftCon.position, LeftCon.forward);
+            if (Physics.Raycast(leftRay, 100f, layerMask) || Physics.Raycast(ReverseRay(leftRay, 100f), layerMask))
+                currentRay = leftRay;
         }
         else
         {
-            p = IntersectPlane(Camera.main.ScreenPointToRay(Input.mousePosition));
+            currentRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         }
-        
-        
-        if(enableDragPoint)
+
+        if (enableDragPoint)
         {
-            if(p != Vector3.negativeInfinity)
-                currDraggingPoint.GetComponent<Point>().DragPosition(p.x);
+            p = IntersectPlane(currentRay);
+            currDraggingPoint.GetComponent<Point>().DragPosition(p);
         }
 
         if (vRHands.VRActive)
         {
-            if(vRHands.IsLeftHandOverUI() || vRHands.IsRightHandOverUI())
+            if (vRHands.IsLeftHandOverUI() || vRHands.IsRightHandOverUI())
             {
                 hoverPoint.SetActive(false);
                 return;
             }
         }
-        else if(EventSystem.current.IsPointerOverGameObject())
+        else if (EventSystem.current.IsPointerOverGameObject())
         {
             hoverPoint.SetActive(false);
             return;
         }
 
-        // Hovering on the graph
-        if (Physics.Raycast(p + new Vector3(0f, 1f, 0f), Vector3.down, out hit, 2f, layerMask))
+        ResetHoveringPoint();
+
+        if (Physics.Raycast(currentRay, out hit, 100f, layerMask) ||
+            Physics.Raycast(ReverseRay(currentRay, 100f), out hit, 100f, layerMask))
         {
             // Hovering on the graph
-            if(hit.transform.gameObject.layer == graphLayer && !enableDragPoint)
+            if (hit.transform.gameObject.layer == graphLayer && !enableDragPoint)
             {
-                ResetHoveringPoint();
-
                 hoverPoint.transform.position = new Vector3(hit.point.x, hit.point.y, hit.transform.position.z);
+                hoverPoint.transform.localScale = new Vector3(1f, 1f, hit.transform.GetComponent<MeshCreator>().width / 2f);
                 hoverPoint.SetActive(true);
             }
-            else if(hit.transform.gameObject.layer == pointLayer)
+            else if (hit.transform.gameObject.layer == pointLayer)
             {
                 hoverPoint.SetActive(false);
-
-                ResetHoveringPoint();
-
                 hit.transform.GetComponentInParent<Point>().Hover();
                 currHoveringPoint = hit.transform.gameObject;
+            }
+            else if (hit.transform.gameObject.layer == handleLayer)
+            {
+                hit.transform.GetComponentInParent<Point>().Hover();
+                currHoveringHandle = hit.transform.gameObject;
             }
         }
         else
         {
-            ResetHoveringPoint();
-
             hoverPoint.SetActive(false);
         }
-        
+
     }
 
     void ResetHoveringPoint()
     {
-        if(currHoveringPoint != null)
+        if (currHoveringPoint != null)
         {
             currHoveringPoint.GetComponentInParent<Point>().UnHover();
             currHoveringPoint = null;
+        }
+
+        if (currHoveringHandle != null)
+        {
+            currHoveringHandle.GetComponentInParent<Point>().UnHover();
+            currHoveringHandle = null;
         }
     }
 
@@ -221,16 +220,18 @@ public class PlayerClickGraph : MonoBehaviour
         }
         else if (currHoveringPoint != null)
         {
-            currHoveringPoint.GetComponentInParent<Point>().StartSelect();
-            currDraggingPoint = currHoveringPoint.transform.parent.gameObject;
+            currHoveringPoint.GetComponentInParent<Point>().Select();
+        }
+        else if (currHoveringHandle != null)
+        {
+            currDraggingPoint = currHoveringHandle.transform.parent.gameObject;
             enableDragPoint = true;
         }
     }
 
     void RightClick(InputAction.CallbackContext obj)
     {
-        
-        if(currHoveringPoint != null)
+        if (currHoveringPoint != null)
         {
             currHoveringPoint.GetComponentInParent<ASL.ASLObject>().SendAndSetClaim(() =>
             {
@@ -241,8 +242,12 @@ public class PlayerClickGraph : MonoBehaviour
 
     void Release(InputAction.CallbackContext obj)
     {
-        currDraggingPoint.GetComponent<Point>().EndSelect();
         currDraggingPoint = null;
         enableDragPoint = false;
+    }
+
+    Ray ReverseRay(Ray ray, float length)
+    {
+        return new Ray(ray.origin + ray.direction * length, -ray.direction);
     }
 }

@@ -25,6 +25,7 @@ public class MeshCreator : MonoBehaviour
     public int minVal = 0;       // minimum of X to render
     public int maxVal = 20;      // maximum of X to render
     public int MeshPerX;     // number of vertices per increment of X;
+    public float width;
     float xIncrement;
     #endregion
 
@@ -52,6 +53,7 @@ public class MeshCreator : MonoBehaviour
 
     public void InitGraphParameters(int min, int max, int width, float increment)
     {
+        this.width = width;
         /*MeshPerX = Mathf.RoundToInt(1f / increment);
         MeshM = 2 * width + 1;
         minVal = min;
