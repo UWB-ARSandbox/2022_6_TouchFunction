@@ -251,7 +251,8 @@ public class RollerCoasterControl : MonoBehaviour
             Player p = other.GetComponent<Player>();
             if (!p.isRiding)
             {
-                p.SetEnterVehicleGUI(true);
+                p.SetVehicleGUI(true);
+                //p.SetVehicleGUIText("Press R to Enter");             
                 p.RCControlToRide = this;
             }
         }
@@ -262,7 +263,7 @@ public class RollerCoasterControl : MonoBehaviour
         if (other.gameObject.layer == 6)
         {
             Player p = other.GetComponent<Player>();
-            p.SetEnterVehicleGUI(false);
+            p.SetVehicleGUI(false);
             p.RCControlToRide = null;
         }
     }
@@ -332,6 +333,13 @@ public class RollerCoasterControl : MonoBehaviour
         alignPlayers();
     }
 
-
+    public bool isEmpty()
+    {
+        foreach (var p in players)
+        {
+            if (p != null) return false;
+        }
+        return true;
+    }
 
 }

@@ -113,11 +113,21 @@ public class RCPlayerManager : MonoBehaviour
                 deleteHoverRC.transform.rotation = hit.transform.rotation;
                 deleteHoverRC.SetActive(true);
                 toDelete = hit.transform.gameObject;
+                if (!toDelete.GetComponent<RollerCoasterControl>().isEmpty())
+                {
+                    //GetComponent<Player>().SetVehicleGUIText("Can't delete with passenger inside");
+                    GetComponent<Player>().SetDeleteGUI(true);
+                }
+                else
+                {
+                    GetComponent<Player>().SetDeleteGUI(false);
+                }
             }
             else
             {
                 toDelete = null;
                 deleteHoverRC.SetActive(false);
+                GetComponent<Player>().SetDeleteGUI(false);
             }
         }
     }
@@ -145,15 +155,18 @@ public class RCPlayerManager : MonoBehaviour
         {
             if (deleteHoverRC.activeInHierarchy)
             {
-                Destroy(toDelete.GetComponent<RollerCoasterControl>().SignalLight);
-                toDelete.GetComponent<ASLObject>().SendAndSetClaim(() => {
-                    toDelete.GetComponent<ASLObject>().DeleteObject();
-                    toDelete = null;
-                    IsDeletingRC = false;
-                    DeleteRCToggle.isOn = false;
-                    deleteHoverRC.SetActive(false);
+                if (toDelete.GetComponent<RollerCoasterControl>().isEmpty())
+                {
+                    Destroy(toDelete.GetComponent<RollerCoasterControl>().SignalLight);
+                    toDelete.GetComponent<ASLObject>().SendAndSetClaim(() => {
+                        toDelete.GetComponent<ASLObject>().DeleteObject();
+                        toDelete = null;
+                        IsDeletingRC = false;
+                        DeleteRCToggle.isOn = false;
+                        deleteHoverRC.SetActive(false);
 
-                });
+                    });
+                }
 
             }
         }
