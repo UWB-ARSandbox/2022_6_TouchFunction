@@ -78,6 +78,7 @@ public partial class Player : MonoBehaviour
 
     #region Vehicle
     public GameObject EnterVehicleGUI;
+    public GameObject CantDeleteGUI;
     public RollerCoasterControl RCControlToRide;
     public RollerCoasterControl RCControlRiding;
     bool isForward;
@@ -629,7 +630,7 @@ public partial class Player : MonoBehaviour
 
                     transform.localScale = Vector3.one;
 
-                    SetEnterVehicleGUI(false);
+                    SetVehicleGUI(false);
 
                     //controller.Move((RCControlRiding.transform.position - transform.position) + RCControlRiding.SeatPositions[seatNumber]);
 
@@ -670,9 +671,13 @@ public partial class Player : MonoBehaviour
     }
 
 
-    public void SetEnterVehicleGUI(bool op)
+    public void SetVehicleGUI(bool op)
     {
         EnterVehicleGUI.SetActive(op);
+    }
+    public void SetDeleteGUI(bool op)
+    {
+        CantDeleteGUI.SetActive(op);
     }
 
 
